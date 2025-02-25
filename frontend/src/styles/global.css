@@ -1,0 +1,24 @@
+body {
+    background-color: #f5e1c2; /* Cream */
+    color: #4a3f35; /* Dark Brown */
+    font-family: "Poppins", sans-serif;
+  }
+  
+  .btn-primary {
+    background-color: #8d6e63 !important; /* Light Brown */
+    border-color: #6d4c41 !important; /* Dark Brown */
+  }
+  
+  .btn-primary:hover {
+    background-color: #6d4c41 !important; /* Dark Brown Hover */
+  }
+  
+  .card {
+    transition: all 0.3s ease-in-out;
+  }
+  
+  .card:hover {
+    transform: scale(1.05);
+    box-shadow: 0px 4px 15px rgba(0, 0, 0, 0.2);
+  }
+  
