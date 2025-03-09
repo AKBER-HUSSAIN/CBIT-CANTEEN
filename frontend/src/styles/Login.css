@@ -1,0 +1,152 @@
+/* 🌟 General Styles */
+body {
+    margin: 0;
+    padding: 0;
+    font-family: "Poppins", sans-serif;
+    transition: background 0.5s ease-in-out, color 0.5s ease-in-out;
+  }
+  
+  /* 🌙 Dark Mode and 🌞 Light Mode Backgrounds */
+  .dark-mode {
+    background: linear-gradient(135deg, #1a1a2e, #16213e, #0f3460);
+    color: white;
+  }
+  
+  .light-mode {
+    background: linear-gradient(135deg, #fdfbfb, #ebedee, #dfe4ea);
+    color: black;
+  }
+  
+  /* 🎨 Background Animation */
+  .background-animation {
+    position: fixed;
+    top: 0;
+    left: 0;
+    width: 100%;
+    height: 100%;
+    z-index: -1;
+    background: radial-gradient(circle, rgba(255, 182, 193, 0.4) 10%, rgba(173, 216, 230, 0.4) 50%);
+    animation: bgMove 20s infinite alternate;
+  }
+  
+  @keyframes bgMove {
+    0% { transform: scale(1); }
+    100% { transform: scale(1.1); }
+  }
+  
+  /* 🌟 Login Container */
+  .login-container {
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    height: 100vh;
+    position: relative;
+  }
+  
+  /* 🎭 Login Card */
+  .login-card {
+    border-radius: 15px;
+    backdrop-filter: blur(10px);
+    transition: all 0.5s ease-in-out;
+    padding: 2rem;
+    text-align: center;
+  }
+  
+  /* Light Mode Card */
+  .login-card.light {
+    background: rgba(255, 255, 255, 0.9);
+    box-shadow: 5px 5px 20px rgba(0, 0, 0, 0.1);
+  }
+  
+  /* Dark Mode Card */
+  .login-card.dark {
+    background: rgba(30, 30, 30, 0.9);
+    box-shadow: 5px 5px 20px rgba(255, 255, 255, 0.1);
+  }
+  
+  /* 📝 Form Styling */
+  .form-control {
+    padding: 12px;
+    border-radius: 8px;
+    border: none;
+    transition: all 0.3s ease-in-out;
+  }
+  
+  /* Light Mode Input Fields */
+  .light-mode .form-control {
+    background: #f1f1f1;
+    color: black;
+    border: 1px solid #ccc;
+  }
+  
+  /* Dark Mode Input Fields */
+  .dark-mode .form-control {
+    background: #222;
+    color: white;
+    border: 1px solid #555;
+  }
+  
+  .dark-mode .form-control::placeholder {
+    color: #bbb;
+  }
+  
+  /* 🎨 Button Styling */
+  .btn-primary, .btn-success {
+    border: none;
+    padding: 12px;
+    font-weight: bold;
+    border-radius: 8px;
+    transition: all 0.3s ease-in-out;
+  }
+  
+  .btn-primary {
+    background: linear-gradient(135deg, #ff758c, #ff7eb3);
+  }
+  
+  .btn-success {
+    background: linear-gradient(135deg, #57c84d, #45a049);
+  }
+  
+  .btn-primary:hover, .btn-success:hover {
+    transform: scale(1.05);
+    opacity: 0.9;
+  }
+  
+  /* 🌙 Dark Mode Toggle */
+  .dark-mode-toggle {
+    position: fixed;
+    top: 20px;
+    right: 20px;
+    padding: 8px;
+    border-radius: 50%;
+    background: rgba(255, 255, 255, 0.8);
+    border: none;
+    cursor: pointer;
+    transition: transform 0.3s ease-in-out;
+  }
+  
+  .dark-mode-toggle:hover {
+    transform: rotate(15deg);
+  }
+  
+  /* 💡 Fix Text Colors in Dark Mode */
+  .dark-mode .login-card h2, 
+  .dark-mode .login-card p, 
+  .dark-mode .login-card label {
+    color: white !important;
+  }
+  
+  .light-mode .login-card h2, 
+  .light-mode .login-card p, 
+  .light-mode .login-card label {
+    color: black !important;
+  }
+  
+  /* 🛠 Responsive Design */
+  @media (max-width: 768px) {
+    .login-card {
+      width: 90%;
+      padding: 1.5rem;
+    }
+  }
+  
