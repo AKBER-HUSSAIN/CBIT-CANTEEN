@@ -1,0 +1,52 @@
+.order-confirmation-container {
+    display: flex;
+    flex-direction: column;
+    justify-content: center;
+    align-items: center;
+    height: 100vh;
+    text-align: center;
+    background-color: #f0f0f0;
+    color: #333;
+  }
+  
+  .confetti h1 {
+    font-size: 3rem;
+    color: #28a745;
+    font-weight: bold;
+    animation: confettiAnimation 2s infinite;
+  }
+  
+  @keyframes confettiAnimation {
+    0% { transform: translateY(0); }
+    25% { transform: translateY(-10px); }
+    50% { transform: translateY(10px); }
+    75% { transform: translateY(-10px); }
+    100% { transform: translateY(0); }
+  }
+  
+  .qr-container {
+    margin-top: 20px;
+  }
+  
+  .qr-code {
+    width: 150px;
+    height: 150px;
+  }
+  
+  .back-btn-container {
+    margin-top: 40px;
+  }
+  
+  .back-btn {
+    font-size: 1.2rem;
+    padding: 12px 20px;
+    background-color: #ba000d;
+    color: white;
+    border: none;
+  }
+  
+  .back-btn:hover {
+    background-color: #9e0009;
+    transition: background-color 0.3s ease;
+  }
+  
