@@ -1,7 +1,7 @@
 import React, { useState } from 'react';
 import { motion } from 'framer-motion';
 import { Card, Button, Form } from 'react-bootstrap';
-import './CartPage.css';
+import '../styles/CartPage.css';
 
 const CartPage = () => {
   const [darkMode, setDarkMode] = useState(false);

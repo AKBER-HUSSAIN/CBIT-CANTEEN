@@ -1,7 +1,7 @@
 import React, { useState } from 'react';
 import { motion } from 'framer-motion';
 import { Card, Button, Form } from 'react-bootstrap';
-import './MenuPage.css';
+import '../styles/MenuPage.css';
 
 const MenuPage = () => {
   const [search, setSearch] = useState('');

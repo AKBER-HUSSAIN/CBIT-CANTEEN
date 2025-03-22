@@ -1,14 +1,14 @@
 import React from 'react';
 import { motion } from 'framer-motion';
 import { Button } from 'react-bootstrap';
-import './OrderConfirmation.css';
+import '../styles/OrderConfirmation.css';
 
 const OrderConfirmation = () => {
   return (
     <div className="order-confirmation-container">
       {/* Confetti Animation */}
       <motion.div
-        className="confetti"
+        className="confetti"  
         animate={{ opacity: 1 }}
         initial={{ opacity: 0 }}
         transition={{ duration: 1 }}
