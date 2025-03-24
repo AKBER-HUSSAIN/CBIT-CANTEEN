@@ -1,8 +1,7 @@
-import React, { useEffect, useState } from "react";
-import { motion } from "framer-motion";
-import { Button, Card, Container, Row, Col } from "react-bootstrap";
-import { FaTrashAlt } from "react-icons/fa";
-import axios from "axios";
+import React, { useState } from 'react';
+import { motion } from 'framer-motion';
+import { Card, Button, Form } from 'react-bootstrap';
+import './CartPage.css';
 
 const CartPage = () => {
   const userId = localStorage.getItem("userId");  // Get logged-in user ID

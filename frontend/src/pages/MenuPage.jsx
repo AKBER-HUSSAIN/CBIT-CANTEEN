@@ -1,9 +1,7 @@
-import React, { useState, useEffect } from "react";
-import { motion } from "framer-motion";
-import { useNavigate } from "react-router-dom";
-import { FaShoppingCart } from "react-icons/fa";
-import axios from "axios";
-import "../styles/MenuPage.css";
+import React, { useState } from 'react';
+import { motion } from 'framer-motion';
+import { Card, Button, Form } from 'react-bootstrap';
+import './MenuPage.css';
 
 const MenuPage = () => {
   const [categories, setCategories] = useState([]);

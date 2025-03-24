@@ -8,7 +8,7 @@ const OrderConfirmation = () => {
     <div className="order-confirmation-container">
       {/* Confetti Animation */}
       <motion.div
-        className="confetti"
+        className="confetti"  
         animate={{ opacity: 1 }}
         initial={{ opacity: 0 }}
         transition={{ duration: 1 }}
