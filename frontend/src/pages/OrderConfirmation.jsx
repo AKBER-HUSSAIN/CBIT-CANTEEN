@@ -1,7 +1,7 @@
 import React from 'react';
 import { motion } from 'framer-motion';
 import { Button } from 'react-bootstrap';
-import './OrderConfirmation.css';
+import '../styles/OrderConfirmation.css';
 
 const OrderConfirmation = () => {
   return (

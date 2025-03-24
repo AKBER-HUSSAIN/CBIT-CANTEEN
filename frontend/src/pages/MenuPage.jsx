@@ -1,64 +1,54 @@
-import React, { useState } from 'react';
-import { motion } from 'framer-motion';
-import { Card, Button, Form } from 'react-bootstrap';
-import './MenuPage.css';
+import React, { useState, useEffect } from "react";
+import { motion } from "framer-motion";
+import { useNavigate } from "react-router-dom";
+import { FaShoppingCart } from "react-icons/fa";
+import axios from "axios";
+import "../styles/MenuPage.css";
 
 const MenuPage = () => {
-  const [search, setSearch] = useState('');
-  const [darkMode, setDarkMode] = useState(false);
+  const [categories, setCategories] = useState([]);
+  const navigate = useNavigate();
 
-  const foodItems = [
-    { id: 1, name: 'Pizza', category: 'Italian', price: 10, image: '/assets/pizza.jpg' },
-    { id: 2, name: 'Burger', category: 'Fast Food', price: 5, image: '/assets/burger.jpg' },
-    // Add more items here...
-  ];
-
-  const filteredItems = foodItems.filter(item => 
-    item.name.toLowerCase().includes(search.toLowerCase()) ||
-    item.category.toLowerCase().includes(search.toLowerCase())
-  );
+  useEffect(() => {
+    axios.get("http://localhost:3000/api/menu/categories")
+      .then((res) => setCategories(res.data || []))
+      .catch((err) => console.error("❌ Error fetching categories:", err));
+  }, []);
 
   return (
-    <div className={`menu-page ${darkMode ? 'dark' : ''}`}>
-      <div className="search-bar">
-        <Form.Control
-          type="text"
-          placeholder="Search food items"
-          value={search}
-          onChange={(e) => setSearch(e.target.value)}
-        />
+    <div className="menu-page">
+      <div className="menu-header">
+        <h2 className="category-heading">Select a Category</h2>
+        
+        {/* ✅ Fix: Add "Go to Cart" button */}
+        <motion.button 
+          className="cart-button"
+          onClick={() => navigate("/cart")}
+          whileHover={{ scale: 1.1 }}
+        >
+          <FaShoppingCart /> Go to Cart
+        </motion.button>
       </div>
 
-      <div className="food-items">
-        {filteredItems.map(item => (
+      {/* 📌 Category Grid (4 per row) */}
+      <div className="category-grid">
+        {categories.map((category, index) => (
           <motion.div 
-            className="food-item"
-            key={item.id}
-            initial={{ opacity: 0 }}
-            animate={{ opacity: 1 }}
-            transition={{ duration: 0.5 }}
+            key={index} 
+            className="category-card"
+            onClick={() => navigate(`/menu/${category}`)}
+            whileHover={{ scale: 1.05 }}
           >
-            <Card>
-              <Card.Img variant="top" src={item.image} />
-              <Card.Body>
-                <Card.Title>{item.name}</Card.Title>
-                <Card.Text>{item.category}</Card.Text>
-                <Card.Text>${item.price}</Card.Text>
-                <Button variant="primary">Add to Cart</Button>
-              </Card.Body>
-            </Card>
+            <div 
+              className="category-image"
+              style={{ backgroundImage: `url(https://source.unsplash.com/400x300/?${category})` }}
+            ></div>
+            <p className="category-name">{category}</p>
           </motion.div>
         ))}
-      </div>
-
-      <div className="dark-mode-toggle">
-        <Button onClick={() => setDarkMode(!darkMode)}>
-          Toggle Dark Mode
-        </Button>
       </div>
     </div>
   );
 };
 
 export default MenuPage;
-

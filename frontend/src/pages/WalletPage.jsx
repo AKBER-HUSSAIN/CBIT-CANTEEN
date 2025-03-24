@@ -1,7 +1,7 @@
 import React, { useState } from 'react';
 import { motion } from 'framer-motion';
 import { Button, Modal, Form } from 'react-bootstrap';
-import './WalletPage.css';
+import '../styles/WalletPage.css';
 
 const WalletPage = () => {
   const [showModal, setShowModal] = useState(false);

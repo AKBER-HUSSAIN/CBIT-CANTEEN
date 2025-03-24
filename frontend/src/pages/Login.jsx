@@ -23,12 +23,31 @@ const Login = () => {
     e.preventDefault();
     try {
       const { data } = await API.post("/auth/login", formData);
+      
+      // ✅ Store userId & token for session
       localStorage.setItem("token", data.token);
+      localStorage.setItem("userId", data.user._id);
       localStorage.setItem("role", data.user.role);
+
+      // ✅ Fetch user cart on login
+      fetchCart(data.user._id, data.token);
+
       alert("Login successful!");
       navigate(data.user.role === "user" ? "/menu" : "/chef-dashboard");
     } catch (err) {
       alert(err.response?.data?.message || "Login failed!");
+    }
+  };
+
+  // ✅ Fetch cart after login
+  const fetchCart = async (userId, token) => {
+    try {
+      const response = await API.get(`/cart`, {
+        headers: { Authorization: token },
+      });
+      localStorage.setItem("cartItems", JSON.stringify(response.data));  // 🔥 Store cart in localStorage
+    } catch (err) {
+      console.error("❌ Error fetching cart:", err);
     }
   };
 

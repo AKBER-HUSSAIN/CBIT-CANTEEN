@@ -1,7 +1,8 @@
 import React, { useState } from 'react';
 import { motion } from 'framer-motion';
 import { Card, Button, Badge } from 'react-bootstrap';
-import './ChefDashboardPage.css';
+import '../styles/ChefDashboardPage.css';
+
 
 const ChefDashboardPage = () => {
   const [darkMode, setDarkMode] = useState(false);
