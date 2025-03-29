@@ -1,16 +1,48 @@
-import React, { useState } from 'react';
+import React, { useState, useEffect } from 'react';
 import { motion } from 'framer-motion';
-import { Card, Button, Form } from 'react-bootstrap';
-import './MenuPage.css';
+import { useNavigate } from 'react-router-dom';
+import axios from 'axios';
+import { FaShoppingCart } from 'react-icons/fa';
+import '../styles/MenuPage.css';
+
+// ✅ Import category images
+import beverages from '../assets/categories/baverages.jpeg';
+import desserts from '../assets/categories/desserts.jpeg';
+import maincourse from '../assets/categories/maincourse.jpg';
+import snacks from '../assets/categories/snacks.webp';
+import starters from '../assets/categories/starters.jpeg';
+
+// ✅ Map category names to images
+const categoryImages = {
+  Beverages: beverages,
+  Desserts: desserts,
+  'Main Course': maincourse,
+  Snacks: snacks,
+  Starters: starters,
+};
 
 const MenuPage = () => {
   const [categories, setCategories] = useState([]);
+  const [walletBalance, setWalletBalance] = useState(0);
   const navigate = useNavigate();
 
   useEffect(() => {
+    // ✅ Fetch categories
     axios.get("http://localhost:3000/api/menu/categories")
       .then((res) => setCategories(res.data || []))
       .catch((err) => console.error("❌ Error fetching categories:", err));
+
+    // ✅ Fetch wallet balance
+    const token = localStorage.getItem('token');
+    if (token) {
+      axios.get("http://localhost:3000/api/wallet/balance", {
+        headers: { Authorization: `Bearer ${token}` },
+      })
+      .then((res) => {
+        setWalletBalance(res.data.balance);
+      })
+      .catch((err) => console.error("❌ Error fetching wallet balance:", err));
+    }
   }, []);
 
   return (
@@ -18,7 +50,16 @@ const MenuPage = () => {
       <div className="menu-header">
         <h2 className="category-heading">Select a Category</h2>
         
-        {/* ✅ Fix: Add "Go to Cart" button */}
+        {/* ✅ Wallet Balance Button */}
+        <motion.button 
+          className="cart-button"
+          onClick={() => navigate("/wallet")}
+          whileHover={{ scale: 1.1 }}
+        >
+          Wallet Balance: ₹{walletBalance}
+        </motion.button>
+
+        {/* ✅ "Go to Cart" Button */}
         <motion.button 
           className="cart-button"
           onClick={() => navigate("/cart")}
@@ -28,7 +69,7 @@ const MenuPage = () => {
         </motion.button>
       </div>
 
-      {/* 📌 Category Grid (4 per row) */}
+      {/* ✅ Category Grid */}
       <div className="category-grid">
         {categories.map((category, index) => (
           <motion.div 
@@ -37,10 +78,11 @@ const MenuPage = () => {
             onClick={() => navigate(`/menu/${category}`)}
             whileHover={{ scale: 1.05 }}
           >
-            <div 
+            <img 
+              src={categoryImages[category] || starters}  // Default image if category not found
+              alt={category} 
               className="category-image"
-              style={{ backgroundImage: `url(https://source.unsplash.com/400x300/?${category})` }}
-            ></div>
+            />
             <p className="category-name">{category}</p>
           </motion.div>
         ))}

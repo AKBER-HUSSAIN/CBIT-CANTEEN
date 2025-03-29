@@ -9,7 +9,7 @@ dotenv.config();
 const app = express();
 const server = http.createServer(app);
 
-// ✅ Middleware
+// ✅ Middleware    
 app.use(express.json());
 app.use(cors());
 
@@ -27,10 +27,11 @@ io.on("connection", (socket) => {
     socket.on("disconnect", () => console.log("⚡ A user disconnected"));
 });
 
+
 // ✅ Import Routes
 const authRoutes = require("./routes/authRoutes");
 const menuRoutes = require("./routes/menuRoutes");
-const orderRoutes = require("./routes/orderRoutes");
+const orderRoutes = require("./routes/orderRoutes")(io);  // ✅ Pass io to orderRoutes.js
 const walletRoutes = require("./routes/walletRoutes");
 const cartRoutes = require("./routes/cartRoutes");
 

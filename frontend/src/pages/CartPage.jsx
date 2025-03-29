@@ -1,12 +1,18 @@
-import React, { useState } from 'react';
+import React, { useState, useEffect } from 'react';
 import { motion } from 'framer-motion';
 import { Card, Button, Form } from 'react-bootstrap';
-import './CartPage.css';
+import '../styles/CartPage.css';
+import axios from 'axios';
+import { Container, Row, Col } from 'react-bootstrap';
+import { FaTrashAlt } from 'react-icons/fa';
+import { useNavigate } from 'react-router-dom';
 
 const CartPage = () => {
   const userId = localStorage.getItem("userId");  // Get logged-in user ID
   const token = localStorage.getItem("token");    // Get auth token
   const [cartItems, setCartItems] = useState([]);  // Initialize as empty array
+  const [walletBalance, setWalletBalance] = useState(0);  // State for wallet balance
+  const navigate = useNavigate();
 
   // Fetch cart items
   useEffect(() => {
@@ -29,12 +35,19 @@ const CartPage = () => {
     .catch((err) => {
       console.error("❌ Error Fetching Cart:", err);
     });
+
+    // Fetch wallet balance
+    axios.get("http://localhost:3000/api/wallet/balance", {
+      headers: { Authorization: `Bearer ${token}` },
+    })
+    .then((res) => {
+      setWalletBalance(res.data.balance);
+    })
+    .catch((err) => console.error("❌ Error Fetching Wallet Balance:", err));
   }, [token, userId]);
 
   // Add Item to Cart
   const addToCart = (item) => {
-    
-    // Ensure we are only passing the itemId and quantity for the API request
     const { itemId, quantity } = item;
     if (!itemId || !itemId._id || !quantity) {
       console.error("❌ Invalid item data:", item);
@@ -56,7 +69,6 @@ const CartPage = () => {
 
   // Remove Item from Cart
   const removeFromCart = (item) => {
-    // Ensure we are only passing the itemId for the API request
     const { itemId } = item;
     if (!itemId || !itemId._id) {
       console.error("❌ Invalid item data:", item);
@@ -78,6 +90,15 @@ const CartPage = () => {
     <Container className="mt-5">
       <motion.h2 className="text-center mb-4">🛒 Your Cart</motion.h2>
 
+      {/* Display Wallet Balance */}
+      <motion.button 
+        className="wallet-button"
+        onClick={() => navigate("/wallet")}  // Redirect to wallet page
+        whileHover={{ scale: 1.1 }}
+      >
+        Wallet Balance: ₹{walletBalance}
+      </motion.button>
+
       {cartItems.length === 0 ? (
         <p className="text-center text-muted">Your cart is empty! Add some delicious food.</p>
       ) : (
@@ -97,9 +118,7 @@ const CartPage = () => {
                   </Col>
                   <Col xs={2}>
                     <Button variant="success" onClick={() => addToCart(item)}>+</Button>
-                    <Button variant="danger" onClick={() => removeFromCart(item)}>
-                      <FaTrashAlt />
-                    </Button>
+                    <Button variant="danger" onClick={() => removeFromCart(item)}><FaTrashAlt /></Button>
                   </Col>
                 </Row>
               </Card>
@@ -107,6 +126,7 @@ const CartPage = () => {
           })}
         </motion.div>
       )}
+      <Button className="checkout-button" onClick={() => navigate("/order")}  variant="primary"> Proceed to Checkout</Button>
     </Container>
   );
 };

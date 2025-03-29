@@ -1,48 +1,81 @@
-const express = require("express");
+const express = require('express');
+const Wallet = require('../models/Wallet');
+const Transaction = require('../models/Transaction');
+const verifyToken = require('../middleware/authMiddleware');
 const router = express.Router();
-const Wallet = require("../models/WalletModel");
 
-// Fetch user wallet balance
-router.get("/:userId", async (req, res) => {
+// Get Wallet Balance
+router.get('/balance', verifyToken, async (req, res) => {
     try {
-        const wallet = await Wallet.findOne({ userId: req.params.userId });
-        if (!wallet) return res.json({ balance: 0 });
-        res.json(wallet);
-    } catch (error) {
-        res.status(500).json({ error: "Failed to fetch wallet balance" });
+        const wallet = await Wallet.findOne({ userId: req.userId });
+        if (!wallet) {
+            return res.status(404).json({ message: 'Wallet not found' });
+        }
+
+        res.status(200).json({ balance: wallet.balance });
+    } catch (err) {
+        res.status(500).json({ message: 'Error fetching balance', error: err.message });
     }
 });
 
-// Recharge wallet balance
-router.post("/recharge", async (req, res) => {
+// Deposit funds into wallet
+// Deposit funds into wallet
+router.post('/deposit', verifyToken, async (req, res) => {
+    const { amount } = req.body;
+    if (amount <= 0) return res.status(400).json({ message: 'Amount must be greater than 0' });
+
     try {
-        const { userId, amount } = req.body;
-        await Wallet.findOneAndUpdate(
-            { userId },
-            { $inc: { balance: amount } },
-            { upsert: true, new: true }
-        );
-        res.json({ message: "Wallet recharged successfully!" });
-    } catch (error) {
-        res.status(500).json({ error: "Failed to recharge wallet" });
+        let wallet = await Wallet.findOne({ userId: req.userId });
+
+        if (!wallet) {
+            wallet = new Wallet({ userId: req.userId, balance: 0 });
+        }
+
+        // Ensure balance is a number before adding
+        wallet.balance = Number(wallet.balance) + Number(amount);  // Convert to number to avoid string concatenation
+
+        await wallet.save();
+
+        const transaction = new Transaction({
+            userId: req.userId,
+            amount,
+            type: 'deposit',
+        });
+        await transaction.save();
+
+        res.status(200).json({ message: 'Deposit successful', wallet });
+    } catch (err) {
+        res.status(500).json({ message: 'Error depositing funds', error: err.message });
     }
 });
 
-// Deduct money from wallet (On order placement)
-router.post("/deduct", async (req, res) => {
+
+// Withdraw funds from wallet
+router.post('/withdraw', verifyToken, async (req, res) => {
+    const { amount } = req.body;
+
+    if (amount <= 0) return res.status(400).json({ message: 'Amount must be greater than 0' });
+
     try {
-        const { userId, amount } = req.body;
-        const wallet = await Wallet.findOne({ userId });
+        const wallet = await Wallet.findOne({ userId: req.userId });
 
         if (!wallet || wallet.balance < amount) {
-            return res.status(400).json({ error: "Insufficient balance" });
+            return res.status(400).json({ message: 'Insufficient funds' });
         }
 
         wallet.balance -= amount;
         await wallet.save();
-        res.json({ message: "Payment successful!" });
-    } catch (error) {
-        res.status(500).json({ error: "Failed to deduct balance" });
+
+        const transaction = new Transaction({
+            userId: req.userId,
+            amount,
+            type: 'withdrawal',
+        });
+        await transaction.save();
+
+        res.status(200).json({ message: 'Withdrawal successful', wallet });
+    } catch (err) {
+        res.status(500).json({ message: 'Error withdrawing funds', error: err.message });
     }
 });
 

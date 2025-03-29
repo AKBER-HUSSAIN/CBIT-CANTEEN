@@ -1,7 +1,7 @@
 import React, { useState } from 'react';
 import { QRCodeCanvas } from 'qrcode.react';
 import { Button } from 'react-bootstrap';
-import './OrderVerification.css';
+import '../styles//OrderVerification.css';
 
 const OrderVerification = () => {
   const [orderId, setOrderId] = useState('');

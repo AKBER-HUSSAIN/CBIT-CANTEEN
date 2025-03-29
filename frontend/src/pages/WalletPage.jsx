@@ -1,94 +1,110 @@
-import React, { useState } from 'react';
-import { motion } from 'framer-motion';
-import { Button, Modal, Form } from 'react-bootstrap';
-import '../styles/WalletPage.css';
+import React, { useState, useEffect } from "react";
+import { Button, Card, Container, Row, Col, Form } from "react-bootstrap";
+import axios from "axios";
 
 const WalletPage = () => {
-  const [showModal, setShowModal] = useState(false);
-  const [amount, setAmount] = useState('');
-  const [balance, setBalance] = useState(500); // Example initial balance
+  const token = localStorage.getItem("token");
+  const [balance, setBalance] = useState(0);
+  const [depositAmount, setDepositAmount] = useState("");
+  const [withdrawAmount, setWithdrawAmount] = useState("");
 
-  const handleAddMoney = () => {
-    setBalance(balance + parseFloat(amount));
-    setAmount('');
-    setShowModal(false);
+  // Fetch current balance on component load
+  useEffect(() => {
+    axios.get("http://localhost:3000/api/wallet/balance", {
+      headers: { Authorization: `Bearer ${token}` },
+    })
+    .then((response) => {
+      setBalance(response.data.balance);
+    })
+    .catch((err) => console.error("Error fetching wallet balance:", err));
+  }, [token]);
+
+  // Handle deposit logic
+  const handleDeposit = () => {
+    if (depositAmount <= 0 || isNaN(depositAmount)) {
+      alert("Please enter a valid amount greater than zero.");
+      return;
+    }
+
+    axios.post("http://localhost:3000/api/wallet/deposit", { amount: Number(depositAmount) }, {
+      headers: { Authorization: `Bearer ${token}` },
+    })
+    .then((response) => {
+      setBalance(response.data.wallet.balance);
+      setDepositAmount(""); // Clear the input field after deposit
+    })
+    .catch((err) => {
+      console.error("Error while depositing:", err);
+    });
+  };
+
+  // Handle withdraw logic
+  const handleWithdraw = () => {
+    if (withdrawAmount <= 0 || isNaN(withdrawAmount)) {
+      alert("Please enter a valid amount greater than zero.");
+      return;
+    }
+
+    if (withdrawAmount > balance) {
+      alert("Insufficient funds!");
+      return;
+    }
+
+    axios.post("http://localhost:3000/api/wallet/withdraw", { amount: Number(withdrawAmount) }, {
+      headers: { Authorization: `Bearer ${token}` },
+    })
+    .then((response) => {
+      setBalance(response.data.wallet.balance);
+      setWithdrawAmount(""); // Clear the input field after withdrawal
+    })
+    .catch((err) => {
+      console.error("Error while withdrawing:", err);
+    });
   };
 
   return (
-    <div className="wallet-container">
-      {/* Wallet Balance */}
-      <motion.div
-        className="wallet-balance"
-        initial={{ opacity: 0 }}
-        animate={{ opacity: 1 }}
-        transition={{ duration: 1 }}
-      >
-        <h1>Wallet Balance: ₹{balance}</h1>
-      </motion.div>
+    <Container className="mt-5">
+      <Row className="justify-content-center">
+        <Col md={6}>
+          <Card className="shadow-lg p-4 mb-4 bg-white rounded">
+            <Card.Body>
+              <Card.Title className="text-center text-success mb-4">My Wallet</Card.Title>
 
-      {/* Add Money Button */}
-      <motion.div
-        className="add-money-btn"
-        initial={{ opacity: 0 }}
-        animate={{ opacity: 1 }}
-        transition={{ delay: 0.5, duration: 1 }}
-      >
-        <Button
-          variant="primary"
-          onClick={() => setShowModal(true)}
-          className="add-money"
-        >
-          Add Money
-        </Button>
-      </motion.div>
+              {/* Displaying balance */}
+              <h3 className="text-center text-muted">Balance: ₹{balance}</h3>
 
-      {/* Transaction History */}
-      <motion.div
-        className="transaction-history"
-        initial={{ opacity: 0 }}
-        animate={{ opacity: 1 }}
-        transition={{ delay: 1, duration: 1 }}
-      >
-        <h2>Transaction History</h2>
-        <ul>
-          <li>₹100 added to wallet</li>
-          <li>₹200 added to wallet</li>
-          <li>₹150 added to wallet</li>
-        </ul>
-      </motion.div>
+              {/* Deposit form */}
+              <Form className="mb-4">
+                <Form.Group controlId="depositAmount">
+                  <Form.Label>Enter Amount to Deposit</Form.Label>
+                  <Form.Control
+                    type="number"
+                    placeholder="Deposit Amount"
+                    value={depositAmount}
+                    onChange={(e) => setDepositAmount(e.target.value)}
+                  />
+                </Form.Group>
+                <Button variant="primary" onClick={handleDeposit} className="w-100">Deposit</Button>
+              </Form>
 
-      {/* Modal for Adding Money */}
-      <Modal show={showModal} onHide={() => setShowModal(false)}>
-        <Modal.Header closeButton>
-          <Modal.Title>Add Money to Wallet</Modal.Title>
-        </Modal.Header>
-        <Modal.Body>
-          <Form>
-            <Form.Group controlId="formAmount">
-              <Form.Label>Amount (₹)</Form.Label>
-              <Form.Control
-                type="number"
-                value={amount}
-                onChange={(e) => setAmount(e.target.value)}
-                placeholder="Enter amount"
-              />
-            </Form.Group>
-          </Form>
-        </Modal.Body>
-        <Modal.Footer>
-          <Button variant="secondary" onClick={() => setShowModal(false)}>
-            Close
-          </Button>
-          <Button
-            variant="primary"
-            onClick={handleAddMoney}
-            disabled={!amount}
-          >
-            Add Money
-          </Button>
-        </Modal.Footer>
-      </Modal>
-    </div>
+              {/* Withdraw form */}
+              <Form>
+                <Form.Group controlId="withdrawAmount">
+                  <Form.Label>Enter Amount to Withdraw</Form.Label>
+                  <Form.Control
+                    type="number"
+                    placeholder="Withdraw Amount"
+                    value={withdrawAmount}
+                    onChange={(e) => setWithdrawAmount(e.target.value)}
+                  />
+                </Form.Group>
+                <Button variant="danger" onClick={handleWithdraw} className="w-100">Withdraw</Button>
+              </Form>
+            </Card.Body>
+          </Card>
+        </Col>
+      </Row>
+    </Container>
   );
 };
 

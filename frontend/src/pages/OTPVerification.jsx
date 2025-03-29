@@ -1,7 +1,7 @@
 import React, { useState } from 'react';
 import { motion } from 'framer-motion';
 import { Button, Form } from 'react-bootstrap';
-import './OTPVerification.css';
+import '../styles/OTPVerification.css';
 
 const OTPVerification = () => {
   const [otp, setOtp] = useState(['', '', '', '']);
