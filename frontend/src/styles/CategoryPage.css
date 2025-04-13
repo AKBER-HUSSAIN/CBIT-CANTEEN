@@ -1,0 +1,28 @@
+.category-page {
+    padding: 20px;
+    text-align: center;
+  }
+  
+  .category-title {
+    font-size: 24px;
+    margin-bottom: 20px;
+  }
+  
+  .food-items-container {
+    overflow-x: auto;
+    white-space: nowrap;
+    padding: 10px;
+  }
+  
+  .food-items-scroll {
+    display: flex;
+    gap: 15px;
+    overflow-x: auto;
+    padding: 10px;
+  }
+  
+  .food-item {
+    flex: 0 0 auto;
+    width: 220px;
+  }
+  

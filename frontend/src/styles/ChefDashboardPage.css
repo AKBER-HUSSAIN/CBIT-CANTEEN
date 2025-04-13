@@ -1,0 +1,95 @@
+.chef-dashboard {
+  padding: 20px;
+  font-family: 'Poppins', sans-serif;
+}
+
+h2 {
+  text-align: center;
+  font-size: 26px;
+  margin-bottom: 20px;
+}
+
+.order-list {
+  display: flex;
+  flex-wrap: wrap;
+  justify-content: center;
+  gap: 20px;
+}
+
+.order-card {
+  width: 350px;
+  background: white;
+  border-radius: 12px;
+  box-shadow: 0 4px 10px rgba(0, 0, 0, 0.1);
+  padding: 15px;
+  transition: transform 0.2s ease-in-out;
+}
+
+.order-card:hover {
+  transform: scale(1.02);
+}
+
+.order-card-style {
+  border: none;
+}
+
+.order-info {
+  text-align: left;
+}
+
+.order-info h5 {
+  font-size: 18px;
+  font-weight: 600;
+}
+
+.order-items {
+  padding: 10px 0;
+  font-size: 16px;
+}
+
+.order-items li {
+  list-style: none;
+  font-weight: 500;
+  padding: 4px 0;
+}
+
+.order-total {
+  font-weight: 700;
+  font-size: 18px;
+  margin-top: 10px;
+}
+
+.order-status {
+  display: inline-block;
+  padding: 5px 10px;
+  font-size: 14px;
+  font-weight: 600;
+  border-radius: 8px;
+  margin-top: 10px;
+}
+
+.status-pending {
+  background-color: #ffcc00;
+  color: #333;
+}
+
+.status-completed {
+  background-color: #28a745;
+  color: white;
+}
+
+.mark-completed-btn {
+  background-color: #ff5c8a;
+  color: white;
+  font-weight: bold;
+  border: none;
+  width: 100%;
+  padding: 8px;
+  margin-top: 10px;
+  border-radius: 6px;
+  transition: background 0.3s ease;
+}
+
+.mark-completed-btn:hover {
+  background-color: #e04e78;
+}

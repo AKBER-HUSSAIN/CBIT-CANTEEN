@@ -1,0 +1,74 @@
+
+.wallet-container {
+    display: flex;
+    flex-direction: column;
+    justify-content: center;
+    align-items: center;
+    height: 100vh;
+    background-color: #f5f5f5;
+    color: #333;
+    text-align: center;
+  }
+  
+  .wallet-balance h1 {
+    font-size: 2rem;
+    color: #28a745;
+    font-weight: bold;
+  }
+  
+  .add-money-btn {
+    margin-top: 30px;
+  }
+  
+  .add-money {
+    font-size: 1.2rem;
+    padding: 12px 20px;
+    background-color: #ba000d;
+    color: white;
+    border: none;
+  }
+  
+  .add-money:hover {
+    background-color: #9e0009;
+    transition: background-color 0.3s ease;
+  }
+  
+  .transaction-history {
+    margin-top: 40px;
+    width: 80%;
+  }
+  
+  .transaction-history h2 {
+    font-size: 1.5rem;
+    font-weight: bold;
+    margin-bottom: 10px;
+  }
+  
+  .transaction-history ul {
+    list-style-type: none;
+    padding-left: 0;
+  }
+  
+  .transaction-history li {
+    font-size: 1rem;
+    margin-bottom: 5px;
+  }
+  
+  @keyframes rollUp {
+    0% { transform: translateY(50px); opacity: 0; }
+    100% { transform: translateY(0); opacity: 1; }
+  }
+  
+  .wallet-balance {
+    animation: rollUp 1s ease-out forwards;
+  }
+  
+  .add-money-btn {
+    animation: rollUp 1s ease-out forwards;
+  }
+  
+  .transaction-history {
+    animation: rollUp 1s ease-out forwards;
+    animation-delay: 1s;
+  }
+  
