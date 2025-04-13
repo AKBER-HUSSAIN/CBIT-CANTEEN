@@ -5,6 +5,7 @@ const API = axios.create({ baseURL: "http://localhost:3000/api" }); // Ensure th
 // ✅ Add Authorization Header if User is Logged In
 API.interceptors.request.use((req) => {
     const token = localStorage.getItem("token");
+    console.log("🔍 Token from localStorage:", token); // Log the token for debugging
     if (token) {
         req.headers.Authorization = `Bearer ${token}`;
     }

@@ -58,24 +58,25 @@ const Login = () => {
   const handleVerifyOTP = async (e) => {
     e.preventDefault();
     const email = localStorage.getItem("email");
-    const role = localStorage.getItem("role");
 
     try {
-      const response = await API.post("/auth/verify-otp", {
-        email,
-        otp: confirmationCode, // 🔄 Fixed key name here
-      });
+        const response = await API.post("/auth/verify-otp", { email, otp: confirmationCode });
+        console.log("✅ OTP Verification Response:", response.data); // Log the response for debugging
 
-      alert(response.data.message);
+        // Save the token and userId to localStorage
+        localStorage.setItem("token", response.data.token);
+        localStorage.setItem("userId", response.data.user._id); // Ensure userId is stored
 
-      // Redirect based on role
-      if (role === "chef") {
-        navigate("/chef-dashboard");
-      } else {
-        navigate("/menu");
-      }
+        // Redirect based on role
+        const role = response.data.user.role;
+        if (role === "chef") {
+            navigate("/chef-dashboard");
+        } else {
+            navigate("/menu");
+        }
     } catch (err) {
-      alert(err.response?.data?.message || "OTP Verification failed!");
+        console.error("❌ OTP Verification Error:", err.response?.data || err.message);
+        alert(err.response?.data?.message || "OTP Verification failed!");
     }
   };
 
@@ -104,10 +105,24 @@ const Login = () => {
             {step === 1 ? (
               <Form onSubmit={handleSubmit}>
                 <Form.Group className="mb-2">
-                  <Form.Control type="email" name="email" placeholder="Email" onChange={handleChange} required />
+                  <Form.Control
+                    type="email"
+                    name="email"
+                    placeholder="Email"
+                    value={formData.email} // Ensure controlled input
+                    onChange={handleChange}
+                    required
+                  />
                 </Form.Group>
                 <Form.Group className="mb-2">
-                  <Form.Control type="password" name="password" placeholder="Password" onChange={handleChange} required />
+                  <Form.Control
+                    type="password"
+                    name="password"
+                    placeholder="Password"
+                    value={formData.password} // Ensure controlled input
+                    onChange={handleChange}
+                    required
+                  />
                 </Form.Group>
                 <motion.div whileHover={{ scale: 1.05 }}>
                   <Button className="w-100 btn-primary" type="submit">Login</Button>

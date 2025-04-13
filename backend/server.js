@@ -41,7 +41,7 @@ const orderRoutes = require("./routes/orderRoutes")(io); // Ensure the function 
 const walletRoutes = require("./routes/walletRoutes");
 const cartRoutes = require("./routes/cartRoutes");
 const visitorRoutes = require("./routes/visitorRoutes"); // ✅ Import visitor routes
-
+const recommendationRoutes = require("./routes/recommendationRoutes");
 // ✅ Use Routes
 app.use("/api/auth", authRoutes);
 app.use("/api/menu", menuRoutes);
@@ -49,6 +49,7 @@ app.use("/api/orders", orderRoutes); // Use the returned router object
 app.use("/api/wallet", walletRoutes);
 app.use("/api/cart", cartRoutes);
 app.use("/api/visitors", visitorRoutes); // ✅ Register visitor routes
+app.use("/api/recommendations", recommendationRoutes);
 
 // ✅ Start Server
 const PORT = process.env.PORT || 3000;

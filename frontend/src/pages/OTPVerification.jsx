@@ -3,16 +3,17 @@ import { Container, Card, Form, Button } from "react-bootstrap";
 import { useNavigate } from "react-router-dom";
 import { motion } from "framer-motion";
 import API from "../services/api";
+import { getLocalStorageItem, removeLocalStorageItem } from "../utils/localstorage";
 import "../styles/OTPVerification.css";
 
 const OTPVerification = () => {
   const navigate = useNavigate();
   const [confirmationCode, setConfirmationCode] = useState("");
-  const [darkMode, setDarkMode] = useState(localStorage.getItem("darkMode") === "true");
+  const [darkMode, setDarkMode] = useState(getLocalStorageItem("darkMode") === "true");
 
   useEffect(() => {
     document.body.className = darkMode ? "dark-mode" : "light-mode";
-    localStorage.setItem("darkMode", darkMode);
+    setLocalStorageItem("darkMode", darkMode);
   }, [darkMode]);
 
   const handleChange = (e) => {
@@ -21,12 +22,18 @@ const OTPVerification = () => {
 
   const handleVerifyOTP = async (e) => {
     e.preventDefault();
-    const email = localStorage.getItem("email");
+    const email = getLocalStorageItem("email");
+
+    if (!email) {
+      console.warn("⚠️ Email missing. Redirecting to login.");
+      navigate("/login");
+      return;
+    }
 
     try {
       const response = await API.post("/auth/verify-otp", { email, confirmationCode });
       alert(response.data.message || "OTP verified");
-      localStorage.removeItem("email");
+      removeLocalStorageItem("email"); // Remove email only after OTP verification
       navigate("/login");
     } catch (error) {
       alert(error.response?.data?.message || "OTP verification failed");

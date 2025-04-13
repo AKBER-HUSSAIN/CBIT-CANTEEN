@@ -2,20 +2,21 @@ const express = require("express");
 const router = express.Router();
 const Order = require("../models/OrderModel"); // Import Order model
 const Food = require("../models/FoodModel"); // Import Food model
-
+const axios = require("axios");
+// Personalized Recommendations
 // Personalized Recommendations
 router.get("/personalized/:userId", async (req, res) => {
     try {
         const { userId } = req.params;
 
         // Fetch user's past orders
-        const orders = await Order.find({ userId }).populate("items.foodId");
+        const orders = await Order.find({ userId }).populate("items.itemId"); // Changed foodId to itemId
 
         // Count frequency of ordered items
         const foodFrequency = {};
         orders.forEach(order => {
             order.items.forEach(item => {
-                const foodId = item.foodId._id.toString();
+                const foodId = item.itemId._id.toString(); // Changed foodId to itemId
                 foodFrequency[foodId] = (foodFrequency[foodId] || 0) + 1;
             });
         });
@@ -45,7 +46,7 @@ router.get("/trending", async (req, res) => {
         const oneWeekAgo = new Date();
         oneWeekAgo.setDate(oneWeekAgo.getDate() - 7);
 
-        const orders = await Order.find({ createdAt: { $gte: oneWeekAgo } }).populate("items.foodId");
+        const orders = await Order.find({ createdAt: { $gte: oneWeekAgo } }).populate("items.itemId"); // Changed foodId to itemId
 
         // Count frequency of items in the current time slot
         const foodFrequency = {};
@@ -55,7 +56,7 @@ router.get("/trending", async (req, res) => {
 
             if (orderTimeSlot === timeSlot) {
                 order.items.forEach(item => {
-                    const foodId = item.foodId._id.toString();
+                    const foodId = item.itemId._id.toString(); // Changed foodId to itemId
                     foodFrequency[foodId] = (foodFrequency[foodId] || 0) + 1;
                 });
             }
@@ -71,6 +72,35 @@ router.get("/trending", async (req, res) => {
     } catch (error) {
         console.error("Error fetching trending items:", error);
         res.status(500).json({ message: "Server error" });
+    }
+});
+
+// Generate content using Gemini API
+router.post("/generate", async (req, res) => {
+    const { prompt } = req.body;
+
+    try {
+        const response = await axios.post(
+            `https://generativelanguage.googleapis.com/v1beta2/models/text-bison-001:generateText?key=${process.env.GEMINI_API_KEY}`,
+            {
+                prompt: {
+                    text: prompt,
+                },
+                temperature: 0.7,
+                candidateCount: 1,
+            },
+            {
+                headers: {
+                    "Content-Type": "application/json",
+                },
+            }
+        );
+
+        const generatedText = response.data.candidates[0].output;
+        res.status(200).json({ response: generatedText });
+    } catch (error) {
+        console.error("Error generating Gemini AI response:", error?.response?.data || error.message);
+        res.status(500).json({ message: "Gemini API Error", error: error?.response?.data || error.message });
     }
 });
 
