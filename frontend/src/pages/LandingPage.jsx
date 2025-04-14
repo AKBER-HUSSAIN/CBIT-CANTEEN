@@ -1,7 +1,7 @@
 import React, { useEffect } from 'react';
 import { motion } from 'framer-motion';
 import { useNavigate } from 'react-router-dom';
-import { FaUtensils, FaUserCircle, FaChefHat, FaArrowRight } from 'react-icons/fa';
+import { FaUtensils, FaUserCircle, FaArrowRight, FaHardHat } from 'react-icons/fa';
 import '../styles/LandingPage.css';
 
 const LandingPage = () => {
@@ -63,7 +63,7 @@ const LandingPage = () => {
             whileHover={{ scale: 1.05 }}
             whileTap={{ scale: 0.95 }}
           >
-            <FaChefHat /> Login as Chef
+            <FaHardHat /> Login as Chef
             <FaArrowRight className="arrow" />
           </motion.button>
         </div>
