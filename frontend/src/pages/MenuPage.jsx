@@ -2,10 +2,9 @@ import React, { useState, useEffect } from 'react';
 import { motion } from 'framer-motion';
 import { useNavigate } from 'react-router-dom';
 import axios from 'axios';
-import { FaShoppingCart, FaHistory, FaWallet } from 'react-icons/fa';
-import 'bootstrap/dist/css/bootstrap.min.css';
+import { FaShoppingCart, FaHistory } from 'react-icons/fa';
 import '../styles/MenuPage.css';
-import API from "../services/api";
+import API from "../services/api"; // ✅ Import API service
 
 // Import category images
 import beverages from '../assets/categories/baverages.jpeg';
@@ -26,10 +25,12 @@ const categoryImages = {
 const MenuPage = () => {
   const [categories, setCategories] = useState([]);
   const [walletBalance, setWalletBalance] = useState(0);
+  const [recommendations, setRecommendations] = useState([]); // State for recommendations
   const navigate = useNavigate();
 
   useEffect(() => {
     const token = localStorage.getItem('token');
+    const userId = localStorage.getItem('userId'); // Get userId from localStorage
 
     if (!token) {
       console.error("❌ No token found. Redirecting to login.");
@@ -47,46 +48,53 @@ const MenuPage = () => {
       headers: { Authorization: `Bearer ${token}` },
     })
     .then((res) => setWalletBalance(res.data.balance))
-    .catch((err) => console.error("❌ Error fetching wallet balance:", err));
+    .catch((err) => {
+      console.error("❌ Error fetching wallet balance:", err.message);
+      console.log("📜 Full Axios error:", err);
+    });
+    
+
+    // Fetch personalized recommendations
+    getPersonalizedRecommendations(userId)
+      .then((data) => setRecommendations(data))
+      .catch((err) => console.error("❌ Error fetching recommendations:", err));
   }, [navigate]);
 
   return (
-    <div className="menu-page container-fluid py-4">
-      <div className="menu-header row mb-4">
-        <div className="col-12">
-          <h2 className="category-heading text-center mb-4">Our Menu Categories</h2>
-          <div className="d-flex justify-content-center gap-3 flex-wrap">
-            <motion.button 
-              className="btn custom-btn wallet-btn"
-              onClick={() => navigate("/wallet")}
-              whileHover={{ scale: 1.05 }}
-              whileTap={{ scale: 0.95 }}
-            >
-              <FaWallet className="me-2" /> ₹{walletBalance}
-            </motion.button>
+    <div className="menu-page">
+      <div className="menu-header">
+        <h2 className="category-heading">Select a Category</h2>
+        
+        {/* ✅ Wallet Balance Button */}
+        <motion.button 
+          className="cart-button"
+          onClick={() => navigate("/wallet")}
+          whileHover={{ scale: 1.1 }}
+        >
+          Wallet Balance: ₹{walletBalance}
+        </motion.button>
 
-            <motion.button 
-              className="btn custom-btn cart-btn"
-              onClick={() => navigate("/cart")}
-              whileHover={{ scale: 1.05 }}
-              whileTap={{ scale: 0.95 }}
-            >
-              <FaShoppingCart className="me-2" /> Cart
-            </motion.button>
+        {/* ✅ Go to Cart Button */}
+        <motion.button 
+          className="cart-button"
+          onClick={() => navigate("/cart")}
+          whileHover={{ scale: 1.1 }}
+        >
+          <FaShoppingCart /> Go to Cart
+        </motion.button>
 
-            <motion.button 
-              className="btn custom-btn history-btn"
-              onClick={() => navigate("/order-history")}
-              whileHover={{ scale: 1.05 }}
-              whileTap={{ scale: 0.95 }}
-            >
-              <FaHistory className="me-2" /> History
-            </motion.button>
-          </div>
-        </div>
+        {/* ✅ Order History Button */}
+        <motion.button 
+          className="cart-button"
+          onClick={() => navigate("/order-history")}
+          whileHover={{ scale: 1.1 }}
+        >
+          <FaHistory /> Order History
+        </motion.button>
       </div>
 
-      <div className="category-grid row g-4">
+      {/* ✅ Category Grid */}
+      <div className="category-grid">
         {categories.map((category, index) => (
           <motion.div 
             key={index} 
@@ -114,6 +122,28 @@ const MenuPage = () => {
             </motion.div>
           </motion.div>
         ))}
+      </div>
+
+      {/* Personalized Recommendations Section */}
+      <div className="recommendations-section">
+        <h3>Recommended for You</h3>
+        <div className="category-grid">
+          {recommendations.map((item) => (
+            <motion.div
+              key={item._id}
+              className="category-card"
+              onClick={() => navigate(`/menu/${item.category}`)}
+              whileHover={{ scale: 1.05 }}
+            >
+              <img
+                src={item.imageUrl || starters} // Use default image if not available
+                alt={item.name}
+                className="category-image"
+              />
+              <p className="category-name">{item.name}</p>
+            </motion.div>
+          ))}
+        </div>
       </div>
     </div>
   );

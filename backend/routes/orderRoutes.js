@@ -15,7 +15,7 @@ module.exports = (io) => {
     // ✅ Middleware to Verify Chef Role
     const verifyChef = async (req, res, next) => {
         try {
-            const user = await User.findById(req.userId);
+            const user = await User.findById(req.user._id); // Fixed to use req.user._id
             if (!user || user.role !== "chef") {
                 return res.status(403).json({ message: "Forbidden: Only chefs can access this." });
             }
@@ -40,7 +40,7 @@ module.exports = (io) => {
             }
 
             // ✅ Step 2: Check Wallet Balance
-            const userWallet = await Wallet.findOne({ userId: req.userId });
+            const userWallet = await Wallet.findOne({ userId: req.user._id }); // Fixed to use req.user._id
             if (!userWallet || userWallet.balance < totalAmount) {
                 return res.status(400).json({ message: "Insufficient funds" });
             }
@@ -51,7 +51,7 @@ module.exports = (io) => {
 
             // ✅ Step 4: Create Order
             const order = new Order({
-                userId: req.userId,
+                userId: req.user._id, // Fixed to use req.user._id
                 items,
                 totalAmount,
                 status: "Pending",
@@ -61,7 +61,7 @@ module.exports = (io) => {
 
             // ✅ Step 5: Create Order Transaction
             const orderTransaction = new OrderTransaction({
-                userId: req.userId,
+                userId: req.user._id, // Fixed to use req.user._id
                 orderId: savedOrder._id,
                 amount: totalAmount,
                 status: "Success",
@@ -70,7 +70,7 @@ module.exports = (io) => {
             await orderTransaction.save();
 
             // ✅ Step 6: Clear Cart
-            await Cart.findOneAndUpdate({ userId: req.userId }, { items: [] });
+            await Cart.findOneAndUpdate({ userId: req.user._id }, { items: [] }); // Fixed to use req.user._id
 
             // ✅ Step 7: Emit Order Update for Chefs
             io.emit("orderStatus", { orderId: savedOrder._id, status: "Pending" });
@@ -86,7 +86,9 @@ module.exports = (io) => {
     // ✅ Get Orders for Chefs (Only Pending Orders)
     router.get("/chef", verifyToken, verifyChef, async (req, res) => {
         try {
-            const orders = await Order.find({ status: "Pending" }).populate("items.itemId");
+            const orders = await Order.find({ status: "Pending" })
+                .populate("items.itemId") // Populate item details
+                .sort({ createdAt: -1 }); // Sort by most recent orders
             res.status(200).json(orders);
         } catch (error) {
             console.error("❌ Error fetching chef orders:", error);
@@ -97,7 +99,7 @@ module.exports = (io) => {
     // ✅ Get User Orders
     router.get("/", verifyToken, async (req, res) => {
         try {
-            const orders = await Order.find({ userId: req.userId }).populate("items.itemId");
+            const orders = await Order.find({ userId: req.user._id }).populate("items.itemId"); // Fixed to use req.user._id
             res.status(200).json(orders);
         } catch (error) {
             console.error("❌ Error fetching orders:", error);
@@ -108,27 +110,24 @@ module.exports = (io) => {
     // ✅ Get Order Status by Order ID (with ObjectId Fix)
     router.get("/status/:orderId", verifyToken, async (req, res) => {
         try {
-            let { orderId } = req.params;
-            console.log("🔍 Received Order ID:", orderId);
+            const { orderId } = req.params;
 
             if (!mongoose.Types.ObjectId.isValid(orderId)) {
                 return res.status(400).json({ message: "Invalid Order ID format" });
             }
 
-            // ✅ Fetch Order
             const order = await Order.findById(orderId);
             if (!order) {
                 return res.status(404).json({ message: "Order not found" });
             }
 
-            // ✅ Ensure the user requesting the order is the owner
-            if (order.userId.toString() !== req.userId) {
+            if (order.userId.toString() !== req.user._id.toString()) { // Fixed to use req.user._id
                 return res.status(403).json({ message: "Unauthorized: You cannot access this order." });
             }
 
             res.json({ status: order.status });
         } catch (error) {
-            console.error("❌ Backend Error:", error);
+            console.error("❌ Error fetching order status:", error);
             res.status(500).json({ message: "Server error", error: error.message });
         }
     });
@@ -165,7 +164,7 @@ module.exports = (io) => {
     // ✅ Get Transaction History for Logged-in User
     router.get("/transactions", verifyToken, async (req, res) => {
         try {
-            const transactions = await Transaction.find({ userId: req.userId }).sort({ createdAt: -1 });
+            const transactions = await Transaction.find({ userId: req.user._id }).sort({ createdAt: -1 }); // Fixed to use req.user._id
             res.status(200).json(transactions);
         } catch (error) {
             console.error("❌ Error fetching transaction history:", error);
