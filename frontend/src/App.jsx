@@ -20,6 +20,7 @@ import OTPVerification from "./pages/OTPVerification";  // Import OTPVerificatio
 import WalletPage from "./pages/WalletPage";  // Import WalletPage
 import OrderPage from "./pages/OrderPage";  // Import OrderPage
 import OrderHistory from "./pages/OrderHistory";  // Import OrderHistory
+import LandingPage from "./pages/LandingPage";  // Import LandingPage
 // **CSS and Styling**
 // Import your main CSS (if needed)
 
@@ -29,7 +30,8 @@ const App = () => {
       <Header />
       <Routes>
         {/* Define routes for all pages */}
-        <Route path="/" element={<RoleSelection />} />
+        <Route path="/" element={<LandingPage />} />
+        <Route path="/role-selection" element={<RoleSelection />} />
         <Route path="/login" element={<Login />} />
         <Route path="/signup" element={<Signup />} />
         <Route path="/order-status" element={<OrderStatus />} />

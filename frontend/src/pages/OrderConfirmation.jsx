@@ -1,7 +1,7 @@
 import React from 'react';
 import { motion } from 'framer-motion';
 import { Button } from 'react-bootstrap';
-import { CheckCircle } from '@material-ui/icons';
+import { CheckCircle } from '@mui/icons-material';
 import '../styles/OrderConfirmation.css';
 
 const OrderConfirmation = () => {
