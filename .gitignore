@@ -38,3 +38,4 @@ dist-ssr
 # Ignore specific files
 frontend/.env
 backend/.env
+.qodo
