@@ -17,11 +17,11 @@ const RoleSelection = () => {
     <div className="login-container">
       <div className="background-animation"></div>
 
-      {/* Dark Mode Toggle */}
       <motion.button 
         className="dark-mode-toggle" 
         onClick={() => setDarkMode(!darkMode)}
         whileHover={{ scale: 1.1 }}
+        whileTap={{ scale: 0.95 }}
       >
         {darkMode ? "☀️" : "🌙"}
       </motion.button>
@@ -30,18 +30,49 @@ const RoleSelection = () => {
         <motion.div 
           initial={{ opacity: 0, y: -20 }} 
           animate={{ opacity: 1, y: 0 }} 
-          transition={{ duration: 0.8 }}
+          transition={{ duration: 0.8, ease: "easeOut" }}
         >
-          <Card className={`p-4 shadow-lg login-card ${darkMode ? "dark" : "light"}`}>
-            <h2 className="text-center mb-3">Select Your Role</h2>
-            <motion.div whileHover={{ scale: 1.05 }}>
-              <Button className="w-100 btn-primary mb-3" onClick={() => navigate("/signup?role=user")}>
-                I am a User
+          <Card className={`p-5 shadow-lg login-card ${darkMode ? "dark" : "light"}`}>
+            <motion.h2 
+              className="text-center mb-4"
+              initial={{ opacity: 0 }}
+              animate={{ opacity: 1 }}
+              transition={{ delay: 0.3 }}
+            >
+              Welcome to CBIT Canteen
+            </motion.h2>
+            <motion.p 
+              className="text-center mb-4 text-muted"
+              initial={{ opacity: 0 }}
+              animate={{ opacity: 1 }}
+              transition={{ delay: 0.4 }}
+            >
+              Please select your role to continue
+            </motion.p>
+            
+            <motion.div 
+              whileHover={{ scale: 1.02 }}
+              transition={{ type: "spring", stiffness: 300 }}
+            >
+              <Button 
+                className="w-100 mb-3 role-btn user-btn"
+                onClick={() => navigate("/signup?role=user")}
+              >
+                <i className="fas fa-user me-2"></i>
+                Continue as User
               </Button>
             </motion.div>
-            <motion.div whileHover={{ scale: 1.05 }}>
-              <Button className="w-100 btn-success" onClick={() => navigate("/signup?role=chef")}>
-                I am a Chef
+
+            <motion.div 
+              whileHover={{ scale: 1.02 }}
+              transition={{ type: "spring", stiffness: 300 }}
+            >
+              <Button 
+                className="w-100 role-btn chef-btn"
+                onClick={() => navigate("/signup?role=chef")}
+              >
+                <i className="fas fa-utensils me-2"></i>
+                Continue as Chef
               </Button>
             </motion.div>
           </Card>

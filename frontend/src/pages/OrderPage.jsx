@@ -1,6 +1,7 @@
 import React, { useEffect, useState } from "react";
 import { useNavigate } from "react-router-dom";
 import { Container, Card, Button } from "react-bootstrap";
+import { motion } from "framer-motion";
 import axios from "axios";
 
 const OrderPage = () => {
@@ -55,22 +56,74 @@ const OrderPage = () => {
       .catch(err => console.error("❌ Error clearing cart:", err));
 
       setCartItems([]);
-      navigate(`/order-status/${res.data.orderId}`); // ✅ Fixed
+      navigate(`/order-status/${res.data.orderId}`);
     })
     .catch((err) => console.error("❌ Error Placing Order:", err));
   };
 
+  const pageTransition = {
+    initial: { opacity: 0, y: 20 },
+    animate: { opacity: 1, y: 0 },
+    transition: { duration: 0.5 }
+  };
+
+  const cardStyle = {
+    backgroundColor: "#fff9f5",
+    borderRadius: "15px",
+    boxShadow: "0 4px 6px rgba(0,0,0,0.1)",
+    border: "none"
+  };
+
   return (
     <Container className="mt-5">
-      <h2>🛒 Order Summary</h2>
-      <Card className="p-3">
-        <h5>Total Items: {cartItems.length}</h5>
-        <h5>Total Amount: ₹{totalAmount}</h5>
-        <h5>Wallet Balance: ₹{walletBalance}</h5>
-        <Button variant="success" onClick={placeOrder} disabled={walletBalance < totalAmount}>
-          ✅ Place Order
-        </Button>
-      </Card>
+      <motion.div
+        initial={pageTransition.initial}
+        animate={pageTransition.animate}
+        transition={pageTransition.transition}
+      >
+        <h2 className="mb-4" style={{ 
+          color: "#2c3e50", 
+          fontFamily: "'Poppins', sans-serif",
+          fontWeight: "600" 
+        }}>
+          <span style={{ marginRight: "10px" }}>🛒</span>
+          Order Summary
+        </h2>
+        <motion.div whileHover={{ scale: 1.02 }} transition={{ duration: 0.3 }}>
+          <Card className="p-4" style={cardStyle}>
+            <div className="order-details" style={{ color: "#34495e" }}>
+              <h5 className="mb-3">
+                <span style={{ color: "#3498db" }}>📦</span> Total Items: {cartItems.length}
+              </h5>
+              <h5 className="mb-3">
+                <span style={{ color: "#e67e22" }}>💰</span> Total Amount: 
+                <span className="ms-2" style={{ color: "#27ae60" }}>₹{totalAmount}</span>
+              </h5>
+              <h5 className="mb-4">
+                <span style={{ color: "#9b59b6" }}>👛</span> Wallet Balance: 
+                <span className="ms-2" style={{ color: "#27ae60" }}>₹{walletBalance}</span>
+              </h5>
+              <motion.div whileTap={{ scale: 0.95 }}>
+                <Button 
+                  variant="success" 
+                  onClick={placeOrder} 
+                  disabled={walletBalance < totalAmount}
+                  className="w-100 py-2"
+                  style={{
+                    backgroundColor: walletBalance < totalAmount ? "#bdc3c7" : "#2ecc71",
+                    border: "none",
+                    borderRadius: "10px",
+                    fontSize: "1.1rem",
+                    fontWeight: "500"
+                  }}
+                >
+                  {walletBalance < totalAmount ? "❌ Insufficient Balance" : "✅ Place Order"}
+                </Button>
+              </motion.div>
+            </div>
+          </Card>
+        </motion.div>
+      </motion.div>
     </Container>
   );
 };

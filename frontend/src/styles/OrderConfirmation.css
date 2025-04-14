@@ -1,52 +1,90 @@
 .order-confirmation-container {
-    display: flex;
-    flex-direction: column;
-    justify-content: center;
-    align-items: center;
-    height: 100vh;
-    text-align: center;
-    background-color: #f0f0f0;
-    color: #333;
-  }
-  
+  min-height: 100vh;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  justify-content: center;
+  padding: 2rem;
+  background: linear-gradient(135deg, #f5f7fa 0%, #e4e9f2 100%);
+  text-align: center;
+}
+
+.success-icon {
+  margin-bottom: 1.5rem;
+}
+
+.check-icon {
+  font-size: 4rem !important;
+  color: #4CAF50;
+}
+
+.confetti h1 {
+  color: #2c3e50;
+  font-family: 'Poppins', sans-serif;
+  font-size: 2.5rem;
+  margin-bottom: 0.5rem;
+  animation: confettiAnimation 2s infinite;
+}
+
+.confirmation-subtitle {
+  color: #636e72;
+  font-size: 1.1rem;
+  margin-bottom: 2rem;
+}
+
+@keyframes confettiAnimation {
+  0% { transform: translateY(0); }
+  25% { transform: translateY(-10px); }
+  50% { transform: translateY(10px); }
+  75% { transform: translateY(-10px); }
+  100% { transform: translateY(0); }
+}
+
+.qr-wrapper {
+  background: white;
+  padding: 1.5rem;
+  border-radius: 12px;
+  box-shadow: 0 4px 6px rgba(0, 0, 0, 0.1);
+  margin-bottom: 2rem;
+}
+
+.qr-code {
+  border-radius: 8px;
+  margin-bottom: 1rem;
+  width: 150px;
+  height: 150px;
+}
+
+.qr-text {
+  color: #636e72;
+  margin: 0;
+}
+
+.back-btn-container {
+  margin-top: 40px;
+}
+
+.back-btn {
+  background-color: #3498db;
+  border: none;
+  padding: 0.8rem 2rem;
+  font-size: 1.1rem;
+  border-radius: 8px;
+  transition: transform 0.2s ease, background-color 0.2s ease;
+  color: white;
+}
+
+.back-btn:hover {
+  background-color: #2980b9;
+  transform: translateY(-2px);
+}
+
+@media (max-width: 768px) {
   .confetti h1 {
-    font-size: 3rem;
-    color: #28a745;
-    font-weight: bold;
-    animation: confettiAnimation 2s infinite;
+    font-size: 2rem;
   }
   
-  @keyframes confettiAnimation {
-    0% { transform: translateY(0); }
-    25% { transform: translateY(-10px); }
-    50% { transform: translateY(10px); }
-    75% { transform: translateY(-10px); }
-    100% { transform: translateY(0); }
+  .qr-wrapper {
+    padding: 1rem;
   }
-  
-  .qr-container {
-    margin-top: 20px;
-  }
-  
-  .qr-code {
-    width: 150px;
-    height: 150px;
-  }
-  
-  .back-btn-container {
-    margin-top: 40px;
-  }
-  
-  .back-btn {
-    font-size: 1.2rem;
-    padding: 12px 20px;
-    background-color: #ba000d;
-    color: white;
-    border: none;
-  }
-  
-  .back-btn:hover {
-    background-color: #9e0009;
-    transition: background-color 0.3s ease;
-  }
-  
+}

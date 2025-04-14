@@ -2,6 +2,8 @@ import React, { useState, useEffect } from "react";
 import { Button, Card, Container, Row, Col, Form } from "react-bootstrap";
 import axios from "axios";
 import { useNavigate } from "react-router-dom";
+import { motion } from "framer-motion";
+import { FaWallet, FaArrowUp, FaArrowDown } from "react-icons/fa";
 
 const WalletPage = () => {
   const token = localStorage.getItem("token");
@@ -72,42 +74,86 @@ const WalletPage = () => {
     <Container className="mt-5">
       <Row className="justify-content-center">
         <Col md={6}>
-          <Card className="shadow-lg p-4 mb-4 bg-white rounded">
-            <Card.Body>
-              <Card.Title className="text-center text-success mb-4">My Wallet</Card.Title>
+          <motion.div
+            initial={{ opacity: 0, y: 20 }}
+            animate={{ opacity: 1, y: 0 }}
+            transition={{ duration: 0.5 }}
+          >
+            <Card className="shadow-lg p-4 mb-4 rounded" style={{ background: 'linear-gradient(to bottom, #ffffff, #f8f9fa)' }}>
+              <Card.Body>
+                <div className="text-center mb-4">
+                  <motion.div
+                    whileHover={{ scale: 1.1 }}
+                    className="d-inline-block"
+                  >
+                    <FaWallet size={40} className="text-primary mb-3" />
+                  </motion.div>
+                  <h2 className="fw-bold text-primary mb-4" style={{ fontFamily: 'Inter, sans-serif' }}>My Wallet</h2>
+                </div>
 
-              {/* Displaying balance */}
-              <h3 className="text-center text-muted">Balance: ₹{balance}</h3>
+                <motion.div
+                  whileHover={{ scale: 1.02 }}
+                  className="bg-light p-4 rounded-lg mb-4 text-center"
+                  style={{ background: 'rgba(236, 240, 241, 0.6)' }}
+                >
+                  <h3 className="text-dark mb-0" style={{ fontSize: '2.5rem' }}>₹{balance}</h3>
+                  <p className="text-muted">Current Balance</p>
+                </motion.div>
 
-              {/* Deposit form */}
-              <Form className="mb-4">
-                <Form.Group controlId="depositAmount">
-                  <Form.Label>Enter Amount to Deposit</Form.Label>
-                  <Form.Control
-                    type="number"
-                    placeholder="Deposit Amount"
-                    value={depositAmount}
-                    onChange={(e) => setDepositAmount(e.target.value)}
-                  />
-                </Form.Group>
-                <Button variant="primary" onClick={handleDeposit} className="w-100">Deposit</Button>
-              </Form>
+                <div className="mb-4">
+                  <Form.Group controlId="depositAmount" className="mb-3">
+                    <Form.Label className="text-secondary">Deposit Amount</Form.Label>
+                    <div className="input-group">
+                      <span className="input-group-text">₹</span>
+                      <Form.Control
+                        type="number"
+                        placeholder="Enter amount"
+                        value={depositAmount}
+                        onChange={(e) => setDepositAmount(e.target.value)}
+                        className="border-0 shadow-sm"
+                      />
+                    </div>
+                  </Form.Group>
+                  <motion.div whileTap={{ scale: 0.95 }}>
+                    <Button 
+                      variant="primary" 
+                      onClick={handleDeposit} 
+                      className="w-100 py-2"
+                      style={{ background: '#4CAF50', border: 'none' }}
+                    >
+                      <FaArrowUp className="me-2" /> Deposit
+                    </Button>
+                  </motion.div>
+                </div>
 
-              {/* Withdraw form */}
-              <Form>
-                <Form.Group controlId="withdrawAmount">
-                  <Form.Label>Enter Amount to Withdraw</Form.Label>
-                  <Form.Control
-                    type="number"
-                    placeholder="Withdraw Amount"
-                    value={withdrawAmount}
-                    onChange={(e) => setWithdrawAmount(e.target.value)}
-                  />
-                </Form.Group>
-                <Button variant="danger" onClick={handleWithdraw} className="w-100">Withdraw</Button>
-              </Form>
-            </Card.Body>
-          </Card>
+                <div>
+                  <Form.Group controlId="withdrawAmount" className="mb-3">
+                    <Form.Label className="text-secondary">Withdraw Amount</Form.Label>
+                    <div className="input-group">
+                      <span className="input-group-text">₹</span>
+                      <Form.Control
+                        type="number"
+                        placeholder="Enter amount"
+                        value={withdrawAmount}
+                        onChange={(e) => setWithdrawAmount(e.target.value)}
+                        className="border-0 shadow-sm"
+                      />
+                    </div>
+                  </Form.Group>
+                  <motion.div whileTap={{ scale: 0.95 }}>
+                    <Button 
+                      variant="danger" 
+                      onClick={handleWithdraw} 
+                      className="w-100 py-2"
+                      style={{ background: '#ff6b6b', border: 'none' }}
+                    >
+                      <FaArrowDown className="me-2" /> Withdraw
+                    </Button>
+                  </motion.div>
+                </div>
+              </Card.Body>
+            </Card>
+          </motion.div>
         </Col>
       </Row>
     </Container>

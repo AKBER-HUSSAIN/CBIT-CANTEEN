@@ -70,47 +70,80 @@ const ChefDashboardPage = () => {
   };
 
   return (
-    <div className="chef-dashboard">
-      <h2>👨‍🍳 Chef Dashboard</h2>
+    <motion.div 
+      className="chef-dashboard"
+      initial={{ opacity: 0 }}
+      animate={{ opacity: 1 }}
+      transition={{ duration: 0.5 }}
+    >
+      <motion.h2
+        initial={{ y: -20 }}
+        animate={{ y: 0 }}
+        transition={{ type: "spring", stiffness: 50 }}
+      >
+        👨‍🍳 Active Orders
+      </motion.h2>
 
       {orders.length === 0 ? (
-        <p className="text-center text-muted">No pending orders.</p>
+        <motion.p 
+          className="text-center text-muted"
+          initial={{ opacity: 0 }}
+          animate={{ opacity: 1 }}
+          transition={{ delay: 0.2 }}
+        >
+          No pending orders at the moment
+        </motion.p>
       ) : (
         <div className="order-list">
-          {orders.map((order) => (
+          {orders.map((order, index) => (
             <motion.div
               className="order-card"
               key={order._id}
-              initial={{ opacity: 0, scale: 0.8 }}
-              animate={{ opacity: 1, scale: 1 }}
-              transition={{ type: "spring", stiffness: 50 }}
+              initial={{ opacity: 0, y: 20 }}
+              animate={{ opacity: 1, y: 0 }}
+              transition={{ delay: index * 0.1 }}
             >
               <Card className="order-card-style">
                 <Card.Body>
                   <div className="order-info">
-                    <Card.Title>Order #{order._id.slice(-5)}</Card.Title>
+                    <motion.div
+                      whileHover={{ scale: 1.02 }}
+                      transition={{ type: "spring", stiffness: 300 }}
+                    >
+                      <Card.Title>
+                        <span role="img" aria-label="receipt">📝</span> 
+                        Order #{order._id.slice(-5)}
+                      </Card.Title>
+                    </motion.div>
 
-                    {/* ✅ Display Ordered Items */}
                     <ListGroup variant="flush">
-                      {order.items.map((item, index) => (
-                        <ListGroup.Item key={index}>
-                          <strong>{item.itemId.name}</strong> - {item.quantity}x
+                      {order.items.map((item, idx) => (
+                        <ListGroup.Item key={idx}>
+                          <span role="img" aria-label="food">🍽️</span>
+                          <strong>{item.itemId.name}</strong> × {item.quantity}
                         </ListGroup.Item>
                       ))}
                     </ListGroup>
 
                     <Card.Text className="mt-2">
+                      <span role="img" aria-label="money">💰</span>
                       <strong>Total:</strong> ₹{order.totalAmount}
                     </Card.Text>
 
-                    <Badge variant={order.status === "Pending" ? "warning" : "success"}>
-                      {order.status}
+                    <Badge bg={order.status === "Pending" ? "warning" : "success"}>
+                      {order.status === "Pending" ? "🕒 Pending" : "✅ Completed"}
                     </Badge>
 
                     {order.status === "Pending" && (
-                      <Button variant="primary" onClick={() => handleMarkAsCompleted(order._id)}>
-                        Mark as Completed
-                      </Button>
+                      <motion.div whileTap={{ scale: 0.95 }}>
+                        <Button 
+                          variant="primary" 
+                          onClick={() => handleMarkAsCompleted(order._id)}
+                          className="w-100"
+                        >
+                          Complete Order
+                        </Button>
+                      </motion.div>
                     )}
                   </div>
                 </Card.Body>
@@ -119,7 +152,7 @@ const ChefDashboardPage = () => {
           ))}
         </div>
       )}
-    </div>
+    </motion.div>
   );
 };
 

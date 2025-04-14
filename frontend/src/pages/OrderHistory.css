@@ -1,0 +1,111 @@
+.order-history-container {
+  max-width: 800px;
+  padding: 2rem;
+}
+
+.main-title, .section-title {
+  color: #2c3e50;
+  font-family: 'Segoe UI', system-ui, sans-serif;
+  display: flex;
+  align-items: center;
+  gap: 0.5rem;
+}
+
+.title-icon, .section-icon {
+  color: #3498db;
+}
+
+.order-card, .transaction-card {
+  border: none;
+  border-radius: 12px;
+  box-shadow: 0 2px 12px rgba(0, 0, 0, 0.1);
+  transition: transform 0.2s ease, box-shadow 0.2s ease;
+  background-color: #fff;
+}
+
+.order-card:hover, .transaction-card:hover {
+  transform: translateY(-2px);
+  box-shadow: 0 4px 15px rgba(0, 0, 0, 0.15);
+}
+
+.order-id, .transaction-id {
+  color: #34495e;
+  font-size: 1.1rem;
+  font-weight: 600;
+}
+
+.total-amount {
+  color: #2ecc71;
+  font-size: 1.2rem;
+  font-weight: 600;
+}
+
+.items-list {
+  border: none;
+}
+
+.item-entry {
+  display: flex;
+  justify-content: space-between;
+  border: none;
+  padding: 0.5rem 0;
+  color: #576574;
+}
+
+.transaction-details {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 1rem;
+  align-items: center;
+  margin-top: 0.5rem;
+}
+
+.transaction-type {
+  padding: 0.25rem 0.75rem;
+  border-radius: 20px;
+  font-size: 0.9rem;
+  font-weight: 500;
+}
+
+.transaction-type.credit {
+  background-color: #e8f5e9;
+  color: #2e7d32;
+}
+
+.transaction-type.debit {
+  background-color: #ffebee;
+  color: #c62828;
+}
+
+.transaction-amount {
+  font-weight: 600;
+  color: #2c3e50;
+}
+
+.transaction-date {
+  color: #7f8c8d;
+  font-size: 0.9rem;
+  display: flex;
+  align-items: center;
+  gap: 0.3rem;
+}
+
+.no-data-message {
+  color: #95a5a6;
+  text-align: center;
+  padding: 2rem;
+  background-color: #f8f9fa;
+  border-radius: 8px;
+}
+
+@media (max-width: 576px) {
+  .order-history-container {
+    padding: 1rem;
+  }
+  
+  .transaction-details {
+    flex-direction: column;
+    align-items: flex-start;
+    gap: 0.5rem;
+  }
+}

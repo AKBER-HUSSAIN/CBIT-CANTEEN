@@ -118,39 +118,53 @@ const CategoryPage = () => {
 
   return (
     <div className="category-page">
-      <h2 className="category-title">{category} Items</h2>
+      <motion.h2 
+        className="category-title"
+        initial={{ opacity: 0, y: -20 }}
+        animate={{ opacity: 1, y: 0 }}
+        transition={{ duration: 0.6 }}
+      >
+        {category} Items
+      </motion.h2>
 
-      {/* Go to Cart Button */}
-      <Button className="cart-button" onClick={() => navigate("/cart")}>Go to My Cart</Button>
-
-      {/* Show Wallet Balance */}
-      <Button className="wallet-button" onClick={() => navigate("/wallet")}>
-        Wallet Balance: ₹{walletBalance}
-      </Button>
+      <div className="action-buttons">
+        <Button className="cart-button" onClick={() => navigate("/cart")}>
+          <i className="fas fa-shopping-cart"></i> View Cart
+        </Button>
+        <Button className="wallet-button" onClick={() => navigate("/wallet")}>
+          <i className="fas fa-wallet"></i> ₹{walletBalance}
+        </Button>
+      </div>
 
       <div className="food-items-container">
         {foodItems.map((item) => (
           <motion.div
             key={item._id}
-            initial={{ opacity: 0, y: 10 }}
+            initial={{ opacity: 0, y: 20 }}
             animate={{ opacity: 1, y: 0 }}
-            transition={{ duration: 0.5 }}
+            whileHover={{ scale: 1.02 }}
+            transition={{ duration: 0.4 }}
           >
             <Card className="food-item-card">
               <Card.Body>
-                <Card.Title>{item.name}</Card.Title>
-                <Card.Text>₹{item.price}</Card.Text>
+                <Card.Title className="item-title">{item.name}</Card.Title>
+                <Card.Text className="item-price">₹{item.price}</Card.Text>
                 <div className="food-item-actions">
-                  <Button
-                    variant="primary"
-                    onClick={() => addToCart(item)}
-                    disabled={cart[item._id]}
-                  >
-                    Add to Cart
-                  </Button>
-                  {cart[item._id] && (
-                    <Button variant="danger" onClick={() => removeFromCart(item)}>
-                      Remove from Cart
+                  {!cart[item._id] ? (
+                    <Button
+                      variant="primary"
+                      className="add-btn"
+                      onClick={() => addToCart(item)}
+                    >
+                      <i className="fas fa-plus"></i> Add to Cart
+                    </Button>
+                  ) : (
+                    <Button 
+                      variant="danger"
+                      className="remove-btn"
+                      onClick={() => removeFromCart(item)}
+                    >
+                      <i className="fas fa-minus"></i> Remove
                     </Button>
                   )}
                 </div>

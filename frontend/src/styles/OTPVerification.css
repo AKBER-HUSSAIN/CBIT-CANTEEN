@@ -1,58 +1,109 @@
 /* OTPVerification.css */
+:root {
+  --primary-color: #4a90e2;
+  --success-color: #66bb6a;
+  --text-color: #2c3e50;
+  --light-bg: #f8f9fa;
+  --dark-bg: #1a1a1a;
+}
+
+.light-mode {
+  --bg-color: #f8f9fa;
+  --card-bg: #ffffff;
+  --text-color: #2c3e50;
+}
+
+.dark-mode {
+  --bg-color: #1a1a1a;
+  --card-bg: #2c2c2c;
+  --text-color: #e0e0e0;
+}
+
 .otp-verification-container {
+  min-height: 100vh;
   position: relative;
-  height: 100vh;
-  overflow: hidden;
+  background: var(--bg-color);
+  transition: all 0.3s ease;
 }
 
 .background-animation {
-  position: absolute;
+  position: fixed;
   top: 0;
   left: 0;
   right: 0;
   bottom: 0;
-  background: linear-gradient(45deg, #ff7e5f, #feb47b);
-  z-index: -1;
-  animation: backgroundAnimation 5s ease-in-out infinite;
+  z-index: 0;
+  background: linear-gradient(120deg, #e0f7fa 0%, #f8f9fa 100%);
+  opacity: 0.5;
 }
 
-@keyframes backgroundAnimation {
-  0% {
-    background: linear-gradient(45deg, #ff7e5f, #feb47b);
-  }
-  50% {
-    background: linear-gradient(45deg, #feb47b, #ff7e5f);
-  }
-  100% {
-    background: linear-gradient(45deg, #ff7e5f, #feb47b);
-  }
+.dark-mode .background-animation {
+  background: linear-gradient(120deg, #1a1a1a 0%, #2c2c2c 100%);
 }
 
 .dark-mode-toggle {
-  position: absolute;
+  position: fixed;
   top: 20px;
   right: 20px;
-  background: none;
+  padding: 10px;
+  border-radius: 50%;
   border: none;
-  font-size: 1.5rem;
+  background: transparent;
   cursor: pointer;
+  z-index: 1000;
 }
 
 .otp-card {
-  max-width: 400px;
-  width: 100%;
-  border-radius: 10px;
+  min-width: 320px;
+  background: var(--card-bg) !important;
+  border-radius: 15px !important;
+  border: none !important;
+  transition: all 0.3s ease;
 }
 
-.otp-card .btn-success {
-  background-color: #28a745;
+.otp-card.light {
+  box-shadow: 0 8px 24px rgba(149, 157, 165, 0.2) !important;
+}
+
+.otp-card.dark {
+  box-shadow: 0 8px 24px rgba(0, 0, 0, 0.2) !important;
+}
+
+.otp-input {
+  padding: 12px;
+  font-size: 1.1rem;
+  border-radius: 8px;
+  border: 2px solid #e0e0e0;
+  transition: all 0.3s ease;
+}
+
+.otp-input:focus {
+  border-color: var(--primary-color);
+  box-shadow: 0 0 0 0.2rem rgba(74, 144, 226, 0.25);
+}
+
+.verify-btn {
+  padding: 12px;
+  font-size: 1.1rem;
+  border-radius: 8px;
+  background-color: var(--success-color);
   border: none;
+  transition: all 0.3s ease;
 }
 
-.text-center a {
-  color: #007bff;
-  text-decoration: none;
+.verify-btn:hover {
+  background-color: #558b2f;
+  transform: translateY(-1px);
 }
-.text-center a:hover {
-  text-decoration: underline;
+
+.resend-text {
+  color: var(--text-color);
+  font-size: 0.95rem;
+}
+
+.resend-link {
+  color: var(--primary-color);
+  text-decoration: none;
+  font-weight: 500;
+  transition: color 0.3s ease;
 }

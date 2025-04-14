@@ -2,6 +2,7 @@ import React, { useState, useEffect } from "react";
 import { Container, Card, Form, Button } from "react-bootstrap";
 import { useNavigate } from "react-router-dom";
 import { motion } from "framer-motion";
+import { FiMail, FiLock, FiSun, FiMoon } from "react-icons/fi";
 import API from "../services/api";
 import "../styles/Login.css";
 
@@ -84,71 +85,99 @@ const Login = () => {
     <div className="login-container">
       <div className="background-animation"></div>
 
-      {/* Dark Mode Toggle */}
       <motion.button 
-        className="dark-mode-toggle" 
+        className="dark-mode-toggle"
         onClick={() => setDarkMode(!darkMode)}
         whileHover={{ scale: 1.1 }}
+        whileTap={{ scale: 0.95 }}
       >
-        {darkMode ? "☀️" : "🌙"}
+        {darkMode ? <FiSun size={20} /> : <FiMoon size={20} />}
       </motion.button>
 
       <Container className="d-flex align-items-center justify-content-center vh-100">
         <motion.div 
-          initial={{ opacity: 0, y: -20 }} 
-          animate={{ opacity: 1, y: 0 }} 
-          transition={{ duration: 0.8 }}
+          initial={{ opacity: 0, y: -20 }}
+          animate={{ opacity: 1, y: 0 }}
+          transition={{ duration: 0.8, ease: "easeOut" }}
         >
-          <Card className={`p-4 shadow-lg login-card ${darkMode ? "dark" : "light"}`}>
-            <h2 className="text-center mb-3">{step === 1 ? "Login" : "Verify OTP"}</h2>
+          <Card className={`login-card ${darkMode ? "dark" : "light"}`}>
+            <motion.div
+              initial={{ opacity: 0 }}
+              animate={{ opacity: 1 }}
+              transition={{ delay: 0.2 }}
+              className="text-center mb-4"
+            >
+              <h2 className="login-title">{step === 1 ? "Welcome Back" : "Verify OTP"}</h2>
+              {step === 1 && <p className="login-subtitle">Please enter your details</p>}
+            </motion.div>
 
             {step === 1 ? (
-              <Form onSubmit={handleSubmit}>
-                <Form.Group className="mb-2">
+              <Form onSubmit={handleSubmit} className="login-form">
+                <Form.Group className="mb-3 input-group">
+                  <div className="input-icon"><FiMail /></div>
                   <Form.Control
                     type="email"
                     name="email"
                     placeholder="Email"
-                    value={formData.email} // Ensure controlled input
+                    value={formData.email}
                     onChange={handleChange}
                     required
+                    className="form-input"
                   />
                 </Form.Group>
-                <Form.Group className="mb-2">
+                <Form.Group className="mb-4 input-group">
+                  <div className="input-icon"><FiLock /></div>
                   <Form.Control
                     type="password"
                     name="password"
                     placeholder="Password"
-                    value={formData.password} // Ensure controlled input
+                    value={formData.password}
                     onChange={handleChange}
                     required
+                    className="form-input"
                   />
                 </Form.Group>
-                <motion.div whileHover={{ scale: 1.05 }}>
-                  <Button className="w-100 btn-primary" type="submit">Login</Button>
+                <motion.div
+                  whileHover={{ scale: 1.02 }}
+                  whileTap={{ scale: 0.98 }}
+                >
+                  <Button className="login-button w-100" type="submit">
+                    Login
+                  </Button>
                 </motion.div>
               </Form>
             ) : (
-              <Form onSubmit={handleVerifyOTP}>
-                <Form.Group className="mb-3">
+              <Form onSubmit={handleVerifyOTP} className="login-form">
+                <Form.Group className="mb-4">
                   <Form.Control
                     type="text"
                     placeholder="Enter OTP"
                     value={confirmationCode}
                     onChange={(e) => setConfirmationCode(e.target.value)}
                     required
+                    className="form-input text-center"
                   />
                 </Form.Group>
-                <motion.div whileHover={{ scale: 1.05 }}>
-                  <Button className="w-100 btn-success" type="submit">Verify OTP</Button>
+                <motion.div
+                  whileHover={{ scale: 1.02 }}
+                  whileTap={{ scale: 0.98 }}
+                >
+                  <Button className="verify-button w-100" type="submit">
+                    Verify OTP
+                  </Button>
                 </motion.div>
               </Form>
             )}
 
             {step === 1 && (
-              <p className="text-center mt-2">
-                Don't have an account? <a href="/signup" className="text-primary">Sign Up</a>
-              </p>
+              <motion.p 
+                className="text-center mt-3 signup-text"
+                initial={{ opacity: 0 }}
+                animate={{ opacity: 1 }}
+                transition={{ delay: 0.4 }}
+              >
+                Don't have an account? <a href="/signup">Sign Up</a>
+              </motion.p>
             )}
           </Card>
         </motion.div>
