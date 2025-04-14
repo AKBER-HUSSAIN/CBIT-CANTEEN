@@ -104,28 +104,30 @@ const Login = () => {
 
             {step === 1 ? (
               <Form onSubmit={handleSubmit}>
-                <Form.Group className="mb-2">
+                <Form.Group className="mb-3">
                   <Form.Control
                     type="email"
                     name="email"
-                    placeholder="Email"
-                    value={formData.email} // Ensure controlled input
+                    placeholder="Enter your email"
+                    value={formData.email}
                     onChange={handleChange}
                     required
+                    className="form-control-lg"
                   />
                 </Form.Group>
-                <Form.Group className="mb-2">
+                <Form.Group className="mb-3">
                   <Form.Control
                     type="password"
                     name="password"
-                    placeholder="Password"
-                    value={formData.password} // Ensure controlled input
+                    placeholder="Enter your password"
+                    value={formData.password}
                     onChange={handleChange}
                     required
+                    className="form-control-lg"
                   />
                 </Form.Group>
                 <motion.div whileHover={{ scale: 1.05 }}>
-                  <Button className="w-100 btn-primary" type="submit">Login</Button>
+                  <Button className="w-100 btn-primary btn-lg" type="submit">Login</Button>
                 </motion.div>
               </Form>
             ) : (
@@ -137,16 +139,17 @@ const Login = () => {
                     value={confirmationCode}
                     onChange={(e) => setConfirmationCode(e.target.value)}
                     required
+                    className="form-control-lg"
                   />
                 </Form.Group>
                 <motion.div whileHover={{ scale: 1.05 }}>
-                  <Button className="w-100 btn-success" type="submit">Verify OTP</Button>
+                  <Button className="w-100 btn-success btn-lg" type="submit">Verify OTP</Button>
                 </motion.div>
               </Form>
             )}
 
             {step === 1 && (
-              <p className="text-center mt-2">
+              <p className="text-center mt-3">
                 Don't have an account? <a href="/signup" className="text-primary">Sign Up</a>
               </p>
             )}

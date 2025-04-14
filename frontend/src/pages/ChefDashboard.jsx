@@ -17,6 +17,17 @@ const ChefDashboardPage = () => {
       return;
     }
 
+    const fetchOrders = async () => {
+      try {
+        const res = await axios.get("http://localhost:3000/api/orders/chef", {
+          headers: { Authorization: `Bearer ${token}` },
+        });
+        setOrders(res.data);
+      } catch (error) {
+        console.error("❌ Error fetching chef orders:", error.response?.data || error.message);
+      }
+    };
+
     fetchOrders();
 
     // ✅ Listen for real-time order updates
@@ -29,22 +40,8 @@ const ChefDashboardPage = () => {
       );
     });
 
-    return () => socket.off("orderStatus"); // ✅ Cleanup WebSocket listener
+    return () => socket.off("orderStatus"); // Cleanup WebSocket listener
   }, [token]);
-
-  const fetchOrders = async () => {
-    try {
-      const res = await axios.get("http://localhost:3000/api/orders/chef", {
-        headers: { Authorization: `Bearer ${token}` }, // ✅ Ensure token is passed
-      });
-      setOrders(res.data);
-    } catch (error) {
-      console.error(
-        "❌ Error fetching orders:",
-        error.response ? error.response.data : error.message
-      );
-    }
-  };
 
   const handleMarkAsCompleted = async (id) => {
     try {

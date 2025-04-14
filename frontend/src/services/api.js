@@ -12,4 +12,14 @@ API.interceptors.request.use((req) => {
     return req;
 });
 
+export const getPersonalizedRecommendations = async (userId) => {
+    try {
+        const response = await API.get(`/recommendations/personalized/${userId}`);
+        return response.data;
+    } catch (error) {
+        console.error("Error fetching personalized recommendations:", error);
+        throw error;
+    }
+};
+
 export default API;

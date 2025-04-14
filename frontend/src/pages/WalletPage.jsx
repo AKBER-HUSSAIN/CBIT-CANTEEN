@@ -18,11 +18,15 @@ const WalletPage = () => {
       return;
     }
 
-    axios.get("http://localhost:3000/api/wallet/balance", {
-      headers: { Authorization: `Bearer ${token}` },
-    })
-    .then((response) => setBalance(response.data.balance))
-    .catch((err) => console.error("❌ Error fetching wallet balance:", err));
+    axios
+      .get("http://localhost:3000/api/wallet/balance", {
+        headers: { Authorization: `Bearer ${token}` },
+      })
+      .then((response) => setBalance(response.data.balance))
+      .catch((err) => {
+        console.error("❌ Error fetching wallet balance:", err.response?.data || err.message);
+        alert("Failed to fetch wallet balance. Please try again.");
+      });
   }, [token, navigate]);
 
   // Handle deposit logic
@@ -32,16 +36,23 @@ const WalletPage = () => {
       return;
     }
 
-    axios.post("http://localhost:3000/api/wallet/deposit", { amount: Number(depositAmount) }, {
-      headers: { Authorization: `Bearer ${token}` },
-    })
-    .then((response) => {
-      setBalance(response.data.wallet.balance);
-      setDepositAmount(""); // Clear the input field after deposit
-    })
-    .catch((err) => {
-      console.error("Error while depositing:", err);
-    });
+    axios
+      .post(
+        "http://localhost:3000/api/wallet/deposit",
+        { amount: Number(depositAmount) },
+        {
+          headers: { Authorization: `Bearer ${token}` },
+        }
+      )
+      .then((response) => {
+        setBalance(response.data.wallet.balance);
+        setDepositAmount(""); // Clear the input field after deposit
+        alert("Deposit successful!");
+      })
+      .catch((err) => {
+        console.error("❌ Error while depositing:", err.response?.data || err.message);
+        alert("Failed to deposit funds. Please try again.");
+      });
   };
 
   // Handle withdraw logic
@@ -56,16 +67,23 @@ const WalletPage = () => {
       return;
     }
 
-    axios.post("http://localhost:3000/api/wallet/withdraw", { amount: Number(withdrawAmount) }, {
-      headers: { Authorization: `Bearer ${token}` },
-    })
-    .then((response) => {
-      setBalance(response.data.wallet.balance);
-      setWithdrawAmount(""); // Clear the input field after withdrawal
-    })
-    .catch((err) => {
-      console.error("Error while withdrawing:", err);
-    });
+    axios
+      .post(
+        "http://localhost:3000/api/wallet/withdraw",
+        { amount: Number(withdrawAmount) },
+        {
+          headers: { Authorization: `Bearer ${token}` },
+        }
+      )
+      .then((response) => {
+        setBalance(response.data.wallet.balance);
+        setWithdrawAmount(""); // Clear the input field after withdrawal
+        alert("Withdrawal successful!");
+      })
+      .catch((err) => {
+        console.error("❌ Error while withdrawing:", err.response?.data || err.message);
+        alert("Failed to withdraw funds. Please try again.");
+      });
   };
 
   return (

@@ -6,16 +6,11 @@ const router = express.Router();
 
 // Get user's cart
 router.get('/', verifyToken, async (req, res) => {
-    const { userId } = req; // userId is set in the middleware after verifying the token
-
     try {
-        // Step 1: Find the user's cart
-        const cart = await Cart.findOne({ userId }).populate('items.itemId'); // Use .populate to get details of the food items
+        const cart = await Cart.findOne({ userId: req.user._id }).populate('items.itemId'); // Ensure req.user._id is used
         if (!cart) {
             return res.status(404).json({ message: "Cart not found" });
         }
-
-        // Step 2: Return the cart to the client
         res.status(200).json(cart);
     } catch (error) {
         console.error("❌ Error fetching cart:", error);
@@ -25,46 +20,31 @@ router.get('/', verifyToken, async (req, res) => {
 
 // Add item to cart route
 router.post('/add', verifyToken, async (req, res) => {
-    const { userId, itemId, quantity } = req.body;
+    const { itemId, quantity } = req.body;
 
-    // Ensure all necessary fields are present
-    if (!userId || !itemId || !quantity) {
-        return res.status(400).json({ message: "Missing required fields" });
+    if (!itemId || !quantity || quantity <= 0) {
+        return res.status(400).json({ message: "Invalid itemId or quantity" });
     }
 
     try {
-        console.log("Received add to cart request:", { userId, itemId, quantity });
-
-        // Step 1: Check if the item exists in the Food collection
-        const foodItem = await Food.findById(itemId);  // Change MenuItem to Food
+        const foodItem = await Food.findById(itemId); // Ensure the item exists in the Food collection
         if (!foodItem) {
-            return res.status(404).json({ message: "Food item not found" });  // Change Menu item not found
+            return res.status(404).json({ message: "Food item not found" });
         }
 
-        // Step 2: Find the user's cart
-        let cart = await Cart.findOne({ userId });
+        let cart = await Cart.findOne({ userId: req.user._id }); // Ensure req.user._id is used
         if (!cart) {
-            console.log("No cart found for user. Creating a new cart...");
-            // If no cart exists, create a new one
-            cart = new Cart({ userId, items: [] });
+            cart = new Cart({ userId: req.user._id, items: [] }); // Create a new cart if none exists
         }
 
-        // Step 3: Check if the item already exists in the cart
         const existingItemIndex = cart.items.findIndex(item => item.itemId.toString() === itemId);
         if (existingItemIndex >= 0) {
-            // If the item is already in the cart, update its quantity
-            console.log("Item already in cart. Updating quantity...");
-            cart.items[existingItemIndex].quantity += quantity;
+            cart.items[existingItemIndex].quantity += quantity; // Update quantity if item exists
         } else {
-            // If the item is not in the cart, add it
-            console.log("Adding new item to cart...");
-            cart.items.push({ itemId, quantity });
+            cart.items.push({ itemId, quantity }); // Add new item to the cart
         }
 
-        // Step 4: Save the cart with the updated item
         await cart.save();
-
-        // Step 5: Return the updated cart to the client
         res.status(200).json({ message: 'Item added to cart successfully', cart });
     } catch (error) {
         console.error("❌ Error adding item to cart:", error);
@@ -74,18 +54,18 @@ router.post('/add', verifyToken, async (req, res) => {
 
 // Remove item from cart route
 router.post('/remove', verifyToken, async (req, res) => {
-    const { userId, itemId } = req.body;
+    const { itemId } = req.body;
 
     // Ensure the required fields are present
-    if (!userId || !itemId) {
+    if (!itemId) {
         return res.status(400).json({ message: "Missing required fields" });
     }
 
     try {
-        console.log("Received remove from cart request:", { userId, itemId });
+        console.log("Received remove from cart request:", { userId: req.userId, itemId });
 
         // Step 1: Find the user's cart
-        let cart = await Cart.findOne({ userId });
+        let cart = await Cart.findOne({ userId: req.userId }); // Reverted to req.userId
 
         if (!cart) {
             return res.status(404).json({ message: "Cart not found" });

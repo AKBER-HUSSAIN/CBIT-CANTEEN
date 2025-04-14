@@ -2,18 +2,18 @@ import React, { useState, useEffect } from 'react';
 import { motion } from 'framer-motion';
 import { useNavigate } from 'react-router-dom';
 import axios from 'axios';
-import { FaShoppingCart, FaHistory } from 'react-icons/fa'; // ✅ Added FaHistory icon
+import { FaShoppingCart, FaHistory } from 'react-icons/fa';
 import '../styles/MenuPage.css';
-import API from "../services/api"; // ✅ Import API service
+import API, { getPersonalizedRecommendations } from "../services/api"; // Import API service and new function
 
-// ✅ Import category images
+// Import category images
 import beverages from '../assets/categories/baverages.jpeg';
 import desserts from '../assets/categories/desserts.jpeg';
 import maincourse from '../assets/categories/maincourse.jpg';
 import snacks from '../assets/categories/snacks.webp';
 import starters from '../assets/categories/starters.jpeg';
 
-// ✅ Map category names to images
+// Map category names to images
 const categoryImages = {
   Beverages: beverages,
   Desserts: desserts,
@@ -25,10 +25,12 @@ const categoryImages = {
 const MenuPage = () => {
   const [categories, setCategories] = useState([]);
   const [walletBalance, setWalletBalance] = useState(0);
+  const [recommendations, setRecommendations] = useState([]); // State for recommendations
   const navigate = useNavigate();
 
   useEffect(() => {
     const token = localStorage.getItem('token');
+    const userId = localStorage.getItem('userId'); // Get userId from localStorage
 
     if (!token) {
       console.error("❌ No token found. Redirecting to login.");
@@ -36,17 +38,26 @@ const MenuPage = () => {
       return;
     }
 
-    // ✅ Fetch categories
+    // Fetch categories
     axios.get("http://localhost:3000/api/menu/categories")
       .then((res) => setCategories(res.data || []))
       .catch((err) => console.error("❌ Error fetching categories:", err));
 
-    // ✅ Fetch wallet balance
+    // Fetch wallet balance
     axios.get("http://localhost:3000/api/wallet/balance", {
       headers: { Authorization: `Bearer ${token}` },
     })
     .then((res) => setWalletBalance(res.data.balance))
-    .catch((err) => console.error("❌ Error fetching wallet balance:", err));
+    .catch((err) => {
+      console.error("❌ Error fetching wallet balance:", err.message);
+      console.log("📜 Full Axios error:", err);
+    });
+    
+
+    // Fetch personalized recommendations
+    getPersonalizedRecommendations(userId)
+      .then((data) => setRecommendations(data))
+      .catch((err) => console.error("❌ Error fetching recommendations:", err));
   }, [navigate]);
 
   return (
@@ -54,7 +65,7 @@ const MenuPage = () => {
       <div className="menu-header">
         <h2 className="category-heading">Select a Category</h2>
         
-        {/* ✅ Wallet Balance Button */}
+        {/* Wallet Balance Button */}
         <motion.button 
           className="cart-button"
           onClick={() => navigate("/wallet")}
@@ -63,7 +74,7 @@ const MenuPage = () => {
           Wallet Balance: ₹{walletBalance}
         </motion.button>
 
-        {/* ✅ Go to Cart Button */}
+        {/* Go to Cart Button */}
         <motion.button 
           className="cart-button"
           onClick={() => navigate("/cart")}
@@ -72,7 +83,7 @@ const MenuPage = () => {
           <FaShoppingCart /> Go to Cart
         </motion.button>
 
-        {/* ✅ Order History Button */}
+        {/* Order History Button */}
         <motion.button 
           className="cart-button"
           onClick={() => navigate("/order-history")}
@@ -82,7 +93,7 @@ const MenuPage = () => {
         </motion.button>
       </div>
 
-      {/* ✅ Category Grid */}
+      {/* Category Grid */}
       <div className="category-grid">
         {categories.map((category, index) => (
           <motion.div 
@@ -99,6 +110,28 @@ const MenuPage = () => {
             <p className="category-name">{category}</p>
           </motion.div>
         ))}
+      </div>
+
+      {/* Personalized Recommendations Section */}
+      <div className="recommendations-section">
+        <h3>Recommended for You</h3>
+        <div className="category-grid">
+          {recommendations.map((item) => (
+            <motion.div
+              key={item._id}
+              className="category-card"
+              onClick={() => navigate(`/menu/${item.category}`)}
+              whileHover={{ scale: 1.05 }}
+            >
+              <img
+                src={item.imageUrl || starters} // Use default image if not available
+                alt={item.name}
+                className="category-image"
+              />
+              <p className="category-name">{item.name}</p>
+            </motion.div>
+          ))}
+        </div>
       </div>
     </div>
   );
