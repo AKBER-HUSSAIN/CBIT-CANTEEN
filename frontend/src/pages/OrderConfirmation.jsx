@@ -1,7 +1,7 @@
 import React from 'react';
 import { motion } from 'framer-motion';
 import { Button } from 'react-bootstrap';
-import { CheckCircle } from '@material-ui/icons';
+import CheckCircleIcon from '@mui/icons-material/CheckCircle';
 import '../styles/OrderConfirmation.css';
 
 const OrderConfirmation = () => {
@@ -18,7 +18,7 @@ const OrderConfirmation = () => {
         animate={{ scale: 1 }}
         transition={{ type: "spring", stiffness: 260, damping: 20 }}
       >
-        <CheckCircle className="check-icon" />
+        <CheckCircleIcon className="check-icon" />
       </motion.div>
 
       <motion.div

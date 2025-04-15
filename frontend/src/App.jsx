@@ -4,6 +4,7 @@ import { BrowserRouter as Router, Route, Routes } from "react-router-dom";
 // **Frontend Components**
 import Header from "./components/Header";
 import Footer from "./components/Footer";
+import LandingPage from "./pages/LandingPage";  // Fixed import path
 
 // **Pages**
 import RoleSelection from "./pages/RoleSelection";
@@ -29,7 +30,7 @@ const App = () => {
       <Header />
       <Routes>
         {/* Define routes for all pages */}
-        <Route path="/" element={<RoleSelection />} />
+        <Route path="/" element={<LandingPage />} /> {/* Change this line */}
         <Route path="/login" element={<Login />} />
         <Route path="/signup" element={<Signup />} />
         <Route path="/order-status" element={<OrderStatus />} />
