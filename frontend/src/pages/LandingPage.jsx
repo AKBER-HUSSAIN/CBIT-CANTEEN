@@ -1,24 +1,37 @@
 import React, { useEffect } from 'react';
 import { motion } from 'framer-motion';
 import { useNavigate } from 'react-router-dom';
-import { FaUtensils, FaUserCircle, FaArrowRight, FaHardHat } from 'react-icons/fa';
+import { FaUtensils, FaUserCircle, FaHatCowboy, FaArrowRight } from 'react-icons/fa';
 import '../styles/LandingPage.css';
 
 const LandingPage = () => {
   const navigate = useNavigate();
 
   useEffect(() => {
-    // Initialize particles
-    particlesJS('particles-js', {
-      particles: {
-        number: { value: 80 },
-        color: { value: '#ff6b6b' },
-        shape: { type: 'circle' },
-        opacity: { value: 0.5 },
-        size: { value: 3 },
-        move: { speed: 3 }
-      }
-    });
+    // Check if particlesJS is loaded
+    if (window.particlesJS) {
+      particlesJS('particles-js', {
+        particles: {
+          number: { value: 80 },
+          color: { value: '#ff6b6b' },
+          shape: { type: 'circle' },
+          opacity: { value: 0.5 },
+          size: { value: 3 },
+          move: { 
+            speed: 3,
+            out_mode: "out"
+          }
+        },
+        interactivity: {
+          events: {
+            onhover: {
+              enable: true,
+              mode: "repulse"
+            }
+          }
+        }
+      });
+    }
   }, []);
 
   return (
@@ -43,7 +56,7 @@ const LandingPage = () => {
           animate={{ opacity: 1 }}
           transition={{ delay: 0.3 }}
         >
-          Delicious Food, Delivered Fast
+          Quick & Easy Food Booking
         </motion.p>
 
         <div className="buttons-container">
@@ -63,7 +76,7 @@ const LandingPage = () => {
             whileHover={{ scale: 1.05 }}
             whileTap={{ scale: 0.95 }}
           >
-            <FaHardHat /> Login as Chef
+            <FaHatCowboy /> Login as Chef
             <FaArrowRight className="arrow" />
           </motion.button>
         </div>

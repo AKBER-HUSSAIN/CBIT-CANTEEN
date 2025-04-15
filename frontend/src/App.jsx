@@ -17,18 +17,9 @@ import ChefDashboard from "./pages/ChefDashboard";
 import OrderConfirmation from "./pages/OrderConfirmation";
 import OrderVerification from "./pages/OrderVerification";
 import OrderStatus from "./pages/OrderStatus";
-import MenuPage from "./pages/MenuPage";  // Import MenuPage
-import CategoryPage from "./pages/CategoryPage";  // Import CategoryPage
-import CartPage from "./pages/CartPage";  // Import CartPage
-import ChefDashboard from "./pages/ChefDashboard";  // Import ChefDashboard
-import OrderConfirmation from "./pages/OrderConfirmation";  // Import OrderConfirmation
-import OrderVerification from "./pages/OrderVerification";  // Import OrderVerification
-import OTPVerification from "./pages/OTPVerification";  // Import OTPVerification
-import WalletPage from "./pages/WalletPage";  // Import WalletPage
-import OrderPage from "./pages/OrderPage";  // Import OrderPage
-import OrderHistory from "./pages/OrderHistory";  // Import OrderHistory
-// **CSS and Styling**
-// Import your main CSS (if needed)
+import WalletPage from "./pages/WalletPage";
+import OrderPage from "./pages/OrderPage";
+import OrderHistory from "./pages/OrderHistory";
 
 const App = () => {
   return (
