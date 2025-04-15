@@ -25,7 +25,12 @@ const CartPage = () => {
       headers: { Authorization: `Bearer ${token}` },
     })
     .then((res) => {
-      setCartItems(res.data.items || []); // Ensure items are set as an array
+      console.log("✅ Fetched Cart Data:", res.data);
+      if (Array.isArray(res.data.items)) {
+        setCartItems(res.data.items); // Ensure it's set as an array
+      } else {
+        console.error("❌ Invalid cart data format:", res.data);
+      }
     })
     .catch((err) => {
       console.error("❌ Error Fetching Cart:", err);
@@ -43,17 +48,19 @@ const CartPage = () => {
 
   // Add Item to Cart
   const addToCart = (item) => {
-    if (!item.itemId || !item.itemId._id) {
+    const { itemId, quantity } = item;
+    if (!itemId || !itemId._id || !quantity) {
       console.error("❌ Invalid item data:", item);
       return;
     }
 
     axios.post("http://localhost:3000/api/cart/add", 
-      { itemId: item.itemId._id, quantity: 1 }, 
+      { userId, itemId: itemId._id, quantity: 1 }, 
       { headers: { Authorization: `Bearer ${token}` } }
     )
     .then((res) => {
-      setCartItems(res.data.cart.items || []); // Update cart with the new items
+      console.log("✅ Item added to cart:", res.data);
+      setCartItems(res.data.cart.items); // Update cart with the new items
     })
     .catch((err) => {
       console.error("❌ Error Adding to Cart:", err.response ? err.response.data : err.message);

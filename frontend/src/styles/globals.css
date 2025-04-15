@@ -1,0 +1,45 @@
+:root {
+  --primary: #4A90E2;
+  --secondary: #F8C3AF;
+  --background: #FAFAFA;
+  --text: #2D3436;
+  --neutral-100: #F5F5F5;
+  --neutral-200: #EAEAEA;
+  --neutral-300: #E1E1E1;
+  --accent: #FFB6B6;
+}
+
+body {
+  background-color: var(--background);
+  color: var(--text);
+  font-family: 'Inter', sans-serif;
+}
+
+h1, h2, h3, h4, h5, h6 {
+  font-family: 'Poppins', sans-serif;
+  font-weight: 600;
+}
+
+.btn-primary {
+  background-color: var(--primary);
+  border: none;
+  padding: 0.75rem 1.5rem;
+  border-radius: 8px;
+  transition: transform 0.2s ease;
+}
+
+.btn-primary:hover {
+  transform: translateY(-2px);
+  background-color: #357ABD;
+}
+
+.card {
+  background: white;
+  border-radius: 12px;
+  border: 1px solid var(--neutral-200);
+  transition: all 0.3s ease;
+}
+
+.card:hover {
+  box-shadow: 0 8px 16px rgba(0,0,0,0.1);
+}

@@ -112,29 +112,38 @@ const Login = () => {
             </motion.div>
 
             {step === 1 ? (
-              <Form onSubmit={handleSubmit}>
-                <Form.Group className="mb-2">
+              <Form onSubmit={handleSubmit} className="login-form">
+                <Form.Group className="mb-3 input-group">
+                  <div className="input-icon"><FiMail /></div>
                   <Form.Control
                     type="email"
                     name="email"
                     placeholder="Email"
-                    value={formData.email} // Ensure controlled input
+                    value={formData.email}
                     onChange={handleChange}
                     required
+                    className="form-input"
                   />
                 </Form.Group>
-                <Form.Group className="mb-2">
+                <Form.Group className="mb-4 input-group">
+                  <div className="input-icon"><FiLock /></div>
                   <Form.Control
                     type="password"
                     name="password"
                     placeholder="Password"
-                    value={formData.password} // Ensure controlled input
+                    value={formData.password}
                     onChange={handleChange}
                     required
+                    className="form-input"
                   />
                 </Form.Group>
-                <motion.div whileHover={{ scale: 1.05 }}>
-                  <Button className="w-100 btn-primary" type="submit">Login</Button>
+                <motion.div
+                  whileHover={{ scale: 1.02 }}
+                  whileTap={{ scale: 0.98 }}
+                >
+                  <Button className="login-button w-100" type="submit">
+                    Login
+                  </Button>
                 </motion.div>
               </Form>
             ) : (
@@ -146,18 +155,29 @@ const Login = () => {
                     value={confirmationCode}
                     onChange={(e) => setConfirmationCode(e.target.value)}
                     required
+                    className="form-input text-center"
                   />
                 </Form.Group>
-                <motion.div whileHover={{ scale: 1.05 }}>
-                  <Button className="w-100 btn-success" type="submit">Verify OTP</Button>
+                <motion.div
+                  whileHover={{ scale: 1.02 }}
+                  whileTap={{ scale: 0.98 }}
+                >
+                  <Button className="verify-button w-100" type="submit">
+                    Verify OTP
+                  </Button>
                 </motion.div>
               </Form>
             )}
 
             {step === 1 && (
-              <p className="text-center mt-2">
-                Don't have an account? <a href="/signup" className="text-primary">Sign Up</a>
-              </p>
+              <motion.p 
+                className="text-center mt-3 signup-text"
+                initial={{ opacity: 0 }}
+                animate={{ opacity: 1 }}
+                transition={{ delay: 0.4 }}
+              >
+                Don't have an account? <a href="/signup">Sign Up</a>
+              </motion.p>
             )}
           </Card>
         </motion.div>

@@ -3,8 +3,9 @@ import { motion } from 'framer-motion';
 import { useNavigate } from 'react-router-dom';
 import axios from 'axios';
 import { FaShoppingCart, FaHistory, FaWallet } from 'react-icons/fa';
+import 'bootstrap/dist/css/bootstrap.min.css';
 import '../styles/MenuPage.css';
-import API from "../services/api"; // ✅ Import API service
+import API from "../services/api";
 
 // Import category images
 import beverages from '../assets/categories/baverages.jpeg';
@@ -25,12 +26,10 @@ const categoryImages = {
 const MenuPage = () => {
   const [categories, setCategories] = useState([]);
   const [walletBalance, setWalletBalance] = useState(0);
-  const [recommendations, setRecommendations] = useState([]); // State for recommendations
   const navigate = useNavigate();
 
   useEffect(() => {
     const token = localStorage.getItem('token');
-    const userId = localStorage.getItem('userId'); // Get userId from localStorage
 
     if (!token) {
       console.error("❌ No token found. Redirecting to login.");
@@ -48,117 +47,73 @@ const MenuPage = () => {
       headers: { Authorization: `Bearer ${token}` },
     })
     .then((res) => setWalletBalance(res.data.balance))
-    .catch((err) => {
-      console.error("❌ Error fetching wallet balance:", err.message);
-      console.log("📜 Full Axios error:", err);
-      });
-  
-    }, []); // Add missing closing parentheses and dependency array
-    
+    .catch((err) => console.error("❌ Error fetching wallet balance:", err));
+  }, [navigate]);
 
   return (
     <div className="menu-page container-fluid py-4">
-      <div className="row justify-content-center">
-        <div className="col-12 col-lg-10">
-          <motion.div 
-            className="menu-header text-center mb-5 p-4"
-            initial={{ y: -20 }}
-            animate={{ y: 0 }}
-            transition={{ duration: 0.6 }}
-          >
-            <h2 className="category-heading mb-4">Select a Category</h2>
-            
-            <div className="d-flex flex-wrap justify-content-center align-items-center gap-3">
-              <motion.button 
-                className="action-button"
-                onClick={() => navigate("/wallet")}
-                whileHover={{ scale: 1.05 }}
-                whileTap={{ scale: 0.95 }}
-              >
-                <FaWallet className="me-2" /> ₹{walletBalance}
-              </motion.button>
-
-              <motion.button 
-                className="action-button"
-                onClick={() => navigate("/cart")}
-                whileHover={{ scale: 1.05 }}
-                whileTap={{ scale: 0.95 }}
-              >
-                <FaShoppingCart className="me-2" /> Go to Cart
-              </motion.button>
-
-              <motion.button 
-                className="action-button"
-                onClick={() => navigate("/order-history")}
-                whileHover={{ scale: 1.05 }}
-                whileTap={{ scale: 0.95 }}
-              >
-                <FaHistory className="me-2" /> Order History
-              </motion.button>
-            </div>
-          </motion.div>
-
-          <div className="row g-4 justify-content-center">
-            {categories.map((category, index) => (
-              <motion.div 
-                key={category}
-                className="col-12 col-sm-6 col-lg-4"
-                initial={{ opacity: 0, y: 20 }}
-                animate={{ opacity: 1, y: 0 }}
-                transition={{ delay: index * 0.1 }}
-              >
-                <motion.div 
-                  className="category-card h-100 shadow-lg"
-                  onClick={() => navigate(`/menu/${category}`)}
-                  whileHover={{ 
-                    scale: 1.03,
-                    transition: { duration: 0.2 }
-                  }}
-                >
-                  <div className="category-image-wrapper">
-                    <img
-                      src={categoryImages[category] || starters}
-                      alt={category}
-                      className="category-image"
-                    />
-                  </div>
-                  <h3 className="category-name">{category}</h3>
-                </motion.div>
-              </motion.div>
-            ))}
-          </div>
-
-          {recommendations.length > 0 && (
-            <motion.div
-              className="recommendations-section mt-5 pt-4"
-              initial={{ opacity: 0 }}
-              animate={{ opacity: 1 }}
+      <div className="menu-header row mb-4">
+        <div className="col-12">
+          <h2 className="category-heading text-center mb-4">Our Menu Categories</h2>
+          <div className="d-flex justify-content-center gap-3 flex-wrap">
+            <motion.button 
+              className="btn custom-btn wallet-btn"
+              onClick={() => navigate("/wallet")}
+              whileHover={{ scale: 1.05 }}
+              whileTap={{ scale: 0.95 }}
             >
-              <h3 className="text-center mb-4">Recommended for You</h3>
-              <div className="row g-4 justify-content-center">
-                {recommendations.map((item) => (
-                  <motion.div
-                    key={item._id}
-                    className="col-12 col-sm-6 col-lg-4"
-                    whileHover={{ scale: 1.02 }}
-                  >
-                    <div 
-                      className="category-card h-100 shadow-lg" 
-                      onClick={() => navigate(`/menu/${item.category}`)}
-                    >
-                      <img
-                        src={item.imageUrl || starters}
-                        alt={item.name}
-                        className="category-image"
-                      />
-                      <p className="category-name">{item.name}</p>
-                    </div>
-                  </motion.div>
-                ))}
-              </div>
-            </motion.div>
-          )}
+              <FaWallet className="me-2" /> ₹{walletBalance}
+            </motion.button>
+
+            <motion.button 
+              className="btn custom-btn cart-btn"
+              onClick={() => navigate("/cart")}
+              whileHover={{ scale: 1.05 }}
+              whileTap={{ scale: 0.95 }}
+            >
+              <FaShoppingCart className="me-2" /> Cart
+            </motion.button>
+
+            <motion.button 
+              className="btn custom-btn history-btn"
+              onClick={() => navigate("/order-history")}
+              whileHover={{ scale: 1.05 }}
+              whileTap={{ scale: 0.95 }}
+            >
+              <FaHistory className="me-2" /> History
+            </motion.button>
+          </div>
         </div>
+      </div>
+
+      <div className="category-grid row g-4">
+        {categories.map((category, index) => (
+          <motion.div 
+            key={index} 
+            className="col-12 col-md-6 col-lg-4"
+            initial={{ opacity: 0, y: 20 }}
+            animate={{ opacity: 1, y: 0 }}
+            transition={{ delay: index * 0.1 }}
+          >
+            <motion.div 
+              className="category-card h-100"
+              onClick={() => navigate(`/menu/${category}`)}
+              whileHover={{ 
+                scale: 1.03,
+                boxShadow: '0 8px 16px rgba(0,0,0,0.1)'
+              }}
+            >
+              <div className="category-image-wrapper">
+                <img 
+                  src={categoryImages[category] || starters}
+                  alt={category} 
+                  className="category-image"
+                />
+              </div>
+              <h3 className="category-name">{category}</h3>
+            </motion.div>
+          </motion.div>
+        ))}
       </div>
     </div>
   );
