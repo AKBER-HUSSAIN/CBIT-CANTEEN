@@ -17,7 +17,10 @@ app.use(cors());
 // ✅ MongoDB Connection
 mongoose.connect(process.env.MONGO_URI)
     .then(() => console.log("✅ MongoDB Connected."))
-    .catch(err => console.error("❌ MongoDB Connection Error:", err));
+    .catch(err => {
+        console.error("❌ MongoDB Connection Error:", err.message);
+        process.exit(1); // Exit the process if the connection fails
+    });
 
 // ✅ WebSocket Setup for Real-time Order Updates
 const io = new Server(server, {

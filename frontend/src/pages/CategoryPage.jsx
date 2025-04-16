@@ -35,22 +35,17 @@ const CategoryPage = () => {
       headers: { Authorization: `Bearer ${token}`, "Content-Type": "application/json" },
     })
     .then((res) => {
-      const cartData = res.data.reduce((acc, item) => {
-        if (item && item._id) {
-          acc[item._id] = item.quantity;
+      const cartData = res.data.items.reduce((acc, item) => {
+        if (item && item.itemId) {
+          acc[item.itemId._id] = item.quantity;
         }
         return acc;
       }, {});
       setCart(cartData);
     })
     .catch((err) => {
-      if (err.response?.status === 401) {
-        console.error("❌ Token Expired. Redirecting to login.");
-        localStorage.clear();
-        navigate("/login");
-      } else {
-        console.error("❌ Error Fetching Cart:", err);
-      }
+      console.error("❌ Error Fetching Cart:", err.message);
+      alert("Failed to load cart. Please try again later.");
     });
 
     // Fetch Wallet Balance

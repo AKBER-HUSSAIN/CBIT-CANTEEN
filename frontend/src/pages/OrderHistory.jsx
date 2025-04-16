@@ -5,7 +5,8 @@ import axios from 'axios';
 import '../styles/OrderHistory.css';
 
 const OrderHistory = () => {
-  const [orders, setOrders] = useState([]);
+  const [orders, setOrders] = useState([]); // Initialize as an empty array
+  const [error, setError] = useState(null); // Add error state
   const token = localStorage.getItem('token');
 
   useEffect(() => {
@@ -17,9 +18,22 @@ const OrderHistory = () => {
     axios.get('http://localhost:3000/api/orders/history', {
       headers: { Authorization: `Bearer ${token}` }
     })
-    .then(res => setOrders(res.data))
-    .catch(err => console.error('Error fetching order history:', err));
+    .then(res => {
+      if (Array.isArray(res.data.orders)) {
+        setOrders(res.data.orders); // Ensure orders is an array
+      } else {
+        throw new Error("Invalid response format");
+      }
+    })
+    .catch(err => {
+      console.error('Error fetching order history:', err);
+      setError('Failed to load order history. Please try again later.');
+    });
   }, []);
+
+  if (error) {
+    return <p className="text-center text-danger">{error}</p>;
+  }
 
   return (
     <Container className="order-history-container">

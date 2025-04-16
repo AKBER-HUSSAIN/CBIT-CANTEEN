@@ -172,6 +172,20 @@ module.exports = (io) => {
         }
     });
 
+    // ✅ Get Order History for Logged-in User
+    router.get('/history', verifyToken, async (req, res) => {
+        try {
+            const orders = await Order.find({ userId: req.user._id }).sort({ createdAt: -1 });
+            if (!orders.length) {
+                return res.status(200).json({ orders: [] }); // Return an empty array if no orders exist
+            }
+            res.status(200).json({ orders });
+        } catch (err) {
+            console.error("❌ Error fetching order history:", err.message);
+            res.status(500).json({ message: 'Error fetching order history', error: err.message });
+        }
+    });
+
     // ✅ RETURN the router at the end
     return router;
 };

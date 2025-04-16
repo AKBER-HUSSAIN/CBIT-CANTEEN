@@ -7,14 +7,16 @@ const router = express.Router();
 // Get Wallet Balance
 router.get('/balance', verifyToken, async (req, res) => {
     try {
-        const wallet = await Wallet.findOne({ userId: req.user._id }); // Reverted to req.user._id
+        const wallet = await Wallet.findOne({ userId: req.user._id });
         if (!wallet) {
-            return res.status(404).json({ message: 'Wallet not found' });
+            // Create a wallet if it doesn't exist
+            const newWallet = new Wallet({ userId: req.user._id, balance: 0 });
+            await newWallet.save();
+            return res.status(200).json({ balance: newWallet.balance });
         }
-
         res.status(200).json({ balance: wallet.balance });
     } catch (err) {
-        console.error("❌ Error fetching wallet balance:", err);
+        console.error("❌ Error fetching wallet balance:", err.message);
         res.status(500).json({ message: 'Error fetching balance', error: err.message });
     }
 });
