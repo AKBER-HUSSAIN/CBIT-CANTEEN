@@ -24,7 +24,10 @@ const WalletPage = () => {
       headers: { Authorization: `Bearer ${token}` },
     })
     .then((response) => setBalance(response.data.balance))
-    .catch((err) => console.error("❌ Error fetching wallet balance:", err));
+    .catch((err) => {
+      console.error("❌ Error fetching wallet balance:", err.message);
+      alert("Failed to fetch wallet balance. Please try again later.");
+    });
   }, [token, navigate]);
 
   // Handle deposit logic

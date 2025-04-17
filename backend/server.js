@@ -17,7 +17,10 @@ app.use(cors());
 // ✅ MongoDB Connection
 mongoose.connect(process.env.MONGO_URI)
     .then(() => console.log("✅ MongoDB Connected."))
-    .catch(err => console.error("❌ MongoDB Connection Error:", err));
+    .catch(err => {
+        console.error("❌ MongoDB Connection Error:", err.message);
+        process.exit(1); // Exit the process if the connection fails
+    });
 
 // ✅ WebSocket Setup for Real-time Order Updates
 const io = new Server(server, {
@@ -42,6 +45,7 @@ const walletRoutes = require("./routes/walletRoutes");
 const cartRoutes = require("./routes/cartRoutes");
 const visitorRoutes = require("./routes/visitorRoutes"); // ✅ Import visitor routes
 const recommendationRoutes = require("./routes/recommendationRoutes");
+const aiRoutes = require("./routes/aiRoutes");// ✅ Import Gemini API routes
 // ✅ Use Routes
 app.use("/api/auth", authRoutes);
 app.use("/api/menu", menuRoutes);
@@ -50,7 +54,7 @@ app.use("/api/wallet", walletRoutes);
 app.use("/api/cart", cartRoutes);
 app.use("/api/visitors", visitorRoutes); // ✅ Register visitor routes
 app.use("/api/recommendations", recommendationRoutes);
-
+app.use("/api/ai", aiRoutes); // ✅ Register Gemini API routes
 // ✅ Start Server
 const PORT = process.env.PORT || 3000;
 server.listen(PORT, () => console.log(`🚀 Server running on port ${PORT}`));

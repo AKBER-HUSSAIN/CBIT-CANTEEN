@@ -6,20 +6,32 @@ import '../styles/OrderHistory.css';
 
 const OrderHistory = () => {
   const [orders, setOrders] = useState([]);
-  const token = localStorage.getItem('token');
+  const [transactions, setTransactions] = useState([]);
+  const token = localStorage.getItem("token");
 
   useEffect(() => {
-    if (!token) {
-      navigate('/login');
-      return;
-    }
-
-    axios.get('http://localhost:3000/api/orders/history', {
-      headers: { Authorization: `Bearer ${token}` }
+    axios.get("http://localhost:3000/api/orders", {
+      headers: { Authorization: `Bearer ${token}` },
     })
-    .then(res => setOrders(res.data))
-    .catch(err => console.error('Error fetching order history:', err));
-  }, []);
+    .then((res) => setOrders(res.data))
+    .catch((err) => console.error("❌ Error Fetching Orders:", err));
+
+    axios.get("http://localhost:3000/api/orders/transactions", {
+      headers: { Authorization: `Bearer ${token}` },
+    })
+    .then((res) => setTransactions(res.data))
+    .catch((err) => console.error("❌ Error Fetching Transactions:", err));
+  }, [token]);
+
+  const containerVariants = {
+    hidden: { opacity: 0, y: 20 },
+    visible: { opacity: 1, y: 0, transition: { duration: 0.6 } }
+  };
+
+  const cardVariants = {
+    hidden: { opacity: 0, scale: 0.95 },
+    visible: { opacity: 1, scale: 1, transition: { duration: 0.3 } }
+  };
 
   return (
     <Container className="order-history-container">

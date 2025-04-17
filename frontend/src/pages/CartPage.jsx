@@ -26,10 +26,12 @@ const CartPage = () => {
         setCartItems(res.data.items);
       } else {
         console.error("❌ Invalid cart data format:", res.data);
+        setCartItems([]); // Fallback to an empty array
       }
     })
     .catch((err) => {
-      console.error("❌ Error Fetching Cart:", err);
+      console.error("❌ Error Fetching Cart:", err.message);
+      alert("Failed to load cart. Please try again later.");
     });
 
     axios.get("http://localhost:3000/api/wallet/balance", {

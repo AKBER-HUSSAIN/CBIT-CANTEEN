@@ -3,20 +3,21 @@ const router = express.Router();
 const Order = require("../models/OrderModel"); // Import Order model
 const Food = require("../models/FoodModel"); // Import Food model
 const axios = require("axios");
+const verifyToken = require("../middleware/authMiddleware"); // Import verifyToken middleware
+
 // Personalized Recommendations
-// Personalized Recommendations
-router.get("/personalized/:userId", async (req, res) => {
+router.get("/personalized/:userId", verifyToken, async (req, res) => {
     try {
         const { userId } = req.params;
 
         // Fetch user's past orders
-        const orders = await Order.find({ userId }).populate("items.itemId"); // Changed foodId to itemId
+        const orders = await Order.find({ userId }).populate("items.itemId");
 
         // Count frequency of ordered items
         const foodFrequency = {};
         orders.forEach(order => {
             order.items.forEach(item => {
-                const foodId = item.itemId._id.toString(); // Changed foodId to itemId
+                const foodId = item.itemId._id.toString();
                 foodFrequency[foodId] = (foodFrequency[foodId] || 0) + 1;
             });
         });
@@ -35,7 +36,7 @@ router.get("/personalized/:userId", async (req, res) => {
 });
 
 // Time-Based Popular Items
-router.get("/trending", async (req, res) => {
+router.get("/trending", verifyToken, async (req, res) => {
     try {
         const currentHour = new Date().getHours();
 
@@ -46,7 +47,7 @@ router.get("/trending", async (req, res) => {
         const oneWeekAgo = new Date();
         oneWeekAgo.setDate(oneWeekAgo.getDate() - 7);
 
-        const orders = await Order.find({ createdAt: { $gte: oneWeekAgo } }).populate("items.itemId"); // Changed foodId to itemId
+        const orders = await Order.find({ createdAt: { $gte: oneWeekAgo } }).populate("items.itemId");
 
         // Count frequency of items in the current time slot
         const foodFrequency = {};
@@ -56,7 +57,7 @@ router.get("/trending", async (req, res) => {
 
             if (orderTimeSlot === timeSlot) {
                 order.items.forEach(item => {
-                    const foodId = item.itemId._id.toString(); // Changed foodId to itemId
+                    const foodId = item.itemId._id.toString();
                     foodFrequency[foodId] = (foodFrequency[foodId] || 0) + 1;
                 });
             }
@@ -81,7 +82,7 @@ router.post("/generate", async (req, res) => {
 
     try {
         const response = await axios.post(
-            `https://generativelanguage.googleapis.com/v1beta2/models/text-bison-001:generateText?key=${process.env.GEMINI_API_KEY}`,
+            `https://generativelanguage.googleapis.com/v1beta/models/gemini-2.0-flash:generateContent?key=${process.env.GEMINI_API_KEY}`,
             {
                 prompt: {
                     text: prompt,
@@ -101,6 +102,53 @@ router.post("/generate", async (req, res) => {
     } catch (error) {
         console.error("Error generating Gemini AI response:", error?.response?.data || error.message);
         res.status(500).json({ message: "Gemini API Error", error: error?.response?.data || error.message });
+    }
+});
+
+// AI-Based Personalized Recommendations
+router.get("/ai-personalized/:userId", verifyToken, async (req, res) => {
+    try {
+        const { userId } = req.params;
+
+        // Fetch user's past orders
+        const orders = await Order.find({ userId }).populate("items.itemId");
+
+        // Prepare data for AI model
+        const orderHistory = orders.map(order => ({
+            items: order.items.map(item => ({
+                name: item.itemId.name,
+                category: item.itemId.category,
+                quantity: item.quantity,
+            })),
+        }));
+
+        // Call AI API for recommendations
+        const aiResponse = await axios.post(
+            "https://api.openai.com/v1/completions", // Replace with your AI API endpoint
+            {
+                model: "text-davinci-003", // Replace with the appropriate model
+                prompt: `Based on the following order history, recommend 5 food items:\n${JSON.stringify(orderHistory)}`,
+                max_tokens: 150,
+                temperature: 0.7,
+            },
+            {
+                headers: {
+                    "Content-Type": "application/json",
+                    Authorization: `Bearer ${process.env.OPENAI_API_KEY}`, // Use your API key
+                },
+            }
+        );
+
+        // Parse AI response
+        const recommendedItems = aiResponse.data.choices[0].text.trim().split("\n");
+
+        // Fetch food details for recommended items
+        const recommendedFoods = await Food.find({ name: { $in: recommendedItems } });
+
+        res.status(200).json(recommendedFoods);
+    } catch (error) {
+        console.error("Error fetching AI-based recommendations:", error);
+        res.status(500).json({ message: "Server error" });
     }
 });
 
