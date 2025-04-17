@@ -82,29 +82,29 @@ const CartPage = () => {
   };
 
   return (
-    <div className="min-h-screen bg-gradient-to-br from-gray-50 to-gray-100 py-12 px-4 sm:px-6 lg:px-8">
+    <div className="min-h-screen bg-gradient-to-br from-gray-50 to-gray-100 dark:from-gray-900 dark:to-gray-800 py-12 px-4 sm:px-6 lg:px-8">
       <motion.div 
         initial={{ opacity: 0, y: 20 }}
         animate={{ opacity: 1, y: 0 }}
         className="max-w-7xl mx-auto"
       >
         <div className="flex justify-between items-center mb-8">
-          <h1 className="text-3xl font-bold text-gray-900">Your Cart</h1>
+          <h1 className="text-3xl font-bold text-gray-900 dark:text-white">Your Cart</h1>
           <motion.button
             whileHover={{ scale: 1.05 }}
             whileTap={{ scale: 0.95 }}
             onClick={() => navigate("/wallet")}
             className="flex items-center gap-2 bg-indigo-600 text-white px-6 py-2 rounded-lg shadow-lg hover:bg-indigo-700 transition-all"
           >
-            <FaWallet />
+            <FaWallet className="text-white" />
             <span>₹{walletBalance}</span>
           </motion.button>
         </div>
 
         {cartItems.length === 0 ? (
           <div className="text-center py-16">
-            <FaShoppingCart className="mx-auto text-6xl text-gray-300 mb-4" />
-            <p className="text-xl text-gray-500">Your cart is empty</p>
+            <FaShoppingCart className="mx-auto text-6xl text-gray-300 dark:text-gray-600 mb-4" />
+            <p className="text-xl text-gray-500 dark:text-gray-400">Your cart is empty</p>
             <button 
               onClick={() => navigate('/menu')}
               className="mt-4 bg-indigo-600 text-white px-6 py-2 rounded-lg hover:bg-indigo-700 transition-all"
@@ -116,15 +116,19 @@ const CartPage = () => {
           <div className="space-y-4">
             {cartItems.map((item) => (
               <motion.div
-                key={`${item.itemId._id}-${item.quantity}`}
+                key={item.itemId._id}
                 initial={{ opacity: 0, x: -20 }}
                 animate={{ opacity: 1, x: 0 }}
-                className="bg-white rounded-xl shadow-md overflow-hidden hover:shadow-lg transition-shadow"
+                className="bg-white dark:bg-gray-800 rounded-xl shadow-md overflow-hidden hover:shadow-lg transition-shadow"
               >
                 <div className="p-6 flex items-center justify-between">
                   <div className="flex-1">
-                    <h3 className="text-xl font-semibold text-gray-900">{item.itemId.name}</h3>
-                    <p className="text-indigo-600 font-medium">₹{item.itemId.price}</p>
+                    <h3 className="text-xl font-semibold text-gray-900 dark:text-white">
+                      {item.itemId.name}
+                    </h3>
+                    <p className="text-indigo-600 dark:text-indigo-400 font-medium">
+                      ₹{item.itemId.price}
+                    </p>
                   </div>
                   
                   <div className="flex items-center gap-4">
@@ -132,17 +136,19 @@ const CartPage = () => {
                       <motion.button
                         whileTap={{ scale: 0.9 }}
                         onClick={() => removeFromCart(item)}
-                        className="p-2 text-gray-500 hover:text-red-500 rounded-full hover:bg-red-50"
+                        className="p-2 text-gray-500 hover:text-red-500 dark:text-gray-400 dark:hover:text-red-400 rounded-full hover:bg-red-50 dark:hover:bg-red-900/20"
                       >
                         <FaMinus />
                       </motion.button>
                       
-                      <span className="w-8 text-center font-medium">{item.quantity}</span>
+                      <span className="w-8 text-center font-medium dark:text-white">
+                        {item.quantity}
+                      </span>
                       
                       <motion.button
                         whileTap={{ scale: 0.9 }}
                         onClick={() => addToCart(item)}
-                        className="p-2 text-gray-500 hover:text-green-500 rounded-full hover:bg-green-50"
+                        className="p-2 text-gray-500 hover:text-green-500 dark:text-gray-400 dark:hover:text-green-400 rounded-full hover:bg-green-50 dark:hover:bg-green-900/20"
                       >
                         <FaPlus />
                       </motion.button>
@@ -151,7 +157,7 @@ const CartPage = () => {
                     <motion.button
                       whileTap={{ scale: 0.9 }}
                       onClick={() => removeFromCart(item)}
-                      className="p-2 text-red-500 hover:bg-red-50 rounded-full"
+                      className="p-2 text-red-500 hover:bg-red-50 dark:hover:bg-red-900/20 rounded-full"
                     >
                       <FaTrashAlt />
                     </motion.button>
@@ -161,9 +167,9 @@ const CartPage = () => {
             ))}
 
             <div className="mt-8 space-y-4">
-              <div className="flex justify-between items-center bg-gray-50 p-4 rounded-lg">
-                <span className="text-lg font-medium">Total Amount:</span>
-                <span className="text-2xl font-bold text-indigo-600">
+              <div className="flex justify-between items-center bg-gray-50 dark:bg-gray-800/50 p-4 rounded-lg">
+                <span className="text-lg font-medium dark:text-gray-300">Total Amount:</span>
+                <span className="text-2xl font-bold text-indigo-600 dark:text-indigo-400">
                   ₹{cartItems.reduce((sum, item) => sum + (item.itemId.price * item.quantity), 0)}
                 </span>
               </div>
