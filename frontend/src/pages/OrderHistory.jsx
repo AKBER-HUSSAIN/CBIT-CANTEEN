@@ -34,7 +34,6 @@ const OrderHistory = () => {
   if (error) {
     return <p className="text-center text-danger">{error}</p>;
   }
-
   return (
     <Container className="order-history-container">
       <motion.h2 
