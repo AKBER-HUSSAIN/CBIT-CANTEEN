@@ -3,8 +3,6 @@ import { motion } from 'framer-motion';
 import { useNavigate } from 'react-router-dom';
 import axios from 'axios';
 import { FaShoppingCart, FaHistory, FaWallet } from 'react-icons/fa';
-import 'bootstrap/dist/css/bootstrap.min.css';
-import '../styles/MenuPage.css';
 import API from "../services/api";
 
 // Import category images
@@ -51,69 +49,77 @@ const MenuPage = () => {
   }, [navigate]);
 
   return (
-    <div className="menu-page container-fluid py-4">
-      <div className="menu-header row mb-4">
-        <div className="col-12">
-          <h2 className="category-heading text-center mb-4">Our Menu Categories</h2>
-          <div className="d-flex justify-content-center gap-3 flex-wrap">
+    <div className="min-h-screen bg-gradient-to-br from-gray-50 to-gray-100 dark:from-gray-900 dark:to-gray-800 py-8 px-4 sm:px-6 lg:px-8">
+      <div className="max-w-7xl mx-auto">
+        <div className="space-y-8">
+          <h2 className="text-3xl font-bold text-center text-gray-900 dark:text-white">
+            Our Menu Categories
+          </h2>
+          
+          <div className="flex flex-wrap justify-center gap-4">
+            {/* Wallet Button */}
             <motion.button 
-              className="btn custom-btn wallet-btn"
               onClick={() => navigate("/wallet")}
-              whileHover={{ scale: 1.05 }}
-              whileTap={{ scale: 0.95 }}
+              whileHover={{ scale: 1.02 }}
+              whileTap={{ scale: 0.98 }}
+              className="flex items-center px-6 py-3 bg-gradient-to-r from-purple-600 to-indigo-600 rounded-lg text-white shadow-lg hover:shadow-xl transition-all duration-300"
             >
-              <FaWallet className="me-2" /> ₹{walletBalance}
+              <FaWallet className="mr-2" /> 
+              <span>₹{walletBalance}</span>
             </motion.button>
 
+            {/* Cart Button */}
             <motion.button 
-              className="btn custom-btn cart-btn"
               onClick={() => navigate("/cart")}
-              whileHover={{ scale: 1.05 }}
-              whileTap={{ scale: 0.95 }}
+              whileHover={{ scale: 1.02 }}
+              whileTap={{ scale: 0.98 }}
+              className="flex items-center px-6 py-3 bg-gradient-to-r from-orange-500 to-pink-500 rounded-lg text-white shadow-lg hover:shadow-xl transition-all duration-300"
             >
-              <FaShoppingCart className="me-2" /> Cart
+              <FaShoppingCart className="mr-2" /> Cart
             </motion.button>
 
+            {/* History Button */}
             <motion.button 
-              className="btn custom-btn history-btn"
               onClick={() => navigate("/order-history")}
-              whileHover={{ scale: 1.05 }}
-              whileTap={{ scale: 0.95 }}
+              whileHover={{ scale: 1.02 }}
+              whileTap={{ scale: 0.98 }}
+              className="flex items-center px-6 py-3 bg-gradient-to-r from-green-500 to-teal-500 rounded-lg text-white shadow-lg hover:shadow-xl transition-all duration-300"
             >
-              <FaHistory className="me-2" /> History
+              <FaHistory className="mr-2" /> History
             </motion.button>
           </div>
-        </div>
-      </div>
 
-      <div className="category-grid row g-4">
-        {categories.map((category, index) => (
-          <motion.div 
-            key={index} 
-            className="col-12 col-md-6 col-lg-4"
-            initial={{ opacity: 0, y: 20 }}
-            animate={{ opacity: 1, y: 0 }}
-            transition={{ delay: index * 0.1 }}
-          >
-            <motion.div 
-              className="category-card h-100"
-              onClick={() => navigate(`/menu/${category}`)}
-              whileHover={{ 
-                scale: 1.03,
-                boxShadow: '0 8px 16px rgba(0,0,0,0.1)'
-              }}
-            >
-              <div className="category-image-wrapper">
-                <img 
-                  src={categoryImages[category] || starters}
-                  alt={category} 
-                  className="category-image"
-                />
-              </div>
-              <h3 className="category-name">{category}</h3>
-            </motion.div>
-          </motion.div>
-        ))}
+          <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-6">
+            {categories.map((category, index) => (
+              <motion.div
+                key={index}
+                initial={{ opacity: 0, y: 20 }}
+                animate={{ opacity: 1, y: 0 }}
+                transition={{ delay: index * 0.1 }}
+              >
+                <motion.div
+                  onClick={() => navigate(`/menu/${category}`)}
+                  whileHover={{ y: -8 }}
+                  className="group cursor-pointer bg-white dark:bg-gray-800 rounded-xl overflow-hidden shadow-md hover:shadow-2xl transition-all duration-300"
+                >
+                  <div className="relative h-48 overflow-hidden">
+                    <img
+                      src={categoryImages[category] || starters}
+                      alt={category}
+                      className="w-full h-full object-cover transform group-hover:scale-110 transition-transform duration-300"
+                    />
+                    <div className="absolute inset-0 bg-gradient-to-t from-black/60 to-transparent opacity-0 group-hover:opacity-100 transition-opacity duration-300" />
+                  </div>
+                  <div className="p-4">
+                    <h3 className="text-xl font-semibold text-gray-800 dark:text-white group-hover:text-indigo-600 dark:group-hover:text-indigo-400 transition-colors duration-300">
+                      {category}
+                    </h3>
+                  </div>
+                </motion.div>
+              </motion.div>
+            ))}
+          </div>
+        </div>
       </div>
     </div>
   );
