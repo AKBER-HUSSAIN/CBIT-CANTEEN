@@ -3,7 +3,6 @@ import { motion } from 'framer-motion';
 import { useNavigate } from 'react-router-dom';
 import axios from 'axios';
 import { FaShoppingCart, FaHistory, FaWallet } from 'react-icons/fa';
-import 'bootstrap/dist/css/bootstrap.min.css';
 import '../styles/MenuPage.css';
 import API from "../services/api";
 
@@ -51,69 +50,72 @@ const MenuPage = () => {
   }, [navigate]);
 
   return (
-    <div className="menu-page container-fluid py-4">
-      <div className="menu-header row mb-4">
-        <div className="col-12">
-          <h2 className="category-heading text-center mb-4">Our Menu Categories</h2>
-          <div className="d-flex justify-content-center gap-3 flex-wrap">
-            <motion.button 
-              className="btn custom-btn wallet-btn"
-              onClick={() => navigate("/wallet")}
-              whileHover={{ scale: 1.05 }}
-              whileTap={{ scale: 0.95 }}
-            >
-              <FaWallet className="me-2" /> ₹{walletBalance}
-            </motion.button>
+    <div className="min-h-screen bg-gradient-to-br from-gray-50 to-gray-100 dark:from-gray-900 dark:to-gray-800 p-6">
+      <div className="max-w-7xl mx-auto">
+        <motion.h2 
+          className="text-4xl font-bold text-center mb-8 text-gray-800 dark:text-white"
+          initial={{ opacity: 0, y: -20 }}
+          animate={{ opacity: 1, y: 0 }}
+        >
+          Our Menu Categories
+        </motion.h2>
 
-            <motion.button 
-              className="btn custom-btn cart-btn"
-              onClick={() => navigate("/cart")}
-              whileHover={{ scale: 1.05 }}
-              whileTap={{ scale: 0.95 }}
-            >
-              <FaShoppingCart className="me-2" /> Cart
-            </motion.button>
-
-            <motion.button 
-              className="btn custom-btn history-btn"
-              onClick={() => navigate("/order-history")}
-              whileHover={{ scale: 1.05 }}
-              whileTap={{ scale: 0.95 }}
-            >
-              <FaHistory className="me-2" /> History
-            </motion.button>
-          </div>
-        </div>
-      </div>
-
-      <div className="category-grid row g-4">
-        {categories.map((category, index) => (
-          <motion.div 
-            key={index} 
-            className="col-12 col-md-6 col-lg-4"
-            initial={{ opacity: 0, y: 20 }}
-            animate={{ opacity: 1, y: 0 }}
-            transition={{ delay: index * 0.1 }}
+        <div className="flex flex-wrap justify-center gap-4 mb-8">
+          <motion.button 
+            onClick={() => navigate("/wallet")}
+            className="flex items-center px-6 py-3 bg-gradient-to-r from-blue-500 to-blue-600 text-white rounded-lg shadow-lg hover:shadow-xl transition-all"
+            whileHover={{ scale: 1.05 }}
+            whileTap={{ scale: 0.95 }}
           >
+            <FaWallet className="mr-2" /> ₹{walletBalance}
+          </motion.button>
+
+          <motion.button 
+            onClick={() => navigate("/cart")}
+            className="flex items-center px-6 py-3 bg-gradient-to-r from-orange-500 to-orange-600 text-white rounded-lg shadow-lg hover:shadow-xl transition-all"
+            whileHover={{ scale: 1.05 }}
+            whileTap={{ scale: 0.95 }}
+          >
+            <FaShoppingCart className="mr-2" /> Cart
+          </motion.button>
+
+          <motion.button 
+            onClick={() => navigate("/order-history")}
+            className="flex items-center px-6 py-3 bg-gradient-to-r from-purple-500 to-purple-600 text-white rounded-lg shadow-lg hover:shadow-xl transition-all"
+            whileHover={{ scale: 1.05 }}
+            whileTap={{ scale: 0.95 }}
+          >
+            <FaHistory className="mr-2" /> History
+          </motion.button>
+        </div>
+
+        <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-6">
+          {categories.map((category, index) => (
             <motion.div 
-              className="category-card h-100"
-              onClick={() => navigate(`/menu/${category}`)}
-              whileHover={{ 
-                scale: 1.03,
-                boxShadow: '0 8px 16px rgba(0,0,0,0.1)'
-              }}
+              key={index}
+              initial={{ opacity: 0, y: 20 }}
+              animate={{ opacity: 1, y: 0 }}
+              transition={{ delay: index * 0.1 }}
             >
-              <div className="category-image-wrapper">
-                <img 
-                  src={categoryImages[category] || starters}
-                  alt={category} 
-                  className="category-image"
-                />
-              </div>
-              <h3 className="category-name">{category}</h3>
+              <motion.div 
+                className="bg-white dark:bg-gray-800 rounded-xl overflow-hidden shadow-lg hover:shadow-2xl transition-all duration-300 cursor-pointer"
+                onClick={() => navigate(`/menu/${category}`)}
+                whileHover={{ y: -8 }}
+              >
+                <div className="h-48 overflow-hidden">
+                  <img 
+                    src={categoryImages[category] || starters}
+                    alt={category}
+                    className="w-full h-full object-cover transform hover:scale-110 transition-transform duration-500"
+                  />
+                </div>
+                <h3 className="text-xl font-semibold text-gray-800 dark:text-white p-4 text-center">
+                  {category}
+                </h3>
+              </motion.div>
             </motion.div>
-          </motion.div>
-        ))}
+          ))}
+        </div>
       </div>
     </div>
   );

@@ -1,8 +1,7 @@
 import React, { useState } from 'react';
 import { QRCodeCanvas } from 'qrcode.react';
-import { Button, Container, Row, Col } from 'react-bootstrap';
 import { motion } from 'framer-motion';
-import { FaQrcode, FaCheckCircle, FaTimesCircle } from 'react-icons/fa';
+import { FaQrcode, FaCheckCircle } from 'react-icons/fa';
 import '../styles/OrderVerification.css';
 
 const OrderVerification = () => {
@@ -19,82 +18,81 @@ const OrderVerification = () => {
   };
 
   return (
-    <Container className="order-verification py-5">
-      <motion.div
-        initial={{ opacity: 0, y: 20 }}
-        animate={{ opacity: 1, y: 0 }}
-        transition={{ duration: 0.5 }}
-      >
-        <h2 className="text-center mb-4">Order Verification</h2>
+    <div className="min-h-screen bg-gradient-to-br from-gray-50 to-gray-100 dark:from-gray-900 dark:to-gray-800 p-6">
+      <div className="max-w-md mx-auto">
+        <motion.h2 
+          className="text-3xl font-bold text-center mb-8 text-gray-800 dark:text-white"
+          initial={{ opacity: 0, y: -20 }}
+          animate={{ opacity: 1, y: 0 }}
+        >
+          Order Verification
+        </motion.h2>
 
-        <Row className="justify-content-center">
-          <Col md={6} className="text-center">
-            {orderId ? (
-              <motion.div 
-                className="qr-section"
-                initial={{ scale: 0.8 }}
-                animate={{ scale: 1 }}
-                transition={{ duration: 0.3 }}
-              >
-                <div className="qr-container">
-                  <QRCodeCanvas value={orderId} size={200} />
-                </div>
-                <p className="mt-3">
-                  <FaQrcode className="me-2" />
-                  Scan this QR Code to verify your order
-                </p>
-                <div className="order-id">Order ID: {orderId}</div>
-              </motion.div>
-            ) : (
-              <motion.div
-                whileHover={{ scale: 1.05 }}
-                whileTap={{ scale: 0.95 }}
-              >
-                <Button 
-                  onClick={() => setOrderId(`ORDER-${Math.floor(Math.random() * 10000)}`)}
-                  className="generate-btn"
-                >
-                  <FaQrcode className="me-2" />
-                  Generate Order QR
-                </Button>
-              </motion.div>
-            )}
-
+        <div className="bg-white dark:bg-gray-800 rounded-xl shadow-lg p-8">
+          {orderId ? (
             <motion.div 
-              className="scan-section mt-4"
-              initial={{ opacity: 0 }}
-              animate={{ opacity: 1 }}
-              transition={{ delay: 0.3 }}
+              className="text-center"
+              initial={{ scale: 0.8 }}
+              animate={{ scale: 1 }}
             >
-              <input
-                type="text"
-                placeholder="Enter scanned QR code"
-                value={scannedId || ''}
-                onChange={(e) => setScannedId(e.target.value)}
-                className="form-control mb-3"
-              />
-              <motion.div whileHover={{ scale: 1.05 }} whileTap={{ scale: 0.95 }}>
-                <Button onClick={handleVerify} className="verify-btn">
-                  Verify Order
-                </Button>
-              </motion.div>
+              <div className="bg-gray-100 dark:bg-gray-700 p-6 rounded-lg inline-block mb-4">
+                <QRCodeCanvas value={orderId} size={200} />
+              </div>
+              <p className="text-gray-600 dark:text-gray-400 mb-2">
+                <FaQrcode className="inline mr-2" />
+                Scan this QR Code to verify your order
+              </p>
+              <div className="text-sm text-gray-500 dark:text-gray-400">
+                Order ID: {orderId}
+              </div>
             </motion.div>
+          ) : (
+            <motion.button
+              onClick={() => setOrderId(`ORDER-${Math.floor(Math.random() * 10000)}`)}
+              className="w-full py-3 bg-gradient-to-r from-blue-500 to-blue-600 text-white rounded-lg shadow-lg"
+              whileHover={{ scale: 1.02 }}
+              whileTap={{ scale: 0.98 }}
+            >
+              <FaQrcode className="inline mr-2" />
+              Generate Order QR
+            </motion.button>
+          )}
 
-            {verified && (
-              <motion.p 
-                className="success-message mt-4"
-                initial={{ opacity: 0, y: 20 }}
-                animate={{ opacity: 1, y: 0 }}
-                transition={{ duration: 0.5 }}
-              >
-                <FaCheckCircle className="me-2" />
-                Order Verified Successfully!
-              </motion.p>
-            )}
-          </Col>
-        </Row>
-      </motion.div>
-    </Container>
+          <motion.div 
+            className="mt-6"
+            initial={{ opacity: 0 }}
+            animate={{ opacity: 1 }}
+          >
+            <input
+              type="text"
+              placeholder="Enter scanned QR code"
+              value={scannedId || ''}
+              onChange={(e) => setScannedId(e.target.value)}
+              className="w-full px-4 py-3 rounded-lg border border-gray-300 dark:border-gray-600 bg-white dark:bg-gray-700 text-gray-900 dark:text-white mb-4"
+            />
+            <motion.button
+              onClick={handleVerify}
+              className="w-full py-3 bg-gradient-to-r from-green-500 to-green-600 text-white rounded-lg shadow-lg"
+              whileHover={{ scale: 1.02 }}
+              whileTap={{ scale: 0.98 }}
+            >
+              Verify Order
+            </motion.button>
+          </motion.div>
+
+          {verified && (
+            <motion.div 
+              className="mt-4 text-center text-green-500"
+              initial={{ opacity: 0, y: 20 }}
+              animate={{ opacity: 1, y: 0 }}
+            >
+              <FaCheckCircle className="inline mr-2" />
+              Order Verified Successfully!
+            </motion.div>
+          )}
+        </div>
+      </div>
+    </div>
   );
 };
 
