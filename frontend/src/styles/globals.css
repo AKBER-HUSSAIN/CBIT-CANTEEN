@@ -1,3 +1,7 @@
+@tailwind base;
+@tailwind components;
+@tailwind utilities;
+
 :root {
   --primary: #4A90E2;
   --secondary: #F8C3AF;
@@ -9,10 +13,10 @@
   --accent: #FFB6B6;
 }
 
-body {
-  background-color: var(--background);
-  color: var(--text);
-  font-family: 'Inter', sans-serif;
+@layer base {
+  body {
+    @apply bg-gray-50 dark:bg-gray-900 text-gray-800 dark:text-gray-200 font-sans;
+  }
 }
 
 h1, h2, h3, h4, h5, h6 {
@@ -20,26 +24,16 @@ h1, h2, h3, h4, h5, h6 {
   font-weight: 600;
 }
 
-.btn-primary {
-  background-color: var(--primary);
-  border: none;
-  padding: 0.75rem 1.5rem;
-  border-radius: 8px;
-  transition: transform 0.2s ease;
-}
+@layer components {
+  .btn-primary {
+    @apply bg-blue-500 text-white font-semibold py-2 px-4 rounded-lg shadow-md hover:bg-blue-600 transition-all;
+  }
 
-.btn-primary:hover {
-  transform: translateY(-2px);
-  background-color: #357ABD;
-}
+  .card {
+    @apply bg-white dark:bg-gray-800 rounded-lg shadow-lg p-6 transition-all;
+  }
 
-.card {
-  background: white;
-  border-radius: 12px;
-  border: 1px solid var(--neutral-200);
-  transition: all 0.3s ease;
-}
-
-.card:hover {
-  box-shadow: 0 8px 16px rgba(0,0,0,0.1);
+  .card:hover {
+    @apply transform scale-105 shadow-xl;
+  }
 }

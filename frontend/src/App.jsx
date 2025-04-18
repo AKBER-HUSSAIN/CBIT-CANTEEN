@@ -27,37 +27,41 @@ import OrderHistory from "./pages/OrderHistory";  // Import OrderHistory
 const App = () => {
   return (
     <Router>
-      <Header />
-      <Routes>
-        {/* Define routes for all pages */}
-        <Route path="/" element={<LandingPage />} /> {/* Change this line */}
-        <Route path="/login" element={<Login />} />
-        <Route path="/signup" element={<Signup />} />
-        <Route path="/order-status" element={<OrderStatus />} />
-        
-        {/* Route for Menu and Categories */}
-        <Route path="/menu" element={<MenuPage />} /> {/* MenuPage route */}
-        <Route path="/menu/:category" element={<CategoryPage />} /> {/* Dynamic category page route */}
+      <div className="flex flex-col min-h-screen">
+        <Header />
+        <main className="flex-grow">
+          <Routes>
+            {/* Define routes for all pages */}
+            <Route path="/" element={<LandingPage />} /> {/* Change this line */}
+            <Route path="/login" element={<Login />} />
+            <Route path="/signup" element={<Signup />} />
+            <Route path="/order-status" element={<OrderStatus />} />
+            
+            {/* Route for Menu and Categories */}
+            <Route path="/menu" element={<MenuPage />} /> {/* MenuPage route */}
+            <Route path="/menu/:category" element={<CategoryPage />} /> {/* Dynamic category page route */}
 
-        {/* Route for Cart */}
-        <Route path="/cart" element={<CartPage />} /> {/* CartPage route */}
+            {/* Route for Cart */}
+            <Route path="/cart" element={<CartPage />} /> {/* CartPage route */}
 
-        {/* Route for Chef Dashboard */}
-        <Route path="/chef-dashboard" element={<ChefDashboard />} /> {/* ChefDashboard route */}
+            {/* Route for Chef Dashboard */}
+            <Route path="/chef-dashboard" element={<ChefDashboard />} /> {/* ChefDashboard route */}
 
-        {/* Route for Order Confirmation */}
-        <Route path="/order-confirmation" element={<OrderConfirmation />} /> {/* OrderConfirmation route */}
+            {/* Route for Order Confirmation */}
+            <Route path="/order-confirmation" element={<OrderConfirmation />} /> {/* OrderConfirmation route */}
 
-        {/* Route for Order Verification */}
-        <Route path="/order-verification" element={<OrderVerification />} /> {/* OrderVerification route */}
-        <Route path="/wallet" element={<WalletPage />} />
-        {/* Route for OTP Verification */}
-        <Route path="/order-status/:orderId" element={<OrderStatus />} />
-        <Route path="/order" element={<OrderPage />} />  {/* ✅ Add Order Page */}
-        <Route path="/order-history" element={<OrderHistory />} />  {/* ✅ Add Order History */}
-        <Route path="/otp-verification" element={<OTPVerification />} /> {/* OTPVerification route */}
-      </Routes>
-      <Footer />
+            {/* Route for Order Verification */}
+            <Route path="/order-verification" element={<OrderVerification />} /> {/* OrderVerification route */}
+            <Route path="/wallet" element={<WalletPage />} />
+            {/* Route for OTP Verification */}
+            <Route path="/order-status/:orderId" element={<OrderStatus />} />
+            <Route path="/order" element={<OrderPage />} />  {/* ✅ Add Order Page */}
+            <Route path="/order-history" element={<OrderHistory />} />  {/* ✅ Add Order History */}
+            <Route path="/otp-verification" element={<OTPVerification />} /> {/* OTPVerification route */}
+          </Routes>
+        </main>
+        <Footer />
+      </div>
     </Router>
   );
 };

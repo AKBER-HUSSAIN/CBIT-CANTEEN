@@ -1,6 +1,5 @@
 import React, { useEffect, useState } from "react";
 import { useNavigate } from "react-router-dom";
-import { Container, Card, Button } from "react-bootstrap";
 import { motion } from "framer-motion";
 import axios from "axios";
 
@@ -61,70 +60,53 @@ const OrderPage = () => {
     .catch((err) => console.error("❌ Error Placing Order:", err));
   };
 
-  const pageTransition = {
-    initial: { opacity: 0, y: 20 },
-    animate: { opacity: 1, y: 0 },
-    transition: { duration: 0.5 }
-  };
-
-  const cardStyle = {
-    backgroundColor: "#fff9f5",
-    borderRadius: "15px",
-    boxShadow: "0 4px 6px rgba(0,0,0,0.1)",
-    border: "none"
-  };
-
   return (
-    <Container className="mt-5">
+    <div className="min-h-screen bg-gradient-to-br from-gray-50 to-gray-100 dark:from-gray-900 dark:to-gray-800 p-6">
       <motion.div
-        initial={pageTransition.initial}
-        animate={pageTransition.animate}
-        transition={pageTransition.transition}
+        initial={{ opacity: 0, y: 20 }}
+        animate={{ opacity: 1, y: 0 }}
+        className="max-w-2xl mx-auto"
       >
-        <h2 className="mb-4" style={{ 
-          color: "#2c3e50", 
-          fontFamily: "'Poppins', sans-serif",
-          fontWeight: "600" 
-        }}>
-          <span style={{ marginRight: "10px" }}>🛒</span>
-          Order Summary
+        <h2 className="text-3xl font-bold text-center mb-8 text-gray-800 dark:text-white">
+          🛒 Order Summary
         </h2>
-        <motion.div whileHover={{ scale: 1.02 }} transition={{ duration: 0.3 }}>
-          <Card className="p-4" style={cardStyle}>
-            <div className="order-details" style={{ color: "#34495e" }}>
-              <h5 className="mb-3">
-                <span style={{ color: "#3498db" }}>📦</span> Total Items: {cartItems.length}
-              </h5>
-              <h5 className="mb-3">
-                <span style={{ color: "#e67e22" }}>💰</span> Total Amount: 
-                <span className="ms-2" style={{ color: "#27ae60" }}>₹{totalAmount}</span>
-              </h5>
-              <h5 className="mb-4">
-                <span style={{ color: "#9b59b6" }}>👛</span> Wallet Balance: 
-                <span className="ms-2" style={{ color: "#27ae60" }}>₹{walletBalance}</span>
-              </h5>
-              <motion.div whileTap={{ scale: 0.95 }}>
-                <Button 
-                  variant="success" 
-                  onClick={placeOrder} 
-                  disabled={walletBalance < totalAmount}
-                  className="w-100 py-2"
-                  style={{
-                    backgroundColor: walletBalance < totalAmount ? "#bdc3c7" : "#2ecc71",
-                    border: "none",
-                    borderRadius: "10px",
-                    fontSize: "1.1rem",
-                    fontWeight: "500"
-                  }}
-                >
-                  {walletBalance < totalAmount ? "❌ Insufficient Balance" : "✅ Place Order"}
-                </Button>
-              </motion.div>
+
+        <div className="bg-white dark:bg-gray-800 rounded-xl shadow-lg p-6 mb-6">
+          <div className="space-y-4">
+            <div className="flex justify-between items-center pb-4 border-b border-gray-200 dark:border-gray-700">
+              <span className="text-gray-600 dark:text-gray-400">Total Items</span>
+              <span className="text-lg font-semibold text-gray-800 dark:text-white">
+                {cartItems.length}
+              </span>
             </div>
-          </Card>
-        </motion.div>
+
+            <div className="flex justify-between items-center pb-4 border-b border-gray-200 dark:border-gray-700">
+              <span className="text-gray-600 dark:text-gray-400">Total Amount</span>
+              <span className="text-lg font-semibold text-green-500">₹{totalAmount}</span>
+            </div>
+
+            <div className="flex justify-between items-center">
+              <span className="text-gray-600 dark:text-gray-400">Wallet Balance</span>
+              <span className="text-lg font-semibold text-blue-500">₹{walletBalance}</span>
+            </div>
+          </div>
+
+          <motion.button
+            whileHover={{ scale: 1.02 }}
+            whileTap={{ scale: 0.98 }}
+            onClick={placeOrder}
+            disabled={walletBalance < totalAmount}
+            className={`w-full mt-6 py-3 rounded-lg text-white font-semibold shadow-lg
+              ${walletBalance < totalAmount
+                ? 'bg-gray-400 cursor-not-allowed'
+                : 'bg-gradient-to-r from-green-500 to-green-600 hover:shadow-xl transition-all duration-300'
+              }`}
+          >
+            {walletBalance < totalAmount ? '❌ Insufficient Balance' : '✅ Place Order'}
+          </motion.button>
+        </div>
       </motion.div>
-    </Container>
+    </div>
   );
 };
 

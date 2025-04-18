@@ -1,7 +1,6 @@
 import React, { useState, useEffect } from "react";
-import { Container, Card, Form, Button } from "react-bootstrap";
-import { useNavigate } from "react-router-dom";
 import { motion } from "framer-motion";
+import { useNavigate } from "react-router-dom";
 import API from "../services/api";
 import { getLocalStorageItem, removeLocalStorageItem } from "../utils/localstorage";
 import "../styles/OTPVerification.css";
@@ -16,10 +15,6 @@ const OTPVerification = () => {
     setLocalStorageItem("darkMode", darkMode);
   }, [darkMode]);
 
-  const handleChange = (e) => {
-    setConfirmationCode(e.target.value);
-  };
-
   const handleVerifyOTP = async (e) => {
     e.preventDefault();
     const email = getLocalStorageItem("email");
@@ -33,7 +28,7 @@ const OTPVerification = () => {
     try {
       const response = await API.post("/auth/verify-otp", { email, confirmationCode });
       alert(response.data.message || "OTP verified");
-      removeLocalStorageItem("email"); // Remove email only after OTP verification
+      removeLocalStorageItem("email");
       navigate("/login");
     } catch (error) {
       alert(error.response?.data?.message || "OTP verification failed");
@@ -41,83 +36,59 @@ const OTPVerification = () => {
   };
 
   return (
-    <div className="otp-verification-container">
-      <div className="background-animation"></div>
-
-      <motion.button 
-        className="dark-mode-toggle" 
-        onClick={() => setDarkMode(!darkMode)}
-        whileHover={{ scale: 1.1 }}
-        whileTap={{ scale: 0.95 }}
+    <div className="min-h-screen bg-gradient-to-br from-gray-50 to-gray-100 dark:from-gray-900 dark:to-gray-800 flex items-center justify-center p-6">
+      <motion.div 
+        className="w-full max-w-md"
+        initial={{ opacity: 0, y: 20 }}
+        animate={{ opacity: 1, y: 0 }}
       >
-        {darkMode ? "☀️" : "🌙"}
-      </motion.button>
+        <div className="bg-white dark:bg-gray-800 rounded-xl shadow-lg p-8">
+          <motion.h2 
+            className="text-3xl font-bold text-center mb-6 text-gray-800 dark:text-white"
+            initial={{ opacity: 0 }}
+            animate={{ opacity: 1 }}
+          >
+            Verify OTP
+          </motion.h2>
 
-      <Container className="d-flex align-items-center justify-content-center vh-100">
-        <motion.div
-          initial={{ opacity: 0, y: -20 }}
-          animate={{ opacity: 1, y: 0 }}
-          transition={{ duration: 0.8, ease: "easeOut" }}
-        >
-          <Card className={`p-5 shadow-lg otp-card ${darkMode ? "dark" : "light"}`}>
-            <motion.h2 
-              className="text-center mb-4 fw-bold"
-              initial={{ opacity: 0 }}
-              animate={{ opacity: 1 }}
-              transition={{ delay: 0.3 }}
+          <form onSubmit={handleVerifyOTP} className="space-y-6">
+            <div>
+              <input
+                type="text"
+                placeholder="Enter OTP"
+                value={confirmationCode}
+                onChange={(e) => setConfirmationCode(e.target.value)}
+                className="w-full px-4 py-3 text-center text-2xl tracking-widest rounded-lg border border-gray-300 dark:border-gray-600 bg-white dark:bg-gray-700 text-gray-900 dark:text-white"
+                required
+              />
+            </div>
+
+            <motion.button
+              type="submit"
+              className="w-full py-3 bg-gradient-to-r from-blue-500 to-blue-600 text-white rounded-lg shadow-lg"
+              whileHover={{ scale: 1.02 }}
+              whileTap={{ scale: 0.98 }}
             >
               Verify OTP
-            </motion.h2>
+            </motion.button>
+          </form>
 
-            <Form onSubmit={handleVerifyOTP}>
-              <Form.Group className="mb-4">
-                <motion.div
-                  whileHover={{ scale: 1.02 }}
-                  transition={{ type: "spring", stiffness: 300 }}
-                >
-                  <Form.Control
-                    type="text"
-                    placeholder="Enter your OTP"
-                    value={confirmationCode}
-                    onChange={handleChange}
-                    required
-                    className="otp-input"
-                  />
-                </motion.div>
-              </Form.Group>
-
-              <motion.div 
-                whileHover={{ scale: 1.03 }}
-                whileTap={{ scale: 0.97 }}
-              >
-                <Button 
-                  className="w-100 verify-btn" 
-                  type="submit"
-                  variant="primary"
-                >
-                  Verify OTP
-                </Button>
-              </motion.div>
-            </Form>
-
-            <motion.p 
-              className="text-center mt-4 resend-text"
-              initial={{ opacity: 0 }}
-              animate={{ opacity: 1 }}
-              transition={{ delay: 0.5 }}
+          <motion.p 
+            className="mt-6 text-center text-gray-600 dark:text-gray-400"
+            initial={{ opacity: 0 }}
+            animate={{ opacity: 1 }}
+          >
+            Didn't receive the OTP?{' '}
+            <motion.a 
+              href="/resend-otp"
+              className="text-blue-500 hover:text-blue-600 font-medium"
+              whileHover={{ scale: 1.05 }}
             >
-              Didn't receive the OTP? {' '}
-              <motion.a 
-                href="/resend-otp" 
-                className="resend-link"
-                whileHover={{ color: '#4a90e2' }}
-              >
-                Resend OTP
-              </motion.a>
-            </motion.p>
-          </Card>
-        </motion.div>
-      </Container>
+              Resend OTP
+            </motion.a>
+          </motion.p>
+        </div>
+      </motion.div>
     </div>
   );
 };
