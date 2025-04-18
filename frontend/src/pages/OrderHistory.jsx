@@ -1,5 +1,4 @@
 import React, { useState, useEffect } from 'react';
-import { Container, Card } from 'react-bootstrap';
 import { motion } from 'framer-motion';
 import axios from 'axios';
 import '../styles/OrderHistory.css';
@@ -36,40 +35,52 @@ const OrderHistory = () => {
   }
 
   return (
-    <Container className="order-history-container">
+    <div className="min-h-screen bg-gradient-to-br from-gray-50 to-gray-100 dark:from-gray-900 dark:to-gray-800 p-6">
       <motion.h2 
-        className="text-center mb-4"
+        className="text-3xl font-bold text-center mb-8 text-gray-800 dark:text-white"
         initial={{ opacity: 0, y: -20 }}
         animate={{ opacity: 1, y: 0 }}
       >
         Order History
       </motion.h2>
 
-      {orders.length === 0 ? (
-        <p className="text-center text-muted">No orders yet!</p>
-      ) : (
-        orders.map((order) => (
-          <motion.div
-            key={order._id}
-            initial={{ opacity: 0, x: -20 }}
-            animate={{ opacity: 1, x: 0 }}
-          >
-            <Card className="mb-3 order-card">
-              <Card.Body>
-                <Card.Title>Order #{order._id.slice(-6)}</Card.Title>
-                <Card.Text>
-                  Status: {order.status}
-                  <br />
-                  Total: ₹{order.totalAmount}
-                  <br />
-                  Date: {new Date(order.createdAt).toLocaleDateString()}
-                </Card.Text>
-              </Card.Body>
-            </Card>
-          </motion.div>
-        ))
-      )}
-    </Container>
+      <div className="max-w-3xl mx-auto">
+        {orders.length === 0 ? (
+          <p className="text-center text-gray-500 dark:text-gray-400">No orders yet!</p>
+        ) : (
+          <div className="space-y-4">
+            {orders.map((order) => (
+              <motion.div
+                key={order._id}
+                initial={{ opacity: 0, x: -20 }}
+                animate={{ opacity: 1, x: 0 }}
+                className="bg-white dark:bg-gray-800 rounded-xl shadow-lg overflow-hidden hover:shadow-xl transition-shadow duration-300"
+              >
+                <div className="p-6">
+                  <div className="flex justify-between items-center mb-4">
+                    <h3 className="text-lg font-semibold text-gray-800 dark:text-white">
+                      Order #{order._id.slice(-6)}
+                    </h3>
+                    <span className={`px-3 py-1 rounded-full text-sm font-medium ${
+                      order.status === "Completed" 
+                        ? "bg-green-100 text-green-800 dark:bg-green-900 dark:text-green-200"
+                        : "bg-yellow-100 text-yellow-800 dark:bg-yellow-900 dark:text-yellow-200"
+                    }`}>
+                      {order.status}
+                    </span>
+                  </div>
+                  
+                  <div className="flex justify-between text-gray-600 dark:text-gray-400">
+                    <span>₹{order.totalAmount}</span>
+                    <span>{new Date(order.createdAt).toLocaleDateString()}</span>
+                  </div>
+                </div>
+              </motion.div>
+            ))}
+          </div>
+        )}
+      </div>
+    </div>
   );
 };
 

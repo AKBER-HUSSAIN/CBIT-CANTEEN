@@ -1,9 +1,7 @@
 import React, { useState, useEffect } from "react";
-import { Container, Card, Form, Button } from "react-bootstrap";
 import { useNavigate } from "react-router-dom";
 import { motion } from "framer-motion";
 import API from "../services/api";
-import "../styles/Signup.css";
 
 const Signup = () => {
   const navigate = useNavigate();
@@ -63,165 +61,147 @@ const Signup = () => {
   };
 
   return (
-    <div className="signup-container">
-      <div className="background-animation"></div>
+    <div className="min-h-screen bg-gradient-to-br from-gray-50 to-gray-100 dark:from-gray-900 dark:to-gray-800 relative overflow-hidden">
+      <div className="absolute inset-0 z-0">
+        <div className="absolute inset-0 bg-grid-pattern opacity-5"></div>
+      </div>
 
-      {/* Dynamic Island Navigation */}
       <motion.div 
-        className={`dynamic-island ${darkMode ? 'dark' : 'light'}`}
+        className="fixed top-4 right-4 z-50 flex gap-4 bg-white/10 backdrop-blur-md rounded-full p-2"
         initial={{ y: -100 }}
         animate={{ y: 0 }}
         transition={{ type: "spring", stiffness: 100 }}
       >
         <motion.button
-          className="nav-item"
+          className="p-2 rounded-full hover:bg-white/20 text-gray-800 dark:text-white transition-colors"
           onClick={() => navigate('/')}
-          whileHover={{ scale: 1.05 }}
+          whileHover={{ scale: 1.1 }}
         >
-          <i className="fas fa-home"></i>
+          <i className="fas fa-home text-xl"></i>
         </motion.button>
         <motion.button
-          className="nav-item"
+          className="p-2 rounded-full hover:bg-white/20 text-gray-800 dark:text-white transition-colors"
           onClick={() => setDarkMode(!darkMode)}
-          whileHover={{ scale: 1.05 }}
+          whileHover={{ scale: 1.1 }}
         >
-          {darkMode ? <i className="fas fa-sun"></i> : <i className="fas fa-moon"></i>}
-        </motion.button>
-        <motion.button
-          className="nav-item"
-          onClick={() => navigate('/login')}
-          whileHover={{ scale: 1.05 }}
-        >
-          <i className="fas fa-sign-in-alt"></i>
+          {darkMode ? <i className="fas fa-sun text-xl"></i> : <i className="fas fa-moon text-xl"></i>}
         </motion.button>
       </motion.div>
 
-      <Container className="d-flex align-items-center justify-content-center vh-100">
+      <div className="relative z-10 min-h-screen flex items-center justify-center p-4">
         <motion.div
           initial={{ opacity: 0, y: 20 }}
           animate={{ opacity: 1, y: 0 }}
           transition={{ duration: 0.6 }}
+          className="w-full max-w-md"
         >
-          <Card
-            className={`p-4 shadow-lg signup-card ${darkMode ? "dark" : "light"}`}
-            style={{
-              borderRadius: "30px", // Rounded corners for dynamic island effect
-              boxShadow: "0 8px 20px rgba(0, 0, 0, 0.2)", // Floating shadow effect
-              background: darkMode ? "rgba(40, 40, 40, 0.9)" : "rgba(255, 255, 255, 0.9)", // Semi-transparent background
-              backdropFilter: "blur(10px)", // Blur effect for dynamic island
-              border: "1px solid rgba(255, 255, 255, 0.2)", // Subtle border for light mode
-            }}
-          >
+          <div className="bg-white/80 dark:bg-gray-800/80 backdrop-blur-lg rounded-2xl shadow-2xl p-8">
             <motion.h2 
-              className="text-center mb-4"
+              className="text-3xl font-bold text-center mb-2 bg-gradient-to-r from-blue-600 to-purple-600 bg-clip-text text-transparent"
               initial={{ opacity: 0 }}
               animate={{ opacity: 1 }}
-              transition={{ delay: 0.3 }}
             >
-              {step === 1 ? "Create Your Account" : "Verify Your Email"}
+              {step === 1 ? "Create Account" : "Verify Email"}
             </motion.h2>
 
             {step === 1 ? (
-              <Form onSubmit={handleSubmit} className="modern-form">
-                <Form.Group className="mb-3">
-                  <Form.Label>Full Name</Form.Label>
-                  <Form.Control
-                    type="text"
-                    placeholder="Enter your full name"
-                    name="name"
-                    value={formData.name}
-                    onChange={handleChange}
-                    required
-                  />
-                </Form.Group>
-
-                <Form.Group className="mb-3">
-                  <Form.Label>Email Address</Form.Label>
-                  <Form.Control
-                    type="email"
-                    placeholder="Enter your email"
-                    name="email"
-                    value={formData.email}
-                    onChange={handleChange}
-                    required
-                  />
-                </Form.Group>
-
-                <Form.Group className="mb-3">
-                  <Form.Label>Password</Form.Label>
-                  <Form.Control
-                    type="password"
-                    placeholder="Create a strong password"
-                    name="password"
-                    value={formData.password}
-                    onChange={handleChange}
-                    required
-                  />
-                  <Form.Text className="text-muted">
-                    Password must be at least 8 characters long.
-                  </Form.Text>
-                </Form.Group>
-
-                <Form.Group className="mb-3">
-                  <Form.Label>Role</Form.Label>
-                  <Form.Select
+              <form onSubmit={handleSubmit} className="space-y-6">
+                <div className="space-y-4">
+                  <div>
+                    <input
+                      type="text"
+                      name="name"
+                      placeholder="Full Name"
+                      value={formData.name}
+                      onChange={handleChange}
+                      className="w-full px-4 py-3 rounded-lg border border-gray-300 dark:border-gray-600 
+                               bg-white/50 dark:bg-gray-700/50 backdrop-blur-sm
+                               focus:ring-2 focus:ring-blue-500 focus:border-transparent
+                               transition-all duration-300"
+                      required
+                    />
+                  </div>
+                  <div>
+                    <input
+                      type="email"
+                      name="email"
+                      placeholder="Email Address"
+                      value={formData.email}
+                      onChange={handleChange}
+                      className="w-full px-4 py-3 rounded-lg border border-gray-300 dark:border-gray-600 
+                               bg-white/50 dark:bg-gray-700/50 backdrop-blur-sm
+                               focus:ring-2 focus:ring-blue-500 focus:border-transparent
+                               transition-all duration-300"
+                      required
+                    />
+                  </div>
+                  <div>
+                    <input
+                      type="password"
+                      name="password"
+                      placeholder="Password"
+                      value={formData.password}
+                      onChange={handleChange}
+                      className="w-full px-4 py-3 rounded-lg border border-gray-300 dark:border-gray-600 
+                               bg-white/50 dark:bg-gray-700/50 backdrop-blur-sm
+                               focus:ring-2 focus:ring-blue-500 focus:border-transparent
+                               transition-all duration-300"
+                      required
+                    />
+                  </div>
+                  <select
                     name="role"
                     value={formData.role}
                     onChange={handleChange}
+                    className="w-full px-4 py-3 rounded-lg border border-gray-300 dark:border-gray-600 
+                             bg-white/50 dark:bg-gray-700/50 backdrop-blur-sm
+                             focus:ring-2 focus:ring-blue-500 focus:border-transparent"
                     required
                   >
                     <option value="user">User</option>
                     <option value="chef">Chef</option>
-                  </Form.Select>
-                </Form.Group>
+                  </select>
+                </div>
 
-                <motion.div 
-                  className="form-submit-button"
+                <motion.button
+                  type="submit"
+                  className="w-full py-3 bg-gradient-to-r from-blue-500 to-purple-600 text-white rounded-lg
+                           shadow-lg hover:shadow-xl transform transition-all duration-300"
                   whileHover={{ scale: 1.02 }}
                   whileTap={{ scale: 0.98 }}
                 >
-                  <Button className="w-100 btn-modern" type="submit">
-                    Sign Up
-                  </Button>
-                </motion.div>
-              </Form>
+                  Sign Up
+                </motion.button>
+              </form>
             ) : (
-              <Form onSubmit={handleVerifyOTP}>
-                <Form.Group className="mb-3">
-                  <Form.Label>Enter OTP</Form.Label>
-                  <Form.Control
-                    type="text"
-                    placeholder="Enter the OTP sent to your email"
-                    value={otp}
-                    onChange={(e) => setOtp(e.target.value)}
-                    required
-                  />
-                </Form.Group>
-
-                <motion.div whileHover={{ scale: 1.05 }}>
-                  <Button className="w-100 btn-success" type="submit">
-                    Verify OTP
-                  </Button>
-                </motion.div>
-              </Form>
-            )}
-
-            {step === 1 && (
-              <motion.p 
-                className="text-center mt-4 login-link"
+              <motion.div
                 initial={{ opacity: 0 }}
                 animate={{ opacity: 1 }}
-                transition={{ delay: 0.5 }}
+                className="space-y-6"
               >
-                Already have an account?{" "}
-                <a href="/login" className="text-primary">
-                  Login
-                </a>
-              </motion.p>
+                <input
+                  type="text"
+                  placeholder="Enter OTP"
+                  value={otp}
+                  onChange={(e) => setOtp(e.target.value)}
+                  className="w-full px-4 py-3 text-center text-2xl tracking-widest rounded-lg 
+                           border border-gray-300 dark:border-gray-600 
+                           bg-white/50 dark:bg-gray-700/50 backdrop-blur-sm"
+                  required
+                />
+                <motion.button
+                  onClick={handleVerifyOTP}
+                  className="w-full py-3 bg-gradient-to-r from-green-500 to-green-600 text-white rounded-lg shadow-lg"
+                  whileHover={{ scale: 1.02 }}
+                  whileTap={{ scale: 0.98 }}
+                >
+                  Verify OTP
+                </motion.button>
+              </motion.div>
             )}
-          </Card>
+          </div>
         </motion.div>
-      </Container>
+      </div>
     </div>
   );
 };

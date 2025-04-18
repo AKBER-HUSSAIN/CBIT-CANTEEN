@@ -1,13 +1,12 @@
 import React, { useState, useEffect } from "react";
 import { motion } from "framer-motion";
-import { Card, Button, Badge, ListGroup } from "react-bootstrap";
 import axios from "axios";
 import { io } from "socket.io-client";
 import "../styles/ChefDashboardPage.css";
 
 const socket = io("http://localhost:3000"); // ✅ WebSocket Connection
 
-const ChefDashboardPage = () => {
+const ChefDashboard = () => {
   const [orders, setOrders] = useState([]);
   const token = localStorage.getItem("token"); // ✅ Get token from localStorage
 
@@ -70,13 +69,9 @@ const ChefDashboardPage = () => {
   };
 
   return (
-    <motion.div 
-      className="chef-dashboard"
-      initial={{ opacity: 0 }}
-      animate={{ opacity: 1 }}
-      transition={{ duration: 0.5 }}
-    >
+    <div className="min-h-screen bg-gradient-to-br from-gray-50 to-gray-100 dark:from-gray-900 dark:to-gray-800 p-6">
       <motion.h2
+        className="text-3xl font-bold text-center mb-8 text-gray-800 dark:text-white"
         initial={{ y: -20 }}
         animate={{ y: 0 }}
         transition={{ type: "spring", stiffness: 50 }}
@@ -86,7 +81,7 @@ const ChefDashboardPage = () => {
 
       {orders.length === 0 ? (
         <motion.p 
-          className="text-center text-muted"
+          className="text-center text-gray-500 dark:text-gray-400"
           initial={{ opacity: 0 }}
           animate={{ opacity: 1 }}
           transition={{ delay: 0.2 }}
@@ -94,66 +89,70 @@ const ChefDashboardPage = () => {
           No pending orders at the moment
         </motion.p>
       ) : (
-        <div className="order-list">
+        <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-6">
           {orders.map((order, index) => (
             <motion.div
-              className="order-card"
               key={order._id}
+              className="bg-white dark:bg-gray-800 rounded-xl shadow-lg hover:shadow-xl transition-shadow duration-300"
               initial={{ opacity: 0, y: 20 }}
               animate={{ opacity: 1, y: 0 }}
               transition={{ delay: index * 0.1 }}
             >
-              <Card className="order-card-style">
-                <Card.Body>
-                  <div className="order-info">
-                    <motion.div
-                      whileHover={{ scale: 1.02 }}
-                      transition={{ type: "spring", stiffness: 300 }}
+              <div className="p-6">
+                <motion.div
+                  whileHover={{ scale: 1.02 }}
+                  className="mb-4"
+                >
+                  <h3 className="text-xl font-semibold text-gray-800 dark:text-white">
+                    <span role="img" aria-label="receipt">📝</span> 
+                    Order #{order._id.slice(-5)}
+                  </h3>
+                </motion.div>
+
+                <ul className="space-y-2 mb-4">
+                  {order.items.map((item, idx) => (
+                    <li 
+                      key={idx}
+                      className="py-2 border-b border-gray-200 dark:border-gray-700 text-gray-700 dark:text-gray-300"
                     >
-                      <Card.Title>
-                        <span role="img" aria-label="receipt">📝</span> 
-                        Order #{order._id.slice(-5)}
-                      </Card.Title>
-                    </motion.div>
+                      <span role="img" aria-label="food" className="mr-2">🍽️</span>
+                      <strong>{item.itemId.name}</strong> × {item.quantity}
+                    </li>
+                  ))}
+                </ul>
 
-                    <ListGroup variant="flush">
-                      {order.items.map((item, idx) => (
-                        <ListGroup.Item key={idx}>
-                          <span role="img" aria-label="food">🍽️</span>
-                          <strong>{item.itemId.name}</strong> × {item.quantity}
-                        </ListGroup.Item>
-                      ))}
-                    </ListGroup>
+                <div className="flex justify-between items-center mb-4">
+                  <span className="text-gray-600 dark:text-gray-400">
+                    <span role="img" aria-label="money">💰</span>
+                    <strong>Total:</strong> ₹{order.totalAmount}
+                  </span>
+                  <span className={`px-3 py-1 rounded-full text-sm font-medium ${
+                    order.status === "Pending"
+                      ? "bg-yellow-100 text-yellow-800 dark:bg-yellow-900 dark:text-yellow-200"
+                      : "bg-green-100 text-green-800 dark:bg-green-900 dark:text-green-200"
+                  }`}>
+                    {order.status === "Pending" ? "🕒 Pending" : "✅ Completed"}
+                  </span>
+                </div>
 
-                    <Card.Text className="mt-2">
-                      <span role="img" aria-label="money">💰</span>
-                      <strong>Total:</strong> ₹{order.totalAmount}
-                    </Card.Text>
-
-                    <Badge bg={order.status === "Pending" ? "warning" : "success"}>
-                      {order.status === "Pending" ? "🕒 Pending" : "✅ Completed"}
-                    </Badge>
-
-                    {order.status === "Pending" && (
-                      <motion.div whileTap={{ scale: 0.95 }}>
-                        <Button 
-                          variant="primary" 
-                          onClick={() => handleMarkAsCompleted(order._id)}
-                          className="w-100"
-                        >
-                          Complete Order
-                        </Button>
-                      </motion.div>
-                    )}
-                  </div>
-                </Card.Body>
-              </Card>
+                {order.status === "Pending" && (
+                  <motion.button
+                    whileHover={{ scale: 1.02 }}
+                    whileTap={{ scale: 0.98 }}
+                    onClick={() => handleMarkAsCompleted(order._id)}
+                    className="w-full py-2 px-4 bg-gradient-to-r from-green-500 to-green-600 text-white rounded-lg 
+                             shadow-md hover:shadow-lg transition-all duration-300"
+                  >
+                    Complete Order
+                  </motion.button>
+                )}
+              </div>
             </motion.div>
           ))}
         </div>
       )}
-    </motion.div>
+    </div>
   );
 };
 
-export default ChefDashboardPage;
+export default ChefDashboard;

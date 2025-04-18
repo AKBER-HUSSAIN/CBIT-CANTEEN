@@ -1,9 +1,8 @@
 import React, { useState, useEffect } from "react";
-import { Button, Card, Container, Row, Col, Form } from "react-bootstrap";
-import axios from "axios";
-import { useNavigate } from "react-router-dom";
 import { motion } from "framer-motion";
 import { FaWallet, FaArrowUp, FaArrowDown } from "react-icons/fa";
+import axios from "axios";
+import { useNavigate } from "react-router-dom";
 
 const WalletPage = () => {
   const token = localStorage.getItem("token");
@@ -20,14 +19,15 @@ const WalletPage = () => {
       return;
     }
 
-    axios.get("http://localhost:3000/api/wallet/balance", {
-      headers: { Authorization: `Bearer ${token}` },
-    })
-    .then((response) => setBalance(response.data.balance))
-    .catch((err) => {
-      console.error("❌ Error fetching wallet balance:", err.message);
-      alert("Failed to fetch wallet balance. Please try again later.");
-    });
+    axios
+      .get("http://localhost:3000/api/wallet/balance", {
+        headers: { Authorization: `Bearer ${token}` },
+      })
+      .then((response) => setBalance(response.data.balance))
+      .catch((err) => {
+        console.error("❌ Error fetching wallet balance:", err.message);
+        alert("Failed to fetch wallet balance. Please try again later.");
+      });
   }, [token, navigate]);
 
   // Handle deposit logic
@@ -37,16 +37,21 @@ const WalletPage = () => {
       return;
     }
 
-    axios.post("http://localhost:3000/api/wallet/deposit", { amount: Number(depositAmount) }, {
-      headers: { Authorization: `Bearer ${token}` },
-    })
-    .then((response) => {
-      setBalance(response.data.wallet.balance);
-      setDepositAmount(""); // Clear the input field after deposit
-    })
-    .catch((err) => {
-      console.error("Error while depositing:", err);
-    });
+    axios
+      .post(
+        "http://localhost:3000/api/wallet/deposit",
+        { amount: Number(depositAmount) },
+        {
+          headers: { Authorization: `Bearer ${token}` },
+        }
+      )
+      .then((response) => {
+        setBalance(response.data.wallet.balance);
+        setDepositAmount(""); // Clear the input field after deposit
+      })
+      .catch((err) => {
+        console.error("Error while depositing:", err);
+      });
   };
 
   // Handle withdraw logic
@@ -61,105 +66,106 @@ const WalletPage = () => {
       return;
     }
 
-    axios.post("http://localhost:3000/api/wallet/withdraw", { amount: Number(withdrawAmount) }, {
-      headers: { Authorization: `Bearer ${token}` },
-    })
-    .then((response) => {
-      setBalance(response.data.wallet.balance);
-      setWithdrawAmount(""); // Clear the input field after withdrawal
-    })
-    .catch((err) => {
-      console.error("Error while withdrawing:", err);
-    });
+    axios
+      .post(
+        "http://localhost:3000/api/wallet/withdraw",
+        { amount: Number(withdrawAmount) },
+        {
+          headers: { Authorization: `Bearer ${token}` },
+        }
+      )
+      .then((response) => {
+        setBalance(response.data.wallet.balance);
+        setWithdrawAmount(""); // Clear the input field after withdrawal
+      })
+      .catch((err) => {
+        console.error("Error while withdrawing:", err);
+      });
   };
 
   return (
-    <Container className="mt-5">
-      <Row className="justify-content-center">
-        <Col md={6}>
-          <motion.div
-            initial={{ opacity: 0, y: 20 }}
-            animate={{ opacity: 1, y: 0 }}
-            transition={{ duration: 0.5 }}
-          >
-            <Card className="shadow-lg p-4 mb-4 rounded" style={{ background: 'linear-gradient(to bottom, #ffffff, #f8f9fa)' }}>
-              <Card.Body>
-                <div className="text-center mb-4">
-                  <motion.div
-                    whileHover={{ scale: 1.1 }}
-                    className="d-inline-block"
-                  >
-                    <FaWallet size={40} className="text-primary mb-3" />
-                  </motion.div>
-                  <h2 className="fw-bold text-primary mb-4" style={{ fontFamily: 'Inter, sans-serif' }}>My Wallet</h2>
-                </div>
+    <div className="min-h-screen bg-gradient-to-br from-gray-50 to-gray-100 dark:from-gray-900 dark:to-gray-800 p-6">
+      <div className="max-w-md mx-auto">
+        <motion.div
+          className="bg-white dark:bg-gray-800 rounded-xl shadow-lg overflow-hidden"
+          initial={{ opacity: 0, y: 20 }}
+          animate={{ opacity: 1, y: 0 }}
+        >
+          <div className="p-6">
+            <div className="text-center mb-8">
+              <motion.div whileHover={{ scale: 1.1 }} className="inline-block">
+                <FaWallet className="text-5xl text-blue-500 mb-4" />
+              </motion.div>
+              <h2 className="text-2xl font-bold text-gray-800 dark:text-white">
+                My Wallet
+              </h2>
+            </div>
 
-                <motion.div
+            <motion.div
+              className="bg-gradient-to-r from-blue-500 to-blue-600 rounded-lg p-6 mb-8"
+              whileHover={{ scale: 1.02 }}
+            >
+              <p className="text-white text-sm mb-1">Current Balance</p>
+              <h3 className="text-4xl font-bold text-white">₹{balance}</h3>
+            </motion.div>
+
+            <div className="space-y-6">
+              {/* Deposit Section */}
+              <div>
+                <label className="text-sm text-gray-600 dark:text-gray-400">
+                  Deposit Amount
+                </label>
+                <div className="mt-1 relative rounded-lg">
+                  <span className="absolute inset-y-0 left-0 pl-3 flex items-center text-gray-500">
+                    ₹
+                  </span>
+                  <input
+                    type="number"
+                    value={depositAmount}
+                    onChange={(e) => setDepositAmount(e.target.value)}
+                    className="w-full pl-8 pr-4 py-3 rounded-lg border border-gray-300 dark:border-gray-600 bg-white dark:bg-gray-700 text-gray-900 dark:text-white"
+                  />
+                </div>
+                <motion.button
+                  onClick={handleDeposit}
+                  className="w-full mt-2 py-3 bg-gradient-to-r from-green-500 to-green-600 text-white rounded-lg shadow-lg"
                   whileHover={{ scale: 1.02 }}
-                  className="bg-light p-4 rounded-lg mb-4 text-center"
-                  style={{ background: 'rgba(236, 240, 241, 0.6)' }}
+                  whileTap={{ scale: 0.98 }}
                 >
-                  <h3 className="text-dark mb-0" style={{ fontSize: '2.5rem' }}>₹{balance}</h3>
-                  <p className="text-muted">Current Balance</p>
-                </motion.div>
+                  <FaArrowUp className="inline mr-2" /> Deposit
+                </motion.button>
+              </div>
 
-                <div className="mb-4">
-                  <Form.Group controlId="depositAmount" className="mb-3">
-                    <Form.Label className="text-secondary">Deposit Amount</Form.Label>
-                    <div className="input-group">
-                      <span className="input-group-text">₹</span>
-                      <Form.Control
-                        type="number"
-                        placeholder="Enter amount"
-                        value={depositAmount}
-                        onChange={(e) => setDepositAmount(e.target.value)}
-                        className="border-0 shadow-sm"
-                      />
-                    </div>
-                  </Form.Group>
-                  <motion.div whileTap={{ scale: 0.95 }}>
-                    <Button 
-                      variant="primary" 
-                      onClick={handleDeposit} 
-                      className="w-100 py-2"
-                      style={{ background: '#4CAF50', border: 'none' }}
-                    >
-                      <FaArrowUp className="me-2" /> Deposit
-                    </Button>
-                  </motion.div>
+              {/* Withdraw Section */}
+              <div>
+                <label className="text-sm text-gray-600 dark:text-gray-400">
+                  Withdraw Amount
+                </label>
+                <div className="mt-1 relative rounded-lg">
+                  <span className="absolute inset-y-0 left-0 pl-3 flex items-center text-gray-500">
+                    ₹
+                  </span>
+                  <input
+                    type="number"
+                    value={withdrawAmount}
+                    onChange={(e) => setWithdrawAmount(e.target.value)}
+                    className="w-full pl-8 pr-4 py-3 rounded-lg border border-gray-300 dark:border-gray-600 bg-white dark:bg-gray-700 text-gray-900 dark:text-white"
+                  />
                 </div>
-
-                <div>
-                  <Form.Group controlId="withdrawAmount" className="mb-3">
-                    <Form.Label className="text-secondary">Withdraw Amount</Form.Label>
-                    <div className="input-group">
-                      <span className="input-group-text">₹</span>
-                      <Form.Control
-                        type="number"
-                        placeholder="Enter amount"
-                        value={withdrawAmount}
-                        onChange={(e) => setWithdrawAmount(e.target.value)}
-                        className="border-0 shadow-sm"
-                      />
-                    </div>
-                  </Form.Group>
-                  <motion.div whileTap={{ scale: 0.95 }}>
-                    <Button 
-                      variant="danger" 
-                      onClick={handleWithdraw} 
-                      className="w-100 py-2"
-                      style={{ background: '#ff6b6b', border: 'none' }}
-                    >
-                      <FaArrowDown className="me-2" /> Withdraw
-                    </Button>
-                  </motion.div>
-                </div>
-              </Card.Body>
-            </Card>
-          </motion.div>
-        </Col>
-      </Row>
-    </Container>
+                <motion.button
+                  onClick={handleWithdraw}
+                  className="w-full mt-2 py-3 bg-gradient-to-r from-red-500 to-red-600 text-white rounded-lg shadow-lg"
+                  whileHover={{ scale: 1.02 }}
+                  whileTap={{ scale: 0.98 }}
+                >
+                  <FaArrowDown className="inline mr-2" /> Withdraw
+                </motion.button>
+              </div>
+            </div>
+          </div>
+        </motion.div>
+      </div>
+    </div>
   );
 };
 

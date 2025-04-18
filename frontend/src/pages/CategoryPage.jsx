@@ -1,20 +1,18 @@
 import React, { useEffect, useState } from "react";
 import { useParams, useNavigate } from "react-router-dom";
 import { motion } from "framer-motion";
-import { Card, Button } from "react-bootstrap";
 import axios from "axios";
 import { getLocalStorageItem, setLocalStorageItem } from "../utils/localstorage";
-import "../styles/CategoryPage.css";
 
 const CategoryPage = () => {
   const { category } = useParams();
   const [foodItems, setFoodItems] = useState([]);
   const [cart, setCart] = useState({});
-  const [walletBalance, setWalletBalance] = useState(0);  // State for wallet balance
+  const [walletBalance, setWalletBalance] = useState(0);
   const navigate = useNavigate();
 
   useEffect(() => {
-    const token = getLocalStorageItem("token") || ""; // Use the utility function
+    const token = getLocalStorageItem("token") || "";
     const userId = getLocalStorageItem("userId") || "";
 
     if (!token || !userId) {
@@ -23,14 +21,12 @@ const CategoryPage = () => {
       return;
     }
 
-    // Fetch food items based on the category
     axios.get(`http://localhost:3000/api/menu/items?category=${category}`)
       .then((res) => {
         setFoodItems(res.data || []);
       })
       .catch((err) => console.error(`❌ Error fetching items for ${category}:`, err));
 
-    // Fetch Cart Data
     axios.get("http://localhost:3000/api/cart", {
       headers: { Authorization: `Bearer ${token}`, "Content-Type": "application/json" },
     })
@@ -48,7 +44,6 @@ const CategoryPage = () => {
       alert("Failed to load cart. Please try again later.");
     });
 
-    // Fetch Wallet Balance
     axios.get("http://localhost:3000/api/wallet/balance", {
       headers: { Authorization: `Bearer ${token}` },
     })
@@ -59,8 +54,8 @@ const CategoryPage = () => {
   }, [category, navigate]);
 
   const addToCart = (item) => {
-    const token = getLocalStorageItem("token") || ""; // Default to empty string
-    const userId = getLocalStorageItem("userId") || ""; // Default to empty string
+    const token = getLocalStorageItem("token") || "";
+    const userId = getLocalStorageItem("userId") || "";
 
     if (!token || !userId) {
       console.error("❌ No token/user found. Redirecting to login.");
@@ -75,7 +70,7 @@ const CategoryPage = () => {
     .then((res) => {
       setCart((prevCart) => ({
         ...prevCart,
-        [item._id]: (prevCart[item._id] || 0) + 1, // Update cart quantity
+        [item._id]: (prevCart[item._id] || 0) + 1,
       }));
     })
     .catch((err) => {
@@ -84,8 +79,8 @@ const CategoryPage = () => {
   };
 
   const removeFromCart = (item) => {
-    const token = getLocalStorageItem("token") || ""; // Default to empty string
-    const userId = getLocalStorageItem("userId") || ""; // Default to empty string
+    const token = getLocalStorageItem("token") || "";
+    const userId = getLocalStorageItem("userId") || "";
 
     if (!token || !userId) {
       console.error("❌ No token/user found. Redirecting to login.");
@@ -112,9 +107,9 @@ const CategoryPage = () => {
   };
 
   return (
-    <div className="category-page">
+    <div className="min-h-screen bg-gradient-to-br from-gray-50 to-gray-100 dark:from-gray-900 dark:to-gray-800 p-6">
       <motion.h2 
-        className="category-title"
+        className="text-3xl font-bold text-center mb-8 text-gray-800 dark:text-white"
         initial={{ opacity: 0, y: -20 }}
         animate={{ opacity: 1, y: 0 }}
         transition={{ duration: 0.6 }}
@@ -122,49 +117,59 @@ const CategoryPage = () => {
         {category} Items
       </motion.h2>
 
-      <div className="action-buttons">
-        <Button className="cart-button" onClick={() => navigate("/cart")}>
-          <i className="fas fa-shopping-cart"></i> View Cart
-        </Button>
-        <Button className="wallet-button" onClick={() => navigate("/wallet")}>
-          <i className="fas fa-wallet"></i> ₹{walletBalance}
-        </Button>
+      <div className="flex justify-between items-center mb-8 max-w-6xl mx-auto">
+        <button 
+          onClick={() => navigate("/cart")}
+          className="flex items-center px-6 py-3 bg-gradient-to-r from-orange-500 to-orange-600 text-white rounded-lg shadow-lg hover:shadow-xl transition-all duration-300"
+        >
+          <i className="fas fa-shopping-cart mr-2"></i> View Cart
+        </button>
+        <button 
+          onClick={() => navigate("/wallet")}
+          className="flex items-center px-6 py-3 bg-gradient-to-r from-green-500 to-green-600 text-white rounded-lg shadow-lg hover:shadow-xl transition-all duration-300"
+        >
+          <i className="fas fa-wallet mr-2"></i> ₹{walletBalance}
+        </button>
       </div>
 
-      <div className="food-items-container">
+      <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-6 max-w-6xl mx-auto">
         {foodItems.map((item) => (
           <motion.div
             key={item._id}
             initial={{ opacity: 0, y: 20 }}
             animate={{ opacity: 1, y: 0 }}
-            whileHover={{ scale: 1.02 }}
+            whileHover={{ y: -5 }}
             transition={{ duration: 0.4 }}
           >
-            <Card className="food-item-card">
-              <Card.Body>
-                <Card.Title className="item-title">{item.name}</Card.Title>
-                <Card.Text className="item-price">₹{item.price}</Card.Text>
-                <div className="food-item-actions">
+            <div className="bg-white dark:bg-gray-800 rounded-xl shadow-lg overflow-hidden hover:shadow-2xl transition-shadow duration-300">
+              <div className="p-6">
+                <h3 className="text-xl font-semibold mb-2 text-gray-800 dark:text-white">{item.name}</h3>
+                <p className="text-2xl font-bold text-orange-500 dark:text-orange-400 mb-4">₹{item.price}</p>
+                <div className="flex justify-end">
                   {!cart[item._id] ? (
-                    <Button
-                      variant="primary"
-                      className="add-btn"
+                    <button
                       onClick={() => addToCart(item)}
+                      className="px-4 py-2 bg-gradient-to-r from-orange-500 to-orange-600 text-white rounded-lg 
+                               transform transition-all duration-300 hover:scale-105 hover:shadow-lg
+                               flex items-center space-x-2"
                     >
-                      <i className="fas fa-plus"></i> Add to Cart
-                    </Button>
+                      <i className="fas fa-plus"></i>
+                      <span>Add to Cart</span>
+                    </button>
                   ) : (
-                    <Button 
-                      variant="danger"
-                      className="remove-btn"
+                    <button
                       onClick={() => removeFromCart(item)}
+                      className="px-4 py-2 bg-gradient-to-r from-red-500 to-red-600 text-white rounded-lg 
+                               transform transition-all duration-300 hover:scale-105 hover:shadow-lg
+                               flex items-center space-x-2"
                     >
-                      <i className="fas fa-minus"></i> Remove
-                    </Button>
+                      <i className="fas fa-minus"></i>
+                      <span>Remove</span>
+                    </button>
                   )}
                 </div>
-              </Card.Body>
-            </Card>
+              </div>
+            </div>
           </motion.div>
         ))}
       </div>
