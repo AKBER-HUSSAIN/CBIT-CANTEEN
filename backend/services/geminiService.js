@@ -43,4 +43,50 @@ Use bullet points, and don't include any descriptions.
     }
 };
 
-module.exports = { getGeminiRecommendations };
+const predictChefOrders = async (pastOrders, timeSlot, day) => {
+    const prompt = `
+You are a helpful canteen assistant.
+
+Based on these past food orders:
+${JSON.stringify(pastOrders, null, 2)}
+
+Predict the food items most likely to be ordered on "${day}" during "${timeSlot}".
+
+Respond strictly in valid JSON format without any additional text, comments, or formatting:
+[
+  { "item": "Dosa", "predictedQuantity": 15 },
+  { "item": "Idli", "predictedQuantity": 10 }
+]
+`;
+
+    try {
+        const response = await axios.post(
+            GEMINI_ENDPOINT,
+            {
+                contents: [
+                    {
+                        role: "user",
+                        parts: [{ text: prompt }],
+                    },
+                ],
+            },
+            {
+                headers: {
+                    "Content-Type": "application/json",
+                },
+            }
+        );
+
+        const rawText = response.data.candidates?.[0]?.content?.parts?.[0]?.text || "";
+
+        // Sanitize the response to ensure valid JSON
+        const sanitizedText = rawText.trim().replace(/```json|```/g, "");
+
+        return JSON.parse(sanitizedText);
+    } catch (error) {
+        console.error("Gemini AI Error:", error?.response?.data || error.message);
+        return [];
+    }
+};
+
+module.exports = { getGeminiRecommendations, predictChefOrders };
