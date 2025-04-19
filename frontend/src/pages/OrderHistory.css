@@ -1,111 +1,50 @@
-.order-history-container {
-  max-width: 800px;
-  padding: 2rem;
-}
+/* Removed static CSS styles. Use the following Tailwind classes in your JSX: */
 
-.main-title, .section-title {
-  color: #2c3e50;
-  font-family: 'Segoe UI', system-ui, sans-serif;
-  display: flex;
-  align-items: center;
-  gap: 0.5rem;
-}
+/* Container */
+<div className="max-w-4xl mx-auto p-6 bg-gradient-to-br from-gray-50 via-gray-100 to-gray-200 dark:from-gray-900 dark:via-gray-800 dark:to-gray-700 rounded-lg shadow-lg">
 
-.title-icon, .section-icon {
-  color: #3498db;
-}
+/* Titles */
+<h1 className="text-3xl font-bold text-gray-800 dark:text-white flex items-center gap-2">
+  <span className="text-blue-500">/* Icon */</span> Order History
+</h1>
 
-.order-card, .transaction-card {
-  border: none;
-  border-radius: 12px;
-  box-shadow: 0 2px 12px rgba(0, 0, 0, 0.1);
-  transition: transform 0.2s ease, box-shadow 0.2s ease;
-  background-color: #fff;
-}
+/* Cards */
+<div className="bg-white dark:bg-gray-800 rounded-lg shadow-md p-4 hover:shadow-lg transition-transform transform hover:-translate-y-1">
 
-.order-card:hover, .transaction-card:hover {
-  transform: translateY(-2px);
-  box-shadow: 0 4px 15px rgba(0, 0, 0, 0.15);
-}
+/* Order ID */
+<p className="text-lg font-semibold text-gray-700 dark:text-gray-300">Order ID: #12345</p>
 
-.order-id, .transaction-id {
-  color: #34495e;
-  font-size: 1.1rem;
-  font-weight: 600;
-}
+/* Total Amount */
+<p className="text-xl font-bold text-green-500">₹500</p>
 
-.total-amount {
-  color: #2ecc71;
-  font-size: 1.2rem;
-  font-weight: 600;
-}
+/* Items List */
+<ul className="divide-y divide-gray-200 dark:divide-gray-700">
+  <li className="flex justify-between py-2 text-gray-600 dark:text-gray-400">
+    <span>Item Name</span>
+    <span>₹100</span>
+  </li>
+</ul>
 
-.items-list {
-  border: none;
-}
+/* Transaction Details */
+<div className="flex flex-wrap gap-4 items-center mt-4">
+  <span className="px-3 py-1 rounded-full text-sm font-medium bg-green-100 text-green-800 dark:bg-green-900 dark:text-green-200">
+    Credit
+  </span>
+  <span className="text-gray-600 dark:text-gray-400 text-sm flex items-center gap-1">
+    <span>📅</span> 2023-10-01
+  </span>
+</div>
 
-.item-entry {
-  display: flex;
-  justify-content: space-between;
-  border: none;
-  padding: 0.5rem 0;
-  color: #576574;
-}
+/* No Data Message */
+<div className="text-center text-gray-500 dark:text-gray-400 p-6 bg-gray-100 dark:bg-gray-800 rounded-lg">
+  No orders found.
+</div>
 
-.transaction-details {
-  display: flex;
-  flex-wrap: wrap;
-  gap: 1rem;
-  align-items: center;
-  margin-top: 0.5rem;
-}
-
-.transaction-type {
-  padding: 0.25rem 0.75rem;
-  border-radius: 20px;
-  font-size: 0.9rem;
-  font-weight: 500;
-}
-
-.transaction-type.credit {
-  background-color: #e8f5e9;
-  color: #2e7d32;
-}
-
-.transaction-type.debit {
-  background-color: #ffebee;
-  color: #c62828;
-}
-
-.transaction-amount {
-  font-weight: 600;
-  color: #2c3e50;
-}
-
-.transaction-date {
-  color: #7f8c8d;
-  font-size: 0.9rem;
-  display: flex;
-  align-items: center;
-  gap: 0.3rem;
-}
-
-.no-data-message {
-  color: #95a5a6;
-  text-align: center;
-  padding: 2rem;
-  background-color: #f8f9fa;
-  border-radius: 8px;
-}
-
+/* Responsive Adjustments */
 @media (max-width: 576px) {
-  .order-history-container {
-    padding: 1rem;
-  }
-  
   .transaction-details {
     flex-direction: column;
-    align-items: flex-start;
+    align-items: center;
     gap: 0.5rem;
   }
 }

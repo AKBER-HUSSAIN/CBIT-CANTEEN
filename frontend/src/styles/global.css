@@ -1,26 +1,59 @@
-body {
-    background-color: #f5e1c2; /* Cream */
-    color: #4a3f35; /* Dark Brown */
-    font-family: "Poppins", sans-serif;
+/* Tailwind Directives */
+@tailwind base;
+@tailwind components;
+@tailwind utilities;
+
+/* CSS Variables */
+:root {
+  --primary: #4A90E2;
+  --secondary: #F8C3AF;
+  --background: #FAFAFA;
+  --text: #2D3436;
+  --neutral-100: #F5F5F5;
+  --neutral-200: #EAEAEA;
+  --neutral-300: #E1E1E1;
+  --accent: #FFB6B6;
+}
+
+/* Base Layer */
+@layer base {
+  body {
+    @apply font-sans bg-[#f5e1c2] text-[#4a3f35];
   }
-  
+
+  h1, h2, h3, h4, h5, h6 {
+    font-family: 'Poppins', sans-serif;
+    font-weight: 600;
+  }
+}
+
+/* Component Layer */
+@layer components {
   .btn-primary {
-    background-color: #8d6e63 !important; /* Light Brown */
-    border-color: #6d4c41 !important; /* Dark Brown */
+    @apply bg-blue-500 text-white font-semibold py-2 px-4 rounded-lg shadow-md hover:bg-blue-600 transition-all;
   }
-  /* Dark Mode Styles */
+
+  .card {
+    @apply bg-white rounded-lg shadow-lg p-6 transition-all;
+  }
+
+  .card:hover {
+    @apply transform scale-105 shadow-xl;
+  }
+}
+
+/* Dark Mode Styles */
 .dark-mode {
-  background-color: #2c2c2c; /* Dark Grey */
-  color: #e0e0e0; /* Light Grey */
+  @apply bg-[#2c2c2c] text-[#e0e0e0];
 }
 
 .dark-mode .btn-primary {
-  background-color: #4a3f35 !important; /* Dark Brown */
-  border-color: #3e2f25 !important; /* Darker Brown */
+  background-color: #4a3f35;
+  border-color: #3e2f25;
 }
 
 .dark-mode .btn-primary:hover {
-  background-color: #3e2f25 !important; /* Darker Hover */
+  background-color: #3e2f25;
 }
 
 .dark-mode .card {
@@ -30,21 +63,5 @@ body {
 }
 
 .dark-mode .card:hover {
-  transform: scale(1.05);
   box-shadow: 0px 4px 20px rgba(255, 255, 255, 0.3);
 }
-
-  
-  .btn-primary:hover {
-    background-color: #6d4c41 !important; /* Dark Brown Hover */
-  }
-  
-  .card {
-    transition: all 0.3s ease-in-out;
-  }
-  
-  .card:hover {
-    transform: scale(1.05);
-    box-shadow: 0px 4px 15px rgba(0, 0, 0, 0.2);
-  }
-  
