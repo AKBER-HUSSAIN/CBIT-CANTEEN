@@ -107,9 +107,9 @@ const CategoryPage = () => {
   };
 
   return (
-    <div className="min-h-screen bg-gradient-to-br from-gray-50 to-gray-100 dark:from-gray-900 dark:to-gray-800 p-6">
+    <div className="min-h-screen bg-gradient-to-br from-orange-50 to-orange-100 dark:from-gray-900 dark:to-gray-800 p-6">
       <motion.h2 
-        className="text-3xl font-bold text-center mb-8 text-gray-800 dark:text-white"
+        className="text-4xl font-bold text-center mb-8 bg-gradient-to-r from-orange-600 to-red-600 bg-clip-text text-transparent"
         initial={{ opacity: 0, y: -20 }}
         animate={{ opacity: 1, y: 0 }}
         transition={{ duration: 0.6 }}
@@ -120,13 +120,13 @@ const CategoryPage = () => {
       <div className="flex justify-between items-center mb-8 max-w-6xl mx-auto">
         <button 
           onClick={() => navigate("/cart")}
-          className="flex items-center px-6 py-3 bg-gradient-to-r from-orange-500 to-orange-600 text-white rounded-lg shadow-lg hover:shadow-xl transition-all duration-300"
+          className="flex items-center px-6 py-3 bg-gradient-to-r from-orange-500 to-orange-600 text-white rounded-lg shadow-lg hover:shadow-xl transform hover:scale-105 transition-all duration-300"
         >
           <i className="fas fa-shopping-cart mr-2"></i> View Cart
         </button>
         <button 
           onClick={() => navigate("/wallet")}
-          className="flex items-center px-6 py-3 bg-gradient-to-r from-green-500 to-green-600 text-white rounded-lg shadow-lg hover:shadow-xl transition-all duration-300"
+          className="flex items-center px-6 py-3 bg-gradient-to-r from-green-500 to-green-600 text-white rounded-lg shadow-lg hover:shadow-xl transform hover:scale-105 transition-all duration-300"
         >
           <i className="fas fa-wallet mr-2"></i> ₹{walletBalance}
         </button>
