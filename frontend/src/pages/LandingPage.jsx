@@ -59,77 +59,268 @@ const Navbar = () => {
   const navigate = useNavigate();
 
   return (
-    <div className="landing-container relative bg-gradient-to-br from-gray-900 via-gray-800 to-black min-h-screen flex flex-col items-center justify-center text-white overflow-hidden">
-      {/* Rotating Gradient Background */}
-      <div className="absolute inset-0 bg-gradient-to-r from-purple-500 via-indigo-500 to-blue-500 opacity-20 animate-spin-slow"></div>
-
-      {/* Glowing Blobs */}
-      <motion.div
-        className="absolute top-10 left-10 w-40 h-40 bg-gradient-to-br from-teal-400 to-green-500 rounded-full opacity-50 blur-2xl"
-        animate={{ scale: [1, 1.2, 1], opacity: [0.5, 0.8, 0.5] }}
-        transition={{ duration: 4, repeat: Infinity, ease: "easeInOut" }}
-      ></motion.div>
-      <motion.div
-        className="absolute bottom-20 right-20 w-56 h-56 bg-gradient-to-br from-yellow-400 to-orange-500 rounded-full opacity-50 blur-3xl"
-        animate={{ scale: [1, 1.3, 1], opacity: [0.4, 0.7, 0.4] }}
-        transition={{ duration: 6, repeat: Infinity, ease: "easeInOut" }}
-      ></motion.div>
-
-      {/* Pulsating Elements */}
-      <motion.div
-        className="absolute top-1/3 left-1/2 w-64 h-64 bg-gradient-to-br from-indigo-400 to-purple-600 rounded-full opacity-40 blur-2xl"
-        animate={{ y: [0, 30, 0], rotate: [0, 45, 0] }}
-        transition={{ duration: 8, repeat: Infinity, ease: "easeInOut" }}
-      ></motion.div>
-      <motion.div
-        className="absolute top-1/4 right-1/3 w-72 h-72 bg-gradient-to-br from-pink-500 to-red-500 rounded-full opacity-30 blur-3xl"
-        animate={{ x: [0, -40, 0], y: [0, 20, 0] }}
-        transition={{ duration: 10, repeat: Infinity, ease: "easeInOut" }}
-      ></motion.div>
-
-      {/* Main Content */}
-      <motion.div
-        className="relative z-10 p-10 bg-white/10 backdrop-blur-lg rounded-3xl shadow-2xl"
-        initial={{ opacity: 0, scale: 0.9 }}
-        animate={{ opacity: 1, scale: 1 }}
-        transition={{ duration: 0.8, ease: "easeOut" }}
-      >
-        <motion.h1
-          className="text-6xl font-extrabold mb-6 bg-gradient-to-r from-teal-400 via-green-400 to-lime-500 bg-clip-text text-transparent"
-          initial={{ opacity: 0, y: -30 }}
-          animate={{ opacity: 1, y: 0 }}
-          transition={{ duration: 0.8, ease: "easeOut" }}
+    <motion.nav
+      className="flex justify-between items-center px-6 py-4 bg-indigo-600 text-white sticky top-0 z-50"
+      initial={{ opacity: 0 }}
+      animate={{ opacity: 1 }}
+      transition={{ duration: 1 }}
+    >
+      <Link to="/" className="text-3xl font-bold">
+        CBIT Canteen
+      </Link>
+      <div className="hidden md:flex space-x-8">
+        <a href="#about" className="hover:underline">About</a>
+        <a href="#features" className="hover:underline">Features</a>
+        <a href="#how-it-works" className="hover:underline">How It Works</a>
+        <a href="#testimonials" className="hover:underline">Testimonials</a>
+        <a href="#cta" className="hover:underline">Call to Action</a>
+      </div>
+      <div className="flex space-x-4">
+        <button
+          onClick={() => navigate('/login')}
+          className="bg-white text-indigo-600 px-4 py-2 rounded-full hover:bg-gray-200"
         >
-          Welcome to CBIT Canteen
-        </motion.h1>
-        <motion.p
-          className="text-xl mb-8 text-gray-300"
-          initial={{ opacity: 0 }}
-          animate={{ opacity: 1 }}
-          transition={{ delay: 0.2, duration: 0.6 }}
+          Login
+        </button>
+        <button
+          onClick={() => navigate('/signup')}
+          className="bg-white text-indigo-600 px-4 py-2 rounded-full hover:bg-gray-200"
         >
-          Quick & Easy Food Booking
-        </motion.p>
+          Signup
+        </button>
+      </div>
+    </motion.nav>
+  );
+};
+
+const FeaturesSection = () => {
+  return (
+    <section id="features" className="py-20">
+      <h2 className="text-3xl font-bold text-center mb-10">Our Features</h2>
+      <div className="grid grid-cols-1 md:grid-cols-3 gap-8">
         <motion.div
-          className="flex space-x-6"
+          className="p-6 border rounded-lg shadow-md hover:shadow-xl transform hover:scale-105"
           initial={{ opacity: 0 }}
           animate={{ opacity: 1 }}
-          transition={{ delay: 0.4, duration: 0.6 }}
+          transition={{ delay: 0.3, duration: 1 }}
         >
-          <Link
-            to="/login"
-            className="px-8 py-4 bg-gradient-to-r from-cyan-500 via-blue-500 to-indigo-500 text-white font-semibold rounded-full shadow-lg hover:scale-110 transform transition-all duration-300"
-          >
-            Start Ordering
-          </Link>
-          <Link
-            to="/signup"
-            className="px-8 py-4 bg-gradient-to-r from-pink-500 via-red-500 to-orange-500 text-white font-semibold rounded-full shadow-lg hover:scale-110 transform transition-all duration-300"
-          >
-            Create Account
-          </Link>
+          <h3 className="text-xl font-bold">AI-Powered Recommendations</h3>
+          <p>Get personalized food recommendations based on your preferences and past orders.</p>
         </motion.div>
-      </motion.div>
+        <motion.div
+          className="p-6 border rounded-lg shadow-md hover:shadow-xl transform hover:scale-105"
+          initial={{ opacity: 0 }}
+          animate={{ opacity: 1 }}
+          transition={{ delay: 0.5, duration: 1 }}
+        >
+          <h3 className="text-xl font-bold">Real-Time Order Tracking</h3>
+          <p>Track your orders in real-time and know exactly when your food is ready for pickup or delivery.</p>
+        </motion.div>
+        <motion.div
+          className="p-6 border rounded-lg shadow-md hover:shadow-xl transform hover:scale-105"
+          initial={{ opacity: 0 }}
+          animate={{ opacity: 1 }}
+          transition={{ delay: 0.7, duration: 1 }}
+        >
+          <h3 className="text-xl font-bold">Wallet System</h3>
+          <p>Use the wallet system for seamless payments and rewards.</p>
+        </motion.div>
+      </div>
+    </section>
+  );
+};
+
+const HowItWorksSection = () => {
+  return (
+    <section id="how-it-works" className="py-20 bg-gray-100">
+      <h2 className="text-3xl font-bold text-center mb-10">How It Works</h2>
+      <div className="max-w-4xl mx-auto">
+        <ol className="space-y-6">
+          <motion.li
+            className="flex items-center space-x-4"
+            initial={{ opacity: 0 }}
+            animate={{ opacity: 1 }}
+            transition={{ delay: 0.3, duration: 1 }}
+          >
+            <div className="text-2xl font-semibold">1</div>
+            <p>Sign up or log in to your account.</p>
+          </motion.li>
+          <motion.li
+            className="flex items-center space-x-4"
+            initial={{ opacity: 0 }}
+            animate={{ opacity: 1 }}
+            transition={{ delay: 0.5, duration: 1 }}
+          >
+            <div className="text-2xl font-semibold">2</div>
+            <p>Explore the menu and choose your meals.</p>
+          </motion.li>
+          <motion.li
+            className="flex items-center space-x-4"
+            initial={{ opacity: 0 }}
+            animate={{ opacity: 1 }}
+            transition={{ delay: 0.7, duration: 1 }}
+          >
+            <div className="text-2xl font-semibold">3</div>
+            <p>Pay securely and track your order in real-time.</p>
+          </motion.li>
+        </ol>
+      </div>
+    </section>
+  );
+};
+
+const TestimonialsSection = () => {
+  return (
+    <section id="testimonials" className="py-20 bg-white">
+      <h2 className="text-3xl font-bold text-center mb-10">What Our Users Say</h2>
+      <div className="max-w-4xl mx-auto grid grid-cols-1 md:grid-cols-2 gap-8">
+        <motion.div
+          className="p-6 border rounded-lg shadow-md hover:shadow-xl"
+          initial={{ opacity: 0 }}
+          animate={{ opacity: 1 }}
+          transition={{ delay: 0.3, duration: 1 }}
+        >
+          <p>"The CBIT Canteen app made ordering food so much easier! The AI recommendations are spot on, and I love tracking my orders in real-time!"</p>
+          <div className="flex items-center space-x-2 mt-4">
+            <div className="flex space-x-1">
+              <span className="text-yellow-500">⭐</span>
+              <span className="text-yellow-500">⭐</span>
+              <span className="text-yellow-500">⭐</span>
+              <span className="text-yellow-500">⭐</span>
+              <span className="text-gray-300">⭐</span>
+            </div>
+            <span>John Doe</span>
+          </div>
+        </motion.div>
+        <motion.div
+          className="p-6 border rounded-lg shadow-md hover:shadow-xl"
+          initial={{ opacity: 0 }}
+          animate={{ opacity: 1 }}
+          transition={{ delay: 0.5, duration: 1 }}
+        >
+          <p>"Fast and reliable service! The wallet system is a great touch for easy payments and rewards."</p>
+          <div className="flex items-center space-x-2 mt-4">
+            <div className="flex space-x-1">
+              <span className="text-yellow-500">⭐</span>
+              <span className="text-yellow-500">⭐</span>
+              <span className="text-yellow-500">⭐</span>
+              <span className="text-yellow-500">⭐</span>
+              <span className="text-gray-300">⭐</span>
+            </div>
+            <span>Jane Smith</span>
+          </div>
+        </motion.div>
+      </div>
+    </section>
+  );
+};
+
+const AboutSection = () => {
+  return (
+    <section id="about" className="py-20 bg-gray-100">
+      <h2 className="text-3xl font-bold text-center mb-10">About Us</h2>
+      <div className="max-w-4xl mx-auto text-center">
+        <p className="text-lg text-gray-600 dark:text-gray-400">
+          CBIT Canteen is your one-stop solution for seamless food ordering and management. 
+          With AI-powered recommendations, real-time order tracking, and a secure wallet system, 
+          we aim to provide a hassle-free dining experience for students and staff alike.
+        </p>
+      </div>
+    </section>
+  );
+};
+
+const CTASection = () => {
+  const navigate = useNavigate();
+
+  return (
+    <section id="cta" className="py-20 bg-gradient-to-br from-indigo-600 to-purple-700 text-white relative z-10">
+      <h2 className="text-3xl font-bold text-center mb-6">Get Started Today</h2>
+      <p className="text-center mb-6">Join the CBIT Canteen revolution and experience effortless food ordering like never before.</p>
+      <div className="flex justify-center space-x-4">
+        <button
+          onClick={() => navigate('/signup')}
+          className="px-8 py-4 bg-white text-indigo-600 rounded-full"
+        >
+          Get Started
+        </button>
+        <a href="#about" className="px-8 py-4 bg-transparent border-2 border-white text-white rounded-full hover:bg-white hover:text-indigo-600">
+          Learn More
+        </a>
+      </div>
+    </section>
+  );
+};
+
+const Footer = () => {
+  return (
+    <footer className="py-6 bg-gray-800 text-white relative z-10">
+      <div className="container mx-auto text-center">
+        <p>&copy; 2025 CBIT Canteen</p>
+        <div className="space-x-6 mt-4">
+          <a href="https://facebook.com" target="_blank" rel="noopener noreferrer" className="hover:text-blue-500">
+            Facebook
+          </a>
+          <a href="https://twitter.com" target="_blank" rel="noopener noreferrer" className="hover:text-blue-400">
+            Twitter
+          </a>
+          <a href="https://instagram.com" target="_blank" rel="noopener noreferrer" className="hover:text-pink-500">
+            Instagram
+          </a>
+        </div>
+      </div>
+    </footer>
+  );
+};
+
+const LandingPage = () => {
+  return (
+    <div className="relative">
+      <ParticleBackground />
+      <CanteenLogo />
+      <Navbar />
+      <main className="relative z-10">
+        <section className="min-h-screen flex flex-col items-center justify-center bg-gradient-to-br from-pink-100 via-purple-100 to-indigo-100 dark:from-gray-900 dark:via-gray-800 dark:to-gray-900 transition-colors duration-1000">
+          <motion.h1
+            className="text-5xl md:text-6xl font-bold text-gray-800 dark:text-white mb-6"
+            initial={{ opacity: 0, y: -50 }}
+            animate={{ opacity: 1, y: 0 }}
+            transition={{ duration: 1 }}
+          >
+            Welcome to CBIT Canteen 🍱
+          </motion.h1>
+          <motion.p
+            className="text-lg md:text-xl text-gray-600 dark:text-gray-300 max-w-xl mb-8"
+            initial={{ opacity: 0, y: 50 }}
+            animate={{ opacity: 1, y: 0 }}
+            transition={{ duration: 1, delay: 0.5 }}
+          >
+            Experience seamless food ordering, real-time updates, and AI-powered recommendations at your fingertips.
+          </motion.p>
+          <motion.div
+            className="flex space-x-4"
+            initial={{ opacity: 0 }}
+            animate={{ opacity: 1 }}
+            transition={{ duration: 1, delay: 1 }}
+          >
+            <button
+              onClick={() => navigate('/signup')}
+              className="bg-indigo-600 hover:bg-indigo-700 text-white px-6 py-3 rounded-full"
+            >
+              Get Started
+            </button>
+            <a href="#about" className="bg-transparent border-2 border-indigo-600 hover:bg-indigo-600 text-indigo-600 hover:text-white px-6 py-3 rounded-full">
+              Learn More
+            </a>
+          </motion.div>
+        </section>
+        <FeaturesSection />
+        <HowItWorksSection />
+        <TestimonialsSection />
+        <AboutSection />
+        <CTASection />
+      </main>
+      <Footer />
     </div>
   );
 };
