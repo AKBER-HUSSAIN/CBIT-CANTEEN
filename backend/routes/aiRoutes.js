@@ -2,7 +2,7 @@
 const express = require("express");
 const router = express.Router();
 const Order = require("../models/OrderModel");
-const { getGeminiRecommendations, predictChefOrders } = require("../services/geminiService");
+const { getGeminiRecommendations, predictChefOrders, generatePersonalizedMealRecommendation } = require("../services/geminiService");
 const authenticateToken = require("../middleware/authMiddleware");
 
 router.get("/recommendations", authenticateToken, async (req, res) => {
@@ -56,6 +56,7 @@ router.post("/predict-orders", async (req, res) => {
 
         const { timeSlot, day } = req.body;
         console.log("Time Slot:", timeSlot, "Day:", day);
+        console.log("Past Orders:", pastOrders);
         // Send prompt to generative AI
         const prediction = await predictChefOrders(pastOrders, timeSlot, day);
 
@@ -65,5 +66,25 @@ router.post("/predict-orders", async (req, res) => {
         res.status(500).json({ success: false, message: "Prediction failed" });
     }
 });
+
+
+router.post("/personalized", authenticateToken, async (req, res) => {
+    try {
+        const { mealType, spicyLevel, calories, minBudget, maxBudget } = req.body;
+
+        if (!mealType || !spicyLevel || !calories || minBudget === undefined || maxBudget === undefined) {
+            return res.status(400).json({ error: "All preference fields are required" });
+        }
+
+        const preferences = { mealType, spicyLevel, calories, minBudget, maxBudget };
+        const recommendations = await generatePersonalizedMealRecommendation(preferences);
+
+        res.status(200).json({ recommendations });
+    } catch (error) {
+        console.error("Personalized Recommendation Error:", error.message);
+        res.status(500).json({ error: "Failed to generate recommendations" });
+    }
+});
+
 
 module.exports = router;
