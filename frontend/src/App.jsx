@@ -21,6 +21,7 @@ import OTPVerification from "./pages/OTPVerification";  // Import OTPVerificatio
 import WalletPage from "./pages/WalletPage";  // Import WalletPage
 import OrderPage from "./pages/OrderPage";  // Import OrderPage
 import OrderHistory from "./pages/OrderHistory";  // Import OrderHistory
+import AddFoodItemPage from './pages/AddFoodItemPage';  // Import the Add Food Item Page
 // **CSS and Styling**
 // Import your main CSS (if needed)
 
@@ -46,7 +47,7 @@ const App = () => {
 
             {/* Route for Chef Dashboard */}
             <Route path="/chef-dashboard" element={<ChefDashboard />} /> {/* ChefDashboard route */}
-
+            <Route path="/add-food-item" element={<AddFoodItemPage />} /> {/* Add Food Item Page */}
             {/* Route for Order Confirmation */}
             <Route path="/order-confirmation" element={<OrderConfirmation />} /> {/* OrderConfirmation route */}
 

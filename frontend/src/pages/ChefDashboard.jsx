@@ -3,6 +3,7 @@ import { motion } from "framer-motion";
 import axios from "axios";
 import { io } from "socket.io-client";
 import "../styles/ChefDashboardPage.css";
+import { Link } from "react-router-dom";
 
 const socket = io("http://localhost:3000"); // ✅ WebSocket Connection
 
@@ -78,6 +79,16 @@ const ChefDashboard = () => {
       >
         👨‍🍳 Active Orders
       </motion.h2>
+
+      <Link to="/add-food-item">
+        <motion.button
+          className="mb-8 px-4 py-2 bg-gradient-to-r from-blue-500 to-blue-600 text-white rounded-lg shadow-md hover:shadow-lg transition-all duration-300"
+          whileHover={{ scale: 1.05 }}
+          whileTap={{ scale: 0.98 }}
+        >
+          Add a Menu Item
+        </motion.button>
+      </Link>
 
       {orders.length === 0 ? (
         <motion.p

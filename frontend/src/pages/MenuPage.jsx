@@ -5,13 +5,12 @@ import axios from 'axios';
 import { FaShoppingCart, FaHistory, FaWallet } from 'react-icons/fa';
 import 'bootstrap/dist/css/bootstrap.min.css';
 import '../styles/MenuPage.css';
-import API from "../services/api";
-
 import beverages from '../assets/categories/baverages.jpeg';
 import desserts from '../assets/categories/desserts.jpeg';
 import maincourse from '../assets/categories/maincourse.jpg';
 import snacks from '../assets/categories/snacks.webp';
 import starters from '../assets/categories/starters.jpeg';
+import RecommendedSection from '../components/RecommendedSection'; // ✅ Import added
 
 const categoryImages = {
   Beverages: beverages,
@@ -35,19 +34,26 @@ const MenuPage = () => {
     }
 
     axios.get("http://localhost:3000/api/menu/categories")
-      .then((res) => setCategories(res.data || []))
+      .then((res) => {
+        console.log("Fetched categories:", res.data);
+        setCategories(res.data || []);
+      })
       .catch((err) => console.error("❌ Error fetching categories:", err));
 
     axios.get("http://localhost:3000/api/wallet/balance", {
       headers: { Authorization: `Bearer ${token}` },
     })
-    .then((res) => setWalletBalance(res.data.balance))
+    .then((res) => {
+      console.log("Fetched wallet balance:", res.data.balance);
+      setWalletBalance(res.data.balance);
+    })
     .catch((err) => console.error("❌ Error fetching wallet balance:", err));
   }, [navigate]);
 
   return (
     <div className="relative min-h-screen bg-gradient-to-br from-black via-gray-900 to-gray-800 flex flex-col items-center justify-center text-white overflow-hidden">
       <div className="absolute inset-0 bg-gradient-to-r from-cyan-500 via-purple-500 to-pink-500 opacity-10 animate-spin-slower z-0"></div>
+    
       <motion.div
         className="absolute top-10 left-10 w-36 h-36 bg-gradient-to-br from-teal-400 to-green-500 rounded-full opacity-50 blur-xl"
         animate={{ scale: [1, 1.2, 1], opacity: [0.5, 0.8, 0.5] }}
@@ -113,6 +119,9 @@ const MenuPage = () => {
           </motion.div>
         ))}
       </div>
+
+      {/* ✅ Recommended Section */}
+      <RecommendedSection />
     </div>
   );
 };
