@@ -3,6 +3,8 @@ import { useParams, useNavigate } from "react-router-dom";
 import { motion } from "framer-motion";
 import axios from "axios";
 import { getLocalStorageItem, setLocalStorageItem } from "../utils/localstorage";
+import MenuHeader from "../components/MenuHeader";
+import MenuFooter from "../components/MenuFooter";
 
 const CategoryPage = () => {
   const { category } = useParams();
@@ -107,73 +109,77 @@ const CategoryPage = () => {
   };
 
   return (
-    <div className="min-h-screen bg-gradient-to-br from-orange-50 to-orange-100 dark:from-gray-900 dark:to-gray-800 p-6">
-      <motion.h2 
-        className="text-4xl font-bold text-center mb-8 bg-gradient-to-r from-orange-600 to-red-600 bg-clip-text text-transparent"
-        initial={{ opacity: 0, y: -20 }}
-        animate={{ opacity: 1, y: 0 }}
-        transition={{ duration: 0.6 }}
-      >
-        {category} Items
-      </motion.h2>
-
-      <div className="flex justify-between items-center mb-8 max-w-6xl mx-auto">
-        <button 
-          onClick={() => navigate("/cart")}
-          className="flex items-center px-6 py-3 bg-gradient-to-r from-orange-500 to-orange-600 text-white rounded-lg shadow-lg hover:shadow-xl transform hover:scale-105 transition-all duration-300"
+    <>
+      <MenuHeader />
+      <div className="min-h-screen bg-gradient-to-br from-orange-50 to-orange-100 dark:from-gray-900 dark:to-gray-800 p-6">
+        <motion.h2 
+          className="text-4xl font-bold text-center mb-8 bg-gradient-to-r from-orange-600 to-red-600 bg-clip-text text-transparent"
+          initial={{ opacity: 0, y: -20 }}
+          animate={{ opacity: 1, y: 0 }}
+          transition={{ duration: 0.6 }}
         >
-          <i className="fas fa-shopping-cart mr-2"></i> View Cart
-        </button>
-        <button 
-          onClick={() => navigate("/wallet")}
-          className="flex items-center px-6 py-3 bg-gradient-to-r from-green-500 to-green-600 text-white rounded-lg shadow-lg hover:shadow-xl transform hover:scale-105 transition-all duration-300"
-        >
-          <i className="fas fa-wallet mr-2"></i> ₹{walletBalance}
-        </button>
-      </div>
+          {category} Items
+        </motion.h2>
 
-      <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-6 max-w-6xl mx-auto">
-        {foodItems.map((item) => (
-          <motion.div
-            key={item._id}
-            initial={{ opacity: 0, y: 20 }}
-            animate={{ opacity: 1, y: 0 }}
-            whileHover={{ y: -5 }}
-            transition={{ duration: 0.4 }}
+        <div className="flex justify-between items-center mb-8 max-w-6xl mx-auto">
+          <button 
+            onClick={() => navigate("/cart")}
+            className="flex items-center px-6 py-3 bg-gradient-to-r from-orange-500 to-orange-600 text-white rounded-lg shadow-lg hover:shadow-xl transform hover:scale-105 transition-all duration-300"
           >
-            <div className="bg-white dark:bg-gray-800 rounded-xl shadow-lg overflow-hidden hover:shadow-2xl transition-shadow duration-300">
-              <div className="p-6">
-                <h3 className="text-xl font-semibold mb-2 text-gray-800 dark:text-white">{item.name}</h3>
-                <p className="text-2xl font-bold text-orange-500 dark:text-orange-400 mb-4">₹{item.price}</p>
-                <div className="flex justify-end">
-                  {!cart[item._id] ? (
-                    <button
-                      onClick={() => addToCart(item)}
-                      className="px-4 py-2 bg-gradient-to-r from-orange-500 to-orange-600 text-white rounded-lg 
-                               transform transition-all duration-300 hover:scale-105 hover:shadow-lg
-                               flex items-center space-x-2"
-                    >
-                      <i className="fas fa-plus"></i>
-                      <span>Add to Cart</span>
-                    </button>
-                  ) : (
-                    <button
-                      onClick={() => removeFromCart(item)}
-                      className="px-4 py-2 bg-gradient-to-r from-red-500 to-red-600 text-white rounded-lg 
-                               transform transition-all duration-300 hover:scale-105 hover:shadow-lg
-                               flex items-center space-x-2"
-                    >
-                      <i className="fas fa-minus"></i>
-                      <span>Remove</span>
-                    </button>
-                  )}
+            <i className="fas fa-shopping-cart mr-2"></i> View Cart
+          </button>
+          <button 
+            onClick={() => navigate("/wallet")}
+            className="flex items-center px-6 py-3 bg-gradient-to-r from-green-500 to-green-600 text-white rounded-lg shadow-lg hover:shadow-xl transform hover:scale-105 transition-all duration-300"
+          >
+            <i className="fas fa-wallet mr-2"></i> ₹{walletBalance}
+          </button>
+        </div>
+
+        <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-6 max-w-6xl mx-auto">
+          {foodItems.map((item) => (
+            <motion.div
+              key={item._id}
+              initial={{ opacity: 0, y: 20 }}
+              animate={{ opacity: 1, y: 0 }}
+              whileHover={{ y: -5 }}
+              transition={{ duration: 0.4 }}
+            >
+              <div className="bg-white dark:bg-gray-800 rounded-xl shadow-lg overflow-hidden hover:shadow-2xl transition-shadow duration-300">
+                <div className="p-6">
+                  <h3 className="text-xl font-semibold mb-2 text-gray-800 dark:text-white">{item.name}</h3>
+                  <p className="text-2xl font-bold text-orange-500 dark:text-orange-400 mb-4">₹{item.price}</p>
+                  <div className="flex justify-end">
+                    {!cart[item._id] ? (
+                      <button
+                        onClick={() => addToCart(item)}
+                        className="px-4 py-2 bg-gradient-to-r from-orange-500 to-orange-600 text-white rounded-lg 
+                                 transform transition-all duration-300 hover:scale-105 hover:shadow-lg
+                                 flex items-center space-x-2"
+                      >
+                        <i className="fas fa-plus"></i>
+                        <span>Add to Cart</span>
+                      </button>
+                    ) : (
+                      <button
+                        onClick={() => removeFromCart(item)}
+                        className="px-4 py-2 bg-gradient-to-r from-red-500 to-red-600 text-white rounded-lg 
+                                 transform transition-all duration-300 hover:scale-105 hover:shadow-lg
+                                 flex items-center space-x-2"
+                      >
+                        <i className="fas fa-minus"></i>
+                        <span>Remove</span>
+                      </button>
+                    )}
+                  </div>
                 </div>
               </div>
-            </div>
-          </motion.div>
-        ))}
+            </motion.div>
+          ))}
+        </div>
       </div>
-    </div>
+      <MenuFooter />
+    </>
   );
 };
 

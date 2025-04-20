@@ -11,6 +11,8 @@ import maincourse from '../assets/categories/maincourse.jpg';
 import snacks from '../assets/categories/snacks.webp';
 import starters from '../assets/categories/starters.jpeg';
 import RecommendedSection from '../components/RecommendedSection'; // ✅ Import added
+import MenuHeader from '../components/MenuHeader';
+import MenuFooter from '../components/MenuFooter';
 
 const categoryImages = {
   Beverages: beverages,
@@ -51,6 +53,8 @@ const MenuPage = () => {
   }, [navigate]);
 
   return (
+    <>
+    <MenuHeader />
     <div className="relative min-h-screen bg-gradient-to-br from-black via-gray-900 to-gray-800 flex flex-col items-center justify-center text-white overflow-hidden">
       <div className="absolute inset-0 bg-gradient-to-r from-cyan-500 via-purple-500 to-pink-500 opacity-10 animate-spin-slower z-0"></div>
     
@@ -122,7 +126,9 @@ const MenuPage = () => {
 
       {/* ✅ Recommended Section */}
       <RecommendedSection />
+      <MenuFooter />
     </div>
+    </>
   );
 };
 

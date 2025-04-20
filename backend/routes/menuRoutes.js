@@ -13,6 +13,29 @@ router.get("/categories", async (req, res) => {
     }
 });
 
+
+router.get("/search", async (req, res) => {
+    const { name } = req.query;
+
+    if (!name) {
+        return res.status(400).json({ message: "❌ Item name is required." });
+    }
+
+    try {
+        const item = await Food.findOne({
+            name: { $regex: new RegExp(name, "i") }, // case-insensitive match
+        });
+
+        if (!item) {
+            return res.status(404).json({ message: "❌ Item not found." });
+        }
+
+        res.json(item);
+    } catch (err) {
+        console.error("❌ Error searching menu item:", err);
+        res.status(500).json({ message: "Internal Server Error" });
+    }
+});
 // Fetch menu items by category
 router.get("/items", async (req, res) => {
     try {

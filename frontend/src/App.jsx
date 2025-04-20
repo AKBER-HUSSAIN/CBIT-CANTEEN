@@ -33,7 +33,9 @@ const App = () => {
         <main className="flex-grow">
           <Routes>
             {/* Define routes for all pages */}
-            <Route path="/" element={<LandingPage />} /> {/* Change this line */}
+            <Route path="/" element={<LandingPage />} /> 
+          </Routes>
+          <Routes>
             <Route path="/login" element={<Login />} />
             <Route path="/signup" element={<Signup />} />
             <Route path="/order-status" element={<OrderStatus />} />
@@ -61,7 +63,6 @@ const App = () => {
             <Route path="/otp-verification" element={<OTPVerification />} /> {/* OTPVerification route */}
           </Routes>
         </main>
-        <Footer />
       </div>
     </Router>
   );

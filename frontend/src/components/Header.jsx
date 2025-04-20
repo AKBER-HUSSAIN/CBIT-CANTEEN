@@ -3,19 +3,19 @@ import { Link } from "react-router-dom";
 
 const Header = () => {
   return (
-    <header className="bg-white dark:bg-gray-800 shadow-md">
+    <header className="bg-blue-600 shadow-md">
       <div className="container mx-auto px-4 py-4 flex justify-between items-center">
-        <Link to="/" className="text-2xl font-bold text-blue-500">
+        <Link to="/" className="text-2xl font-bold text-white">
           CBIT Canteen
         </Link>
         <nav className="flex space-x-4">
-          <Link to="/login" className="text-gray-700 dark:text-gray-300 hover:text-blue-500">
+          <Link to="/login" className="text-white hover:text-gray-200">
             Login
           </Link>
-          <Link to="/signup" className="text-gray-700 dark:text-gray-300 hover:text-blue-500">
+          <Link to="/signup" className="text-white hover:text-gray-200">
             Signup
           </Link>
-          <Link to="/about" className="text-gray-700 dark:text-gray-300 hover:text-blue-500">
+          <Link to="/about" className="text-white hover:text-gray-200">
             About
           </Link>
         </nav>

@@ -1,17 +1,32 @@
 const axios = require('axios');
+const Menu = require("../models/FoodModel"); // Import Mongoose model
 
 const GEMINI_API_KEY = process.env.GEMINI_API_KEY;
 const GEMINI_ENDPOINT = `https://generativelanguage.googleapis.com/v1beta/models/gemini-2.0-flash:generateContent?key=${GEMINI_API_KEY}`;
 
+// ✅ FETCH MENU ITEMS
+const fetchAvailableMenuItems = async () => {
+    const menuItems = await Menu.find({});
+    return menuItems.map(item => item.name);
+};
+
+// ✅ AI RECOMMENDATIONS BASED ON USER'S ORDER HISTORY
 const getGeminiRecommendations = async (orderItems) => {
-    const prompt = `
-You are a food recommendation engine.
+    try {
+        const availableItems = await fetchAvailableMenuItems();
+
+        const prompt = `
+You are a food recommendation engine for a college canteen.
 The user frequently orders: ${orderItems.join(", ")}.
-Suggest 5 unique food items they might enjoy.
-Use bullet points, and don't include any descriptions.
+
+Based on their preferences, suggest 5 unique food items they might enjoy.
+
+IMPORTANT: Only suggest items from the following available menu:
+${availableItems.join(", ")}
+
+Respond in bullet points. No descriptions.
 `;
 
-    try {
         const response = await axios.post(
             GEMINI_ENDPOINT,
             {
@@ -42,6 +57,11 @@ Use bullet points, and don't include any descriptions.
         return [];
     }
 };
+
+
+
+
+
 
 const predictChefOrders = async (pastOrders, timeSlot, day) => {
     const prompt = `
@@ -90,21 +110,29 @@ Respond strictly in valid JSON format without any additional text, comments, or 
 };
 
 
+// ✅ PERSONALIZED MEAL GENERATOR (BASED ON USER PREFERENCES)
 const generatePersonalizedMealRecommendation = async (preferences) => {
     const { mealType, spicyLevel, calories, minBudget, maxBudget } = preferences;
 
-    const prompt = `
-You are a food recommendation engine.
-The user prefers the following:
-- Meal Type: ${mealType} (Veg/Non-Veg)
-- Spicy Level: ${spicyLevel} (Spicy/Mild)
-- Calorie Preferences: ${calories} (Low/Medium/High)
-- Budget Range: ₹${minBudget} - ₹${maxBudget}
+    try {
+        const availableItems = await fetchAvailableMenuItems();
 
-Suggest 5 unique food items based on these preferences. Use bullet points, and don't include any descriptions.
+        const prompt = `
+You are a food recommendation engine for a college canteen.
+
+User preferences:
+- Meal Type: ${mealType} (Veg/Non-Veg)
+- Spicy Level: ${spicyLevel}
+- Calories: ${calories}
+- Budget: ₹${minBudget} - ₹${maxBudget}
+
+IMPORTANT: Only suggest items from the available menu below:
+${availableItems.join(", ")}
+
+Suggest 5 food items that best match these preferences.
+Use bullet points only. No descriptions.
 `;
 
-    try {
         const response = await axios.post(
             GEMINI_ENDPOINT,
             {
