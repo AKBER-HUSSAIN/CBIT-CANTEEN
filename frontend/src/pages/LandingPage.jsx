@@ -2,6 +2,8 @@ import React, { useEffect } from 'react';
 import { motion } from 'framer-motion';
 import { Link, useNavigate } from 'react-router-dom';
 import Particles from 'react-tsparticles';
+import useTypewriter from "./useTypeWriter";
+import '../styles/dotAnimation.css';  // Importing CSS for dot animation
 
 const ParticleBackground = () => {
   const particlesOptions = {
@@ -92,6 +94,27 @@ const Navbar = () => {
     </motion.nav>
   );
 };
+
+
+const Description = () => {
+  const fullText = "E xperience seamless food ordering, real-time updates, and AI-powered recommendations at your fingertips.";
+  const { displayedText, dotVisible } = useTypewriter(fullText, 50); // Use the hook
+
+  return (
+    <motion.p
+      className="text-lg md:text-xl text-gray-600 dark:text-gray-300 max-w-xl mb-8"
+      initial={{ opacity: 0 }}
+      animate={{ opacity: 1 }}
+      transition={{ duration: 1, delay: 0.5 }}
+      style={{ minHeight: "3rem" }} // Prevents flickering
+    >
+      {displayedText}
+      {dotVisible && <span className="ml-1">.</span>} {/* Show dot only if it's visible */}
+    </motion.p>
+  );
+};
+
+
 
 const FeaturesSection = () => {
   return (
@@ -289,14 +312,7 @@ const LandingPage = () => {
           >
             Welcome to CBIT Canteen 🍱
           </motion.h1>
-          <motion.p
-            className="text-lg md:text-xl text-gray-600 dark:text-gray-300 max-w-xl mb-8"
-            initial={{ opacity: 0, y: 50 }}
-            animate={{ opacity: 1, y: 0 }}
-            transition={{ duration: 1, delay: 0.5 }}
-          >
-            Experience seamless food ordering, real-time updates, and AI-powered recommendations at your fingertips.
-          </motion.p>
+          <Description />
           <motion.div
             className="flex space-x-4"
             initial={{ opacity: 0 }}
