@@ -179,6 +179,7 @@ module.exports = (io) => {
             if (!orders.length) {
                 return res.status(200).json({ orders: [] }); // Return an empty array if no orders exist
             }
+            console.log("🔍 Orders found:", orders);
             res.status(200).json({ orders });
         } catch (err) {
             console.error("❌ Error fetching order history:", err.message);

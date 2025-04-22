@@ -52,7 +52,7 @@ const CanteenLogo = () => {
       animate={{ rotate: [0, 10, -10, 10, 0] }}
       transition={{ repeat: Infinity, duration: 3 }}
     >
-      CBIT Canteen
+      CBIT CanteenX
     </motion.div>
   );
 };
@@ -68,7 +68,7 @@ const Navbar = () => {
       transition={{ duration: 1 }}
     >
       <Link to="/" className="text-3xl font-bold">
-        CBIT Canteen
+        CBIT CanteenX
       </Link>
       <div className="hidden md:flex space-x-8">
         <a href="#about" className="hover:underline">About</a>
@@ -203,7 +203,7 @@ const TestimonialsSection = () => {
           animate={{ opacity: 1 }}
           transition={{ delay: 0.3, duration: 1 }}
         >
-          <p>"The CBIT Canteen app made ordering food so much easier! The AI recommendations are spot on, and I love tracking my orders in real-time!"</p>
+          <p>"The CBIT CanteenX app made ordering food so much easier! The AI recommendations are spot on, and I love tracking my orders in real-time!"</p>
           <div className="flex items-center space-x-2 mt-4">
             <div className="flex space-x-1">
               <span className="text-yellow-500">⭐</span>
@@ -244,7 +244,7 @@ const AboutSection = () => {
       <h2 className="text-3xl font-bold text-center mb-10">About Us</h2>
       <div className="max-w-4xl mx-auto text-center">
         <p className="text-lg text-gray-600 dark:text-gray-400">
-          CBIT Canteen is your one-stop solution for seamless food ordering and management. 
+          CBIT CanteenX is your one-stop solution for seamless food ordering and management. 
           With AI-powered recommendations, real-time order tracking, and a secure wallet system, 
           we aim to provide a hassle-free dining experience for students and staff alike.
         </p>
@@ -259,7 +259,7 @@ const CTASection = () => {
   return (
     <section id="cta" className="py-20 bg-gradient-to-br from-indigo-600 to-purple-700 text-white relative z-10">
       <h2 className="text-3xl font-bold text-center mb-6">Get Started Today</h2>
-      <p className="text-center mb-6">Join the CBIT Canteen revolution and experience effortless food ordering like never before.</p>
+      <p className="text-center mb-6">Join the CBIT CanteenX revolution and experience effortless food ordering like never before.</p>
       <div className="flex justify-center space-x-4">
         <button
           onClick={() => navigate('/signup')}
@@ -279,7 +279,7 @@ const Footer = () => {
   return (
     <footer className="py-6 bg-gray-800 text-white relative z-10">
       <div className="container mx-auto text-center">
-        <p>&copy; 2025 CBIT Canteen</p>
+        <p>&copy; 2025 CBIT CanteenX</p>
         <div className="space-x-6 mt-4">
           <a href="https://facebook.com" target="_blank" rel="noopener noreferrer" className="hover:text-blue-500">
             Facebook
@@ -310,7 +310,7 @@ const LandingPage = () => {
             animate={{ opacity: 1, y: 0 }}
             transition={{ duration: 1 }}
           >
-            Welcome to CBIT Canteen 🍱
+            Welcome to CBIT CanteenX 🍱
           </motion.h1>
           <Description />
           <motion.div
