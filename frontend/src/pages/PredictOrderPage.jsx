@@ -212,10 +212,6 @@ const PredictOrderPage = () => {
                                                         {prediction.predictedQuantity}
                                                     </span>
                                                 </div>
-                                                <div className="flex justify-between text-sm text-gray-600">
-                                                    <span>{prediction.category}</span>
-                                                    <span>₹{prediction.price}</span>
-                                                </div>
                                             </div>
                                         </motion.div>
                                     )) : (

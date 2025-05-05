@@ -23,7 +23,7 @@ const AddFoodItem = () => {
       const response = await axios.post('http://localhost:3000/api/menu/add', {
         name,
         category,
-        price,  
+        price,
         imageUrl,
       });
 
@@ -44,7 +44,7 @@ const AddFoodItem = () => {
   return (
     <div className="max-w-md mx-auto p-6 bg-white rounded-lg shadow-lg">
       <h2 className="text-2xl font-bold mb-4">Add New Food Item</h2>
-      {message && <p className="text-center mb-4 text-red-500">{message}</p>}  {/* Error or success message */}
+      {message && <p className="text-center mb-4 text-red-500">{message}</p>}
       <form onSubmit={handleSubmit}>
         <div className="mb-4">
           <label className="block text-sm font-medium">Food Name</label>
