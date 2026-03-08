@@ -12,4 +12,11 @@ export default defineConfig({
     },
     cors: true,
   },
+  build: {
+    rollupOptions: {
+      output: {
+        manualChunks: undefined,
+      },
+    },
+  },
 })
