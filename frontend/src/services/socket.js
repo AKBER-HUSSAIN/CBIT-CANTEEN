@@ -1,6 +1,6 @@
 import { io } from 'socket.io-client';
 
 // Replace with your backend WebSocket URL
-const socket = io('http://localhost:5000');
+const socket = io('https://cbit-canteen-1.onrender.com');
 
 export default socket;

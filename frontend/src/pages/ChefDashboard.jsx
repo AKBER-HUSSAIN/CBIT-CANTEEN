@@ -8,7 +8,7 @@ import MenuHeader from "../components/MenuHeader";
 import MenuFooter from "../components/MenuFooter";
 import { FaUtensils, FaChartLine, FaPlus } from "react-icons/fa";
 
-const socket = io("http://localhost:3000"); // ✅ WebSocket Connection
+const socket = io("https://cbit-canteen-1.onrender.com"); // ✅ WebSocket Connection
 
 const ChefDashboard = () => {
   const [orders, setOrders] = useState([]);

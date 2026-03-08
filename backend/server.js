@@ -13,7 +13,7 @@ const server = http.createServer(app);
 // ✅ Middleware    
 app.use(express.json());
 app.use(cors({
-    origin: process.env.FRONTEND_URL || "http://localhost:5173",
+    origin: process.env.FRONTEND_URL || "https://cbitcanteen.onrender.com", // Updated to deployed frontend URL
     methods: ["GET", "POST", "PUT", "DELETE"],
     credentials: true
 }));
@@ -29,7 +29,7 @@ mongoose.connect(process.env.MONGO_URI)
 // ✅ WebSocket Setup for Real-time Order Updates
 const io = new Server(server, {
     cors: {
-        origin: "http://localhost:5173", // Replace with your frontend's URL
+        origin: process.env.FRONTEND_URL || "https://cbitcanteen.onrender.com", // Updated to deployed frontend URL
         methods: ["GET", "POST"],
     },
 });

@@ -6,7 +6,7 @@ import '../styles/OrderStatus.css';
 import MenuHeader from '../components/MenuHeader';
 import MenuFooter from '../components/MenuFooter';
 
-const socket = io('http://localhost:3000');
+const socket = io('https://cbit-canteen-1.onrender.com');
 
 const OrderStatus = () => {
   const { orderId } = useParams();
